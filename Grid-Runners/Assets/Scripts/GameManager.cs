@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public float RoundTimer = 90f;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +17,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (RoundTimer > 0)
+            RoundTimer -= Time.deltaTime;
+        else
+            EndRound();
+    }
+
+    void EndRound()
+    {
+
     }
 }
