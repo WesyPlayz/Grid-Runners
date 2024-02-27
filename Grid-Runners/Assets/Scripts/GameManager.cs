@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public float RoundTimer = 90f;
-
+    public float RoundTimer;
+    public int players;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        RoundTimer = 45f * players;
     }
 
     // Update is called once per frame
