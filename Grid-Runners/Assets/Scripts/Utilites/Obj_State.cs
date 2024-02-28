@@ -28,9 +28,10 @@ public class Obj_State : MonoBehaviour
 
     [Header("Attack Variables")]
     public float Damage;
-
+    public int Bullets_Per_Shot;
     public float Attack_Cooldown;
-
+    public float bloom;
+    public float recoil;
     public float bullet_Speed;
 
     [Header("Collision Variables")]

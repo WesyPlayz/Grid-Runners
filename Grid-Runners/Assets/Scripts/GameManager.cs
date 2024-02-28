@@ -6,12 +6,18 @@ public class GameManager : MonoBehaviour
 {
     public float RoundTimer;
     public int players;
+    public int players_Alive;
+    public GameObject[] wepons;
+    public GameObject[] basic_Weapons;
+    public GameObject[] water_Weapons;
+    public GameObject[] medieval_Weapons;
 
 
     // Start is called before the first frame update
     void Start()
     {
         RoundTimer = 45f * players;
+        
     }
 
     // Update is called once per frame
@@ -23,7 +29,7 @@ public class GameManager : MonoBehaviour
             EndRound();
     }
 
-    void EndRound()
+    public void EndRound()
     {
 
     }
