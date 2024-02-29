@@ -7,11 +7,12 @@ TagManager:
   - Dummy
   - Spawn
   - Barrier
+  - Floor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
   - Spawn

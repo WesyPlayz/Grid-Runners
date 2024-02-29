@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UserHandler : MonoBehaviour
 {
+    /*
     //objects
     public GameObject secondary_Obj;
     private Rigidbody obj_Physics;
@@ -75,13 +76,13 @@ public class UserHandler : MonoBehaviour
     
     void MeleeAttack()
     {
-        /*
+        
         if (secondary_Data.collided_Entity.name == "Enemy")
         {
             secondary_Data.collided_Entity.GetComponent<EnemyHandler>().damaged_Particle.GetComponent<ParticleSystem>().Play();
             //secondary_Data.collided_Entity.GetComponent<EnemyHandler>().damaged_Sound.Play(); //needs sxf
         }
-        */
+        
 
         if (secondary_Data.collided_Entity.name == "Body")
         {
@@ -134,4 +135,5 @@ public class UserHandler : MonoBehaviour
         can_Attack = true;
         Debug.Log("can attack again");
     }
+*/
 }
