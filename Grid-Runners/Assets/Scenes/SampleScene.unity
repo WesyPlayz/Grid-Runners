@@ -3948,6 +3948,9 @@ PrefabInstance:
       addedObject: {fileID: 1513848535}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1513848539}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1513848538}
   m_SourcePrefab: {fileID: 100100000, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
 --- !u!1 &722898335
@@ -4076,6 +4079,9 @@ GameObject:
   - component: {fileID: 764515809}
   - component: {fileID: 764515808}
   - component: {fileID: 764515807}
+  - component: {fileID: 764515811}
+  - component: {fileID: 764515810}
+  - component: {fileID: 764515812}
   m_Layer: 0
   m_Name: Detector
   m_TagString: Untagged
@@ -4148,6 +4154,68 @@ Transform:
   m_Father: {fileID: 1513848537}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &764515810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764515805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1798cef719a931947a453f18393f0a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  Team_ID: 0
+  collided_Entity: {fileID: 0}
+  collided_Item: {fileID: 0}
+  Primary_ID: 0
+  Secondary_ID: 0
+  Ability_ID: 0
+  Reach: 0
+  Speed: 0
+  jump_Force: 0
+  gravity: 0
+  Damage: 0
+  Bullets_Per_Shot: 0
+  Attack_Cooldown: 0
+  bloom: 0
+  recoil: 0
+  bullet_Speed: 0
+  collided_Wall: {fileID: 0}
+  collided_Floor: {fileID: 0}
+  collided_Ceiling: {fileID: 0}
+  last_Wall_Contact: {x: 0, y: 0, z: 0}
+  last_Floor_Contact: {x: 0, y: 0, z: 0}
+  last_Ceiling_Contact: {x: 0, y: 0, z: 0}
+  total_Collisions: 0
+--- !u!114 &764515811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764515805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31238126c3a05aa44b550dc2d567ba18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entity: {fileID: 0}
+--- !u!114 &764515812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764515805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31238126c3a05aa44b550dc2d567ba18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entity: {fileID: 0}
 --- !u!4 &785908459 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d51be7b4fcaf1ea46b5423c838817997, type: 3}
@@ -27757,6 +27825,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5958d48cc7c76604bb121c1b45608f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondary_Obj: {fileID: 764515805}
+  current_Primary: {fileID: 0}
+  current_Secondary: {fileID: 0}
+  current_Knife: {fileID: 0}
+  new_Weapon: {fileID: 0}
+  on_Floor: 1
+  on_Wall: 0
 --- !u!54 &1513848536
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27810,6 +27885,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.5021596, z: 0.38952753}
   m_Center: {x: 0, y: 1.2336981, z: -0.005619034}
+--- !u!114 &1513848539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513848533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1798cef719a931947a453f18393f0a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  Team_ID: 0
+  collided_Entity: {fileID: 0}
+  collided_Item: {fileID: 0}
+  Primary_ID: 0
+  Secondary_ID: 0
+  Ability_ID: 0
+  Reach: 0
+  Speed: 10
+  jump_Force: 0
+  gravity: 0
+  Damage: 0
+  Bullets_Per_Shot: 0
+  Attack_Cooldown: 0
+  bloom: 0
+  recoil: 0
+  bullet_Speed: 0
+  collided_Wall: {fileID: 0}
+  collided_Floor: {fileID: 0}
+  collided_Ceiling: {fileID: 0}
+  last_Wall_Contact: {x: 0, y: 0, z: 0}
+  last_Floor_Contact: {x: 0, y: 0, z: 0}
+  last_Ceiling_Contact: {x: 0, y: 0, z: 0}
+  total_Collisions: 0
 --- !u!1001 &1524707387
 PrefabInstance:
   m_ObjectHideFlags: 0

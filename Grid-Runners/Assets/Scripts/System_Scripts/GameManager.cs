@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public float RoundTimer;
     public int players;
     public int players_Alive;
-    public GameObject[] wepons;
+    public GameObject[] weapons;
     public GameObject[] basic_Weapons;
     public GameObject[] water_Weapons;
     public GameObject[] medieval_Weapons;

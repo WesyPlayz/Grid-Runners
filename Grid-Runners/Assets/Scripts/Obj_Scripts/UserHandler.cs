@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UserHandler : MonoBehaviour
 {
-    /*
+    
     //objects
     public GameObject secondary_Obj;
     private Rigidbody obj_Physics;
@@ -16,7 +16,7 @@ public class UserHandler : MonoBehaviour
     private Obj_State obj_Data;
     private Obj_State NWD; //new weapon data
     private Obj_State secondary_Data;
-    private DumbiesHandler dumby;
+    private DummyHandler dumby;
     private GameManager gm;
 
     private bool is_Jumping;
@@ -44,7 +44,7 @@ public class UserHandler : MonoBehaviour
     {
         if (on_Floor) //movement system
         { 
-            obj_Physics.AddRelativeForce(Vector3.down * obj_Data.grivity);
+            obj_Physics.AddRelativeForce(Vector3.down * obj_Data.gravity);
             obj_Physics.velocity = new Vector3(Input.GetAxis("Horizontal") * obj_Data.Speed, obj_Physics.velocity.y, Input.GetAxis("Vertical") * obj_Data.Speed);
         }
 
@@ -75,32 +75,16 @@ public class UserHandler : MonoBehaviour
 
     
     void MeleeAttack()
-    {
-        
-        if (secondary_Data.collided_Entity.name == "Enemy")
-        {
-            secondary_Data.collided_Entity.GetComponent<EnemyHandler>().damaged_Particle.GetComponent<ParticleSystem>().Play();
-            //secondary_Data.collided_Entity.GetComponent<EnemyHandler>().damaged_Sound.Play(); //needs sxf
-        }
-        
-
+    {    
         if (secondary_Data.collided_Entity.name == "Body")
         {
-            dumby = secondary_Data.collided_Entity.GetComponent<DumbiesHandler>();
-            dumby.Begin();
+            dumby = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
+            dumby.StopAllCoroutines();
+            StartCoroutine(dumby.Shake(0));
         }
 
 
     }
-
-
-    
-    IEnumerator JumpCooldown()
-    {
-        yield return new WaitForSeconds(obj_Data.jump_Cooldown);
-        is_Jumping = false;
-    }
-    
 
     void died()
     {
@@ -119,13 +103,11 @@ public class UserHandler : MonoBehaviour
 
     void getNewWeapon()
     {
-        int new_WeaponChoice = Random.Range(0, gm.weapons.Length);
-        new_Weapon = gm.weapons[new_WeaponChoice];
         NWD = new_Weapon.GetComponent<Obj_State>();
 
-        if (NWD.Item_ID == 1)
+        if (NWD.Primary_ID == 1)
             current_Primary = new_Weapon;
-        else if (NWD.Item_ID == 2)
+        else if (NWD.Secondary_ID == 2)
             current_Secondary = new_Weapon;
     }
 
@@ -135,5 +117,5 @@ public class UserHandler : MonoBehaviour
         can_Attack = true;
         Debug.Log("can attack again");
     }
-*/
+
 }

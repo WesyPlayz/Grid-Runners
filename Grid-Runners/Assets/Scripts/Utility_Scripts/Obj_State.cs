@@ -25,6 +25,7 @@ public class Obj_State : MonoBehaviour
     [Header("Movement Variables")]
     public float Speed;
     public float jump_Force;
+    public float gravity;
 
     [Header("Attack Variables")]
     public float Damage;
