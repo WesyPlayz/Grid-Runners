@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static Utilities.Collisions;
+using static Utilities.Generic;
+
 public class UserHandler : MonoBehaviour
 {
-    
     //objects
     public GameObject secondary_Obj;
     private Rigidbody obj_Physics;
@@ -29,9 +31,8 @@ public class UserHandler : MonoBehaviour
 
     // Collision Variables:
     public bool on_Floor;
-    public bool on_Wall;
 
-    private bool is_scoping = false;
+    private bool is_scoping;
 
     private void Start()
     {
@@ -46,9 +47,17 @@ public class UserHandler : MonoBehaviour
     private void Update()
     {
         if (on_Floor) //movement system
-        { 
-            obj_Physics.AddRelativeForce(Vector3.down * obj_Data.gravity);
-            obj_Physics.velocity = new Vector3(Input.GetAxis("Horizontal") * obj_Data.Speed, obj_Physics.velocity.y, Input.GetAxis("Vertical") * obj_Data.Speed);
+        {
+            float current_Speed_V = Input.GetAxis("Vertical") * obj_Data.Speed;
+            float current_Speed_H = Input.GetAxis("Horizontal") * obj_Data.Speed;
+
+            Vector3 forwardMovement = transform.forward * current_Speed_V;
+            Vector3 rightMovement = transform.right * current_Speed_H;
+
+            obj_Physics.velocity = forwardMovement + rightMovement;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject);
         }
 
         if (can_Attack) //attack system
@@ -125,5 +134,27 @@ public class UserHandler : MonoBehaviour
         can_Attack = true;
         Debug.Log("can attack again");
     }
+    
+    // Collision System:
+    void OnCollisionEnter(Collision sender)
+    {
+        GameObject current_Obj = sender.gameObject;
+        obj_Data.total_Collisions++;
+        if (current_Obj.layer == LayerMask.NameToLayer("Terrain")) // Terrain Collision:
+        {
+            bool foundFloor = FindSurfaceType("Floor", sender, gameObject);
+            if (foundFloor)
+            {
+                on_Floor = true;
+                obj_Data.collided_Floor = current_Obj;
+            }
+        }
+    }
+    void OnCollisionExit(Collision sender)
+    {
+        if (sender.gameObject == obj_Data.collided_Floor)
+            obj_Data.collided_Floor = null;
 
+        on_Floor = obj_Data.collided_Floor == null ? false : true;
+    }
 }

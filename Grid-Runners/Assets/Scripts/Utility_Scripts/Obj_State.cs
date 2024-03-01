@@ -31,8 +31,8 @@ public class Obj_State : MonoBehaviour
     public float Attack_Cooldown;
 
     [Header("Collision Variables")]
-    public GameObject collided_Wall;
     public GameObject collided_Floor;
+    public GameObject collided_Wall;
     public GameObject collided_Ceiling;
 
     public Vector3 last_Wall_Contact;

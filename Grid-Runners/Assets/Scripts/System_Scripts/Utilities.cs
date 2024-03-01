@@ -53,7 +53,7 @@ namespace Utilities
                 on_Floor ? obj_Data.last_Floor_Contact :
                 obj_Data.last_Floor_Contact != Vector3.zero ? obj_Data.last_Floor_Contact :
                 Vector3.up;
-            obj_Physics.AddForce(jump_Direction * jump_Force, ForceMode.Impulse);
+            obj_Physics.AddRelativeForce(jump_Direction * jump_Force, ForceMode.Impulse);
             return true;
         }
         public static bool LinearJump(Vector3 jump_Direction, float jump_Force, GameObject retriever) // ID : 02 // Parameters are as follows (direction of movement) (force applied) (object being affected)
