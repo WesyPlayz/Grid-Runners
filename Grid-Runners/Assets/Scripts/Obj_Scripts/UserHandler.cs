@@ -136,11 +136,11 @@ public class UserHandler : MonoBehaviour
     }
     
     // Collision System:
-    void OnCollisionEnter(Collision sender)
+    void OnCollisionStay(Collision sender)
     {
         GameObject current_Obj = sender.gameObject;
         obj_Data.total_Collisions++;
-        if (current_Obj.layer == LayerMask.NameToLayer("Terrain")) // Terrain Collision:
+        if (current_Obj.layer == LayerMask.NameToLayer("Terrain") && current_Obj != obj_Data.collided_Floor) // Terrain Collision:
         {
             bool foundFloor = FindSurfaceType("Floor", sender, gameObject);
             if (foundFloor)
