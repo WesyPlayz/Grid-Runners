@@ -11,6 +11,9 @@ public class UserHandler : MonoBehaviour
     private Transform obj_Transform;
     public GameObject current_Primary, current_Secondary, current_Knife;
     public GameObject new_Weapon;
+    public Camera fpsCam;
+    public LayerMask enemyTeam;
+    public string enemyTeamTag;
 
     //script data
     private Obj_State obj_Data;
@@ -22,7 +25,7 @@ public class UserHandler : MonoBehaviour
     private bool is_Jumping;
 
     // Jumping Variables:
-    private bool can_Attack = true;
+    public bool can_Attack = true;
 
     // Collision Variables:
     public bool on_Floor;
@@ -72,7 +75,12 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-
+    public void hit(int dmg)
+    {
+        obj_Data.Health -= (dmg);
+        if (obj_Data.Health <= 0)
+            died();
+    }
     
     void MeleeAttack()
     {    
@@ -111,7 +119,7 @@ public class UserHandler : MonoBehaviour
             current_Secondary = new_Weapon;
     }
 
-    IEnumerator AttackCooldown(float length)
+    public IEnumerator AttackCooldown(float length)
     {
         yield return new WaitForSeconds(length);
         can_Attack = true;
