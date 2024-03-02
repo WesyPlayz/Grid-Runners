@@ -21,6 +21,7 @@ public class GridHandler : MonoBehaviour
 
     // Grid Data Variables:
     private bool is_Selected;
+    private bool can_Select = true;
 
     // Variable Initialization System:
     void Start()
@@ -53,10 +54,11 @@ public class GridHandler : MonoBehaviour
     // Grid Placement System:
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && is_Selected)
+        if (can_Select && Input.GetMouseButtonDown(0) && is_Selected)
         {
             if (!placement_Bounds.Intersects(User.GetComponent<Collider>().bounds) && Vector3.Distance(transform.position, User.transform.position) <= 10)
             {
+                can_Select = false;
                 GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
                 new_Grid_Obj.transform.position = placement_Zone.transform.position;
             }
