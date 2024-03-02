@@ -4,61 +4,61 @@ using UnityEngine;
 
 public class GridHandler : MonoBehaviour
 {
-    // Object Variables:
-    private GameObject grid_Tile;
+    // User Variables:
     private GameObject User;
 
+    // Grid Variables:
+    private GameObject Grid;
+    private Grid_Data grid_Data;
+
+    // Object Variables:
+    private GameObject grid_Tile;
+
+    public GameObject placement_Zone;
+    private Bounds placement_Bounds;
+
+    public Material run_Material;
+
     // Grid Data Variables:
-    private bool isSelected;
+    private bool is_Selected;
 
-    public int Direction;
-
+    // Variable Initialization System:
     void Start()
     {
+        // Initiate User ID:
+        User = GameObject.Find("User");
+
+        // Initiate Grid ID:
+        Grid = GameObject.Find("Grid");
+        grid_Data = Grid.GetComponent<Grid_Data>();
+
+        // Initiate Grid State:
         grid_Tile = gameObject.transform.parent.gameObject;
-        User = GameObject.Find("Human_GR");
+        placement_Bounds = placement_Zone.GetComponent<Renderer>().bounds;
+
+        // Disable Detection Visibility:
+        GetComponent<MeshRenderer>().material = run_Material;
     }
 
     // Mouse Detection System:
     private void OnMouseEnter()
     {
-        isSelected = true;
+        is_Selected = true;
     }
     private void OnMouseExit()
     {
-        isSelected = false;
+        is_Selected = false;
     }
 
     // Grid Placement System:
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && isSelected)
+        if (Input.GetMouseButtonDown(0) && is_Selected)
         {
-            float distance = Vector3.Distance(transform.position, User.transform.position);
-            if (distance <= 6 && distance > 3)
+            if (!placement_Bounds.Intersects(User.GetComponent<Collider>().bounds) && Vector3.Distance(transform.position, User.transform.position) <= 10)
             {
-                GameObject new_Grid_Obj = Instantiate(grid_Tile);
-                switch (Direction)
-                {
-                    case 0:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x, grid_Tile.transform.position.y + 2, grid_Tile.transform.position.z);
-                        break;
-                    case 1:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x, grid_Tile.transform.position.y - 2, grid_Tile.transform.position.z);
-                        break;
-                    case 2:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x + 2, grid_Tile.transform.position.y, grid_Tile.transform.position.z);
-                        break;
-                    case 3:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x - 2, grid_Tile.transform.position.y, grid_Tile.transform.position.z);
-                        break;
-                    case 4:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x, grid_Tile.transform.position.y, grid_Tile.transform.position.z + 2);
-                        break;
-                    case 5:
-                        new_Grid_Obj.transform.position = new Vector3(grid_Tile.transform.position.x, grid_Tile.transform.position.y, grid_Tile.transform.position.z - 2);
-                        break;
-                }
+                GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
+                new_Grid_Obj.transform.position = placement_Zone.transform.position;
             }
         }
     }
