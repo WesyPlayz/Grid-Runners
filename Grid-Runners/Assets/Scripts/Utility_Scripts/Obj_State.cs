@@ -23,7 +23,8 @@ public class Obj_State : MonoBehaviour
     public float Reach;
 
     [Header("Movement Variables")]
-    public float Speed;
+    public float walk_Speed;
+    public float sprint_Speed;
     public float jump_Force;
     public float gravity;
 

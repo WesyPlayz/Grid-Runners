@@ -30,6 +30,7 @@ public class WeaponHandler : MonoBehaviour
     public GameObject user;
     private UserHandler UH;
 
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -91,5 +92,5 @@ public class WeaponHandler : MonoBehaviour
         reloading = false;
         maxAmmo -= (maxMagSize - ammo);
         ammo = maxMagSize;
-    }
+    } */
 }

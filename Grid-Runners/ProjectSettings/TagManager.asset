@@ -8,6 +8,8 @@ TagManager:
   - Spawn
   - Barrier
   - Floor
+  - Camera
+  - Spectator
   layers:
   - Default
   - TransparentFX
@@ -17,10 +19,10 @@ TagManager:
   - UI
   - Spawn
   - Barrier
-  - 
-  - 
-  - 
-  - 
+  - System
+  - Entity
+  - Camera
+  - User
   - 
   - 
   - 

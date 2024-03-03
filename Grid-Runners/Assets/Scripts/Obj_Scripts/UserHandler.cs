@@ -7,21 +7,32 @@ using static Utilities.Generic;
 
 public class UserHandler : MonoBehaviour
 {
-    //objects
+    // User Variables:
+    public GameObject User, user_Spectate;
+    private Rigidbody user_Physics, user_Spectate_Physics;
+
+    // User Data:
+    private Obj_State obj_Data;
+    [Range(0, 1)]
+    public int Mode;
+
+    //Camera Variables:
+    public Camera user_Camera;
+    public GameObject Camera_Pos0, Camera_Pos1;
+
+    // Movement Variables:
+    private bool is_Sprinting;
+
     public GameObject secondary_Obj;
-    private Rigidbody obj_Physics;
     private Transform obj_Transform;
     public GameObject current_Primary, current_Secondary, current_Knife;
     public GameObject new_Weapon;
-    public Camera fpsCam;
     public LayerMask enemyTeam;
     public string enemyTeamTag;
 
     //script data
-    private Obj_State obj_Data;
     private Obj_State NWD; //new weapon data
     private Obj_State secondary_Data;
-    private DummyHandler dumby;
     private GameManager gm;
 
     private bool is_Jumping;
@@ -34,31 +45,57 @@ public class UserHandler : MonoBehaviour
 
     private bool is_scoping;
 
+    // Variable Initialization System:
     private void Start()
     {
+        // Initiate User Variables:
+        user_Physics = User.GetComponent<Rigidbody>();
+        user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
         obj_Data = GetComponent<Obj_State>();
-        secondary_Data = secondary_Obj.GetComponent<Obj_State>();
-        gm  = GetComponent<GameManager>();
 
-        obj_Physics = GetComponent<Rigidbody>();
+        secondary_Data = secondary_Obj.GetComponent<Obj_State>();
         obj_Transform = GetComponent<Transform>();
     }
 
     private void Update()
     {
-        if (on_Floor) //movement system
+        // Camera System:
+        if (Input.GetKeyDown(KeyCode.Tab)) // Camera Mode System:
         {
-            float current_Speed_V = Input.GetAxis("Vertical") * obj_Data.Speed;
-            float current_Speed_H = Input.GetAxis("Horizontal") * obj_Data.Speed;
-
-            Vector3 forwardMovement = transform.forward * current_Speed_V;
-            Vector3 rightMovement = transform.right * current_Speed_H;
-
-            obj_Physics.velocity = forwardMovement + rightMovement;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject);
+            user_Camera.transform.position = Mode == 0 ? Camera_Pos0.transform.position : Camera_Pos1.transform.position;
+            user_Camera.transform.rotation = Mode == 0 ? Camera_Pos0.transform.rotation : Camera_Pos1.transform.rotation;
+            user_Camera.transform.parent = Mode == 0 ? Camera_Pos0.transform : Camera_Pos1.transform;
+            Mode = 1 - Mode;
         }
+
+        //Movement_System:
+        Vector3 move_Direction = User.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"))); // Basic Move Direction Calculation.
+        Vector3 spec_Move_Direction = user_Spectate.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("ThirdAxis"), Input.GetAxis("Vertical"))); // Spectator Move Direction Calculation.
+        if (Input.GetKey(KeyCode.LeftShift)) // Sprint System:
+            is_Sprinting = true;
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+            is_Sprinting = false;
+        if (Mode == 1) // Movement Mode System:
+        {
+            user_Spectate_Physics.AddForce(spec_Move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
+        }
+        else if (Mode == 0)
+        {
+            user_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
+            if (on_Floor) // Jump System:
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                    nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject);
+            }
+        }
+        user_Spectate_Physics.velocity = Vector3.ClampMagnitude(user_Spectate_Physics.velocity, // Max Speed Calculation:
+            (spec_Move_Direction == Vector3.zero ? 0 : 
+            is_Sprinting ? obj_Data.sprint_Speed : 
+            obj_Data.walk_Speed));
+        user_Physics.velocity = Vector3.ClampMagnitude(user_Physics.velocity, // Max Speed Calculation:
+            (move_Direction == Vector3.zero ? 0 : 
+            is_Sprinting ? obj_Data.sprint_Speed : 
+            obj_Data.walk_Speed)); 
 
         if (can_Attack) //attack system
         {
@@ -66,7 +103,7 @@ public class UserHandler : MonoBehaviour
             if (secondary_Data.collided_Entity != null && Input.GetAxis("Knife") != 0)
             {
                 can_Attack = false;
-                MeleeAttack();
+                Melee();
                 StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
             }
             
@@ -75,12 +112,12 @@ public class UserHandler : MonoBehaviour
         if (Input.GetAxis("Scope") >= .25f && !is_scoping || Input.GetButton("Scope") && !is_scoping)
         {
             is_scoping = true;
-            obj_Data.Speed *= .75f;
+            obj_Data.walk_Speed *= .75f;
         }
         else if (Input.GetAxis("Scope") <= .25f && is_scoping && !Input.GetButton("Scope"))
         {
             is_scoping = false;
-            obj_Data.Speed /= .75f;
+            obj_Data.walk_Speed /= .75f;
         }
     }
 
@@ -88,34 +125,27 @@ public class UserHandler : MonoBehaviour
     {
         obj_Data.Health -= (dmg);
         if (obj_Data.Health <= 0)
-            died();
+        {
+
+        }
     }
     
-    void MeleeAttack()
-    {    
-        if (secondary_Data.collided_Entity.name == "Body")
+    // Action Systems:
+    void Melee()
+    {   
+        switch(secondary_Data.collided_Entity.tag)
         {
-            dumby = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
-            dumby.StopAllCoroutines();
-            StartCoroutine(dumby.Shake(0));
-        }
+            case "Dummy":
+                DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
+                dummy_Handler.StopAllCoroutines();
+                dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
+                break;
 
-
-    }
-
-    void died()
-    {
-        gm.players_Alive--; //determines if the round ends or not
-        if (gm.players_Alive == 1)
-        {
-            lost();
-            gm.EndRound();
         }
     }
-
-    void lost()
+    void Range()
     {
-        
+
     }
 
     void getNewWeapon()

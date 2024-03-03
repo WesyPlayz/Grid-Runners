@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public GameObject[] water_Weapons;
     public GameObject[] medieval_Weapons;
 
-
     // Start is called before the first frame update
     void Start()
     {

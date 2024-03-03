@@ -5,7 +5,11 @@ using UnityEngine;
 public class GridHandler : MonoBehaviour
 {
     // User Variables:
+    private GameObject Player;
     private GameObject User;
+    private GameObject Spectator;
+
+    private UserHandler user_handler;
 
     // Grid Variables:
     private GameObject Grid;
@@ -27,7 +31,11 @@ public class GridHandler : MonoBehaviour
     void Start()
     {
         // Initiate User ID:
-        User = GameObject.Find("User");
+        Player = GameObject.Find("Player_1");
+        user_handler = Player.GetComponent<UserHandler>();
+
+        User = user_handler.User;
+        Spectator = user_handler.user_Spectate;
 
         // Initiate Grid ID:
         Grid = GameObject.Find("Grid");
@@ -56,7 +64,8 @@ public class GridHandler : MonoBehaviour
     {
         if (can_Select && Input.GetMouseButtonDown(0) && is_Selected)
         {
-            if (!placement_Bounds.Intersects(User.GetComponent<Collider>().bounds) && Vector3.Distance(transform.position, User.transform.position) <= 10)
+            float distance = user_handler.Mode == 0 ? Vector3.Distance(transform.position, User.transform.position) : Vector3.Distance(transform.position, Spectator.transform.position);
+            if (!placement_Bounds.Intersects((user_handler.Mode == 0 ? User : Spectator).GetComponent<Collider>().bounds) && distance <= 10)
             {
                 can_Select = false;
                 GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);

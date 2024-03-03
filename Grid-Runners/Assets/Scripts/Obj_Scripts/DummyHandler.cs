@@ -21,15 +21,7 @@ public class DummyHandler : MonoBehaviour
         start_Pos = transform.position;
     }
 
-    // Hit Detection System:
-    private void Update() // Melee Based:
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            StopAllCoroutines();
-            StartCoroutine(Shake(0));
-        }
-    }
+    // Projectile Detection System:
     void OnCollisionEnter(Collision projectile) // Ranged Based:
     {
         if (projectile.gameObject.layer == LayerMask.NameToLayer("Projectile"))
