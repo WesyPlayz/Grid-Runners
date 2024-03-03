@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraHandler : MonoBehaviour
 {
     // user Variables:
-    private GameObject User;
+    private GameObject Player;
     private UserHandler user_Handler;
 
     public GameObject Body;
@@ -28,8 +28,8 @@ public class CameraHandler : MonoBehaviour
     // Variable Initialization System:
     void Start()
     {
-        User = GameObject.Find("User");
-        user_Handler = User.GetComponent<UserHandler>();
+        Player = GameObject.Find("Player_1");
+        user_Handler = Player.GetComponent<UserHandler>();
 
         distance = Vector3.Distance(Head.transform.position, Neck.transform.position);
     }
@@ -37,28 +37,30 @@ public class CameraHandler : MonoBehaviour
     // Look Direction System:
     void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.Tab))
+        if (!Input.GetKey(KeyCode.Tab))
         {
             float lookHorizontal = Sensitivity * Input.GetAxis("Mouse X") * Time.deltaTime;
             float lookVertical = -Sensitivity * Input.GetAxis("Mouse Y") * Time.deltaTime;
 
-            if (user_Handler.Mode == 0 && (lookHorizontal != 0 || lookVertical != 0))
+            if ((lookHorizontal != 0 || lookVertical != 0))
             {
-                orbitRotationX += lookVertical;
-                orbitRotationY += lookHorizontal;
-
-                orbitRotationX = Mathf.Clamp(orbitRotationX + lookVertical, -150, -30);
-                rotation = Quaternion.Euler(orbitRotationX, orbitRotationY, 0);
-                Head.transform.position = Neck.transform.position + rotation * Vector3.forward * distance;
-                Head.transform.rotation = rotation;
-                Body.transform.rotation = Quaternion.Euler(0, orbitRotationY, 0);
-            }
-            else if (user_Handler.Mode == 1 && (lookHorizontal != 0 || lookVertical != 0))
-            {
-                rotationX_Spec += lookVertical;
-                rotationY_Spec += lookHorizontal;
-
-                gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.rotation = Quaternion.Euler(rotationX_Spec, rotationY_Spec, 0);
+                switch(user_Handler.Mode)
+                {
+                    case 0:
+                        orbitRotationX += lookVertical;
+                        orbitRotationY += lookHorizontal;
+                        orbitRotationX = Mathf.Clamp(orbitRotationX + lookVertical, -150, -30);
+                        rotation = Quaternion.Euler(orbitRotationX, orbitRotationY, 0);
+                        Head.transform.position = Neck.transform.position + rotation * Vector3.forward * distance;
+                        Head.transform.rotation = rotation;
+                        Body.transform.rotation = Quaternion.Euler(0, orbitRotationY, 0);
+                        break;
+                    case 1:
+                        rotationX_Spec += lookVertical;
+                        rotationY_Spec += lookHorizontal;
+                        user_Handler.user_Spectate.transform.rotation = Quaternion.Euler(rotationX_Spec, rotationY_Spec, 0);
+                        break;
+                }
             }
         }
     }

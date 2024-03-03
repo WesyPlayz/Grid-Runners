@@ -11,6 +11,9 @@ public class UserHandler : MonoBehaviour
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
 
+    public Collider body_Hitbox;
+    public Bounds body_Hitbox_Bounds;
+
     // User Data:
     private Obj_State obj_Data;
     [Range(0, 1)]
@@ -60,11 +63,21 @@ public class UserHandler : MonoBehaviour
     private void Update()
     {
         // Camera System:
-        if (Input.GetKeyDown(KeyCode.Tab)) // Camera Mode System:
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
+            // Object Swapping System:
+            User.SetActive(Mode == 0 ? false : true);
+            user_Spectate.SetActive(Mode == 0 ? true : false);
+
+            // User Protection System:
+            if (Mode == 0)
+                body_Hitbox_Bounds = body_Hitbox.bounds;
+
+            // Camera Mode System:
             user_Camera.transform.position = Mode == 0 ? Camera_Pos0.transform.position : Camera_Pos1.transform.position;
             user_Camera.transform.rotation = Mode == 0 ? Camera_Pos0.transform.rotation : Camera_Pos1.transform.rotation;
             user_Camera.transform.parent = Mode == 0 ? Camera_Pos0.transform : Camera_Pos1.transform;
+            // Mode switch:
             Mode = 1 - Mode;
         }
 
@@ -92,10 +105,12 @@ public class UserHandler : MonoBehaviour
             (spec_Move_Direction == Vector3.zero ? 0 : 
             is_Sprinting ? obj_Data.sprint_Speed : 
             obj_Data.walk_Speed));
-        user_Physics.velocity = Vector3.ClampMagnitude(user_Physics.velocity, // Max Speed Calculation:
+        Vector3 horizontalVelocity = new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z);
+        Vector3 clampedHorizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, 
             (move_Direction == Vector3.zero ? 0 : 
             is_Sprinting ? obj_Data.sprint_Speed : 
-            obj_Data.walk_Speed)); 
+            obj_Data.walk_Speed));
+        user_Physics.velocity = new Vector3(clampedHorizontalVelocity.x, user_Physics.velocity.y, clampedHorizontalVelocity.z);
 
         if (can_Attack) //attack system
         {
