@@ -20,11 +20,26 @@ public class UserHandler : MonoBehaviour
     public int Mode;
 
     [Header("Camera Variables")]
-    public Camera user_Camera;
+    public Camera user_Camera, ui_Camera;
     public GameObject Camera_Pos0, Camera_Pos1;
+
+    private float origin_FOV;
 
     // Movement Variables:
     private bool is_Sprinting;
+
+    [Header("Weapon Variables")]
+    public GameObject item_Holder;
+
+    public GameObject fire_Point;
+    public GameObject Projectile;
+
+    public ParticleSystem muzzle_Flash;
+
+    public float fire_Rate;
+
+    public int max_Ammo;
+    public int Ammo;
 
     public GameObject secondary_Obj;
     private Transform obj_Transform;
@@ -55,13 +70,15 @@ public class UserHandler : MonoBehaviour
 
         obj_Data = GetComponent<Obj_State>();
 
+        origin_FOV = ui_Camera.fieldOfView;
+
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
         obj_Transform = GetComponent<Transform>();
     }
 
     private void Update()
     {
-        // Camera System:
+        // Camera Systems:
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             // Object Swapping System:
@@ -80,7 +97,7 @@ public class UserHandler : MonoBehaviour
             Mode = 1 - Mode;
         }
 
-        //Movement_System:
+        // Movement_Systems:
         Vector3 move_Direction = User.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"))); // Basic Move Direction Calculation.
         Vector3 spec_Move_Direction = user_Spectate.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("ThirdAxis"), Input.GetAxis("Vertical"))); // Spectator Move Direction Calculation.
         if (Input.GetKey(KeyCode.LeftShift)) // Sprint System:
@@ -108,6 +125,33 @@ public class UserHandler : MonoBehaviour
             obj_Data.walk_Speed));
         user_Physics.velocity = new Vector3(clampedHorizontalVelocity.x, user_Physics.velocity.y, clampedHorizontalVelocity.z);
 
+        // Attack Systems:
+        if (Mode == 0)
+        {
+            if (can_Attack && Input.GetKeyDown(KeyCode.Mouse0) && Ammo > 0) // Ranged System:
+            {
+                can_Attack = false;
+                Range();
+            }
+            else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                Ammo = max_Ammo;
+            if (Input.GetKeyDown(KeyCode.Mouse1)) // Zoom System:
+            {
+                item_Holder.transform.position -= item_Holder.transform.right * 0.4f;
+                item_Holder.transform.position += item_Holder.transform.up * 0.06f;
+                obj_Data.walk_Speed *= 0.75f;
+            }
+            else if(Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                item_Holder.transform.position += item_Holder.transform.right * 0.4f;
+                item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
+                obj_Data.walk_Speed /= .75f;
+            }
+            if (Input.GetKey(KeyCode.Mouse1))
+                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, 40, 25 * Time.deltaTime);
+            else
+                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
+        }
         if (can_Attack) //attack system
         {
             
@@ -118,17 +162,6 @@ public class UserHandler : MonoBehaviour
                 StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
             }
             
-        }
-
-        if (Input.GetAxis("Scope") >= .25f && !is_scoping || Input.GetButton("Scope") && !is_scoping)
-        {
-            is_scoping = true;
-            obj_Data.walk_Speed *= .75f;
-        }
-        else if (Input.GetAxis("Scope") <= .25f && is_scoping && !Input.GetButton("Scope"))
-        {
-            is_scoping = false;
-            obj_Data.walk_Speed /= .75f;
         }
     }
 
@@ -156,7 +189,17 @@ public class UserHandler : MonoBehaviour
     }
     void Range()
     {
-
+        Ammo--;
+        GameObject new_Projectile = Instantiate(Projectile);
+        new_Projectile.transform.position = fire_Point.transform.position;
+        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
+        muzzle_Flash.Play();
+        StartCoroutine(FireRate());
+    }
+    IEnumerator FireRate()
+    {
+        yield return new WaitForSeconds(fire_Rate);
+        can_Attack = true;
     }
 
     void getNewWeapon()

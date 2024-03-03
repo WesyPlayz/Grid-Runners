@@ -24,8 +24,9 @@ public class DummyHandler : MonoBehaviour
     // Projectile Detection System:
     void OnCollisionEnter(Collision projectile) // Ranged Based:
     {
-        if (projectile.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        if (projectile.gameObject.CompareTag("Projectile"))
         {
+            Destroy(projectile.gameObject);
             StopAllCoroutines();
             StartCoroutine(Shake(0));
         }
