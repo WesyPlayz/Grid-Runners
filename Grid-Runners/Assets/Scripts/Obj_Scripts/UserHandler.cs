@@ -7,19 +7,19 @@ using static Utilities.Generic;
 
 public class UserHandler : MonoBehaviour
 {
-    // User Variables:
+    [Header("User Variables")]
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
 
     public Collider body_Hitbox;
     public Bounds body_Hitbox_Bounds;
 
-    // User Data:
+    [Header("Data Variables")]
     private Obj_State obj_Data;
     [Range(0, 1)]
     public int Mode;
 
-    //Camera Variables:
+    [Header("Camera Variables")]
     public Camera user_Camera;
     public GameObject Camera_Pos0, Camera_Pos1;
 
@@ -36,15 +36,13 @@ public class UserHandler : MonoBehaviour
     //script data
     private Obj_State NWD; //new weapon data
     private Obj_State secondary_Data;
-    private GameManager gm;
-
-    private bool is_Jumping;
 
     // Jumping Variables:
     public bool can_Attack = true;
 
     // Collision Variables:
     public bool on_Floor;
+    public bool on_Wall;
 
     private bool is_scoping;
 
@@ -54,6 +52,7 @@ public class UserHandler : MonoBehaviour
         // Initiate User Variables:
         user_Physics = User.GetComponent<Rigidbody>();
         user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
+
         obj_Data = GetComponent<Obj_State>();
 
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
@@ -95,11 +94,8 @@ public class UserHandler : MonoBehaviour
         else if (Mode == 0)
         {
             user_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
-            if (on_Floor) // Jump System:
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                    nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject);
-            }
+            if (on_Floor && Input.GetKeyDown(KeyCode.Space)) // Jump System:
+                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
         }
         user_Spectate_Physics.velocity = Vector3.ClampMagnitude(user_Spectate_Physics.velocity, // Max Speed Calculation:
             (spec_Move_Direction == Vector3.zero ? 0 : 
@@ -178,28 +174,5 @@ public class UserHandler : MonoBehaviour
         yield return new WaitForSeconds(length);
         can_Attack = true;
         Debug.Log("can attack again");
-    }
-    
-    // Collision System:
-    void OnCollisionStay(Collision sender)
-    {
-        GameObject current_Obj = sender.gameObject;
-        obj_Data.total_Collisions++;
-        if (current_Obj.layer == LayerMask.NameToLayer("Terrain") && current_Obj != obj_Data.collided_Floor) // Terrain Collision:
-        {
-            bool foundFloor = FindSurfaceType("Floor", sender, gameObject);
-            if (foundFloor)
-            {
-                on_Floor = true;
-                obj_Data.collided_Floor = current_Obj;
-            }
-        }
-    }
-    void OnCollisionExit(Collision sender)
-    {
-        if (sender.gameObject == obj_Data.collided_Floor)
-            obj_Data.collided_Floor = null;
-
-        on_Floor = obj_Data.collided_Floor == null ? false : true;
     }
 }
