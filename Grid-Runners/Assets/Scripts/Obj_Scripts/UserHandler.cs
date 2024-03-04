@@ -16,6 +16,9 @@ public class UserHandler : MonoBehaviour
 
     [Header("Data Variables")]
     private Obj_State obj_Data;
+
+    public float Health;
+
     [Range(0, 1)]
     public int Mode;
 
