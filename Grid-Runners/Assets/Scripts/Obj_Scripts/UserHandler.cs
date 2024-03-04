@@ -155,6 +155,17 @@ public class UserHandler : MonoBehaviour
             else
                 ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
         }
+        else
+        {
+            if (Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                item_Holder.transform.position += item_Holder.transform.right * 0.4f;
+                item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
+                obj_Data.walk_Speed /= .75f;
+                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
+            }
+        }
+
         if (can_Attack) //attack system
         {
             
