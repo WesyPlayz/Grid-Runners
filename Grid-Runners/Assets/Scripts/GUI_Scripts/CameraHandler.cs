@@ -49,7 +49,7 @@ public class CameraHandler : MonoBehaviour
                     case 0:
                         orbitRotationX += lookVertical;
                         orbitRotationY += lookHorizontal;
-                        orbitRotationX = Mathf.Clamp(orbitRotationX + lookVertical, -150, -30);
+                        orbitRotationX = Mathf.Clamp(orbitRotationX + lookVertical, -170, -15);
                         rotation = Quaternion.Euler(orbitRotationX, orbitRotationY, 0);
                         Head.transform.position = Neck.transform.position + rotation * Vector3.forward * distance;
                         Head.transform.rotation = rotation;
