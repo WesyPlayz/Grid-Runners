@@ -36,6 +36,7 @@ public class UserHandler : MonoBehaviour
 
     public GameObject fire_Point;
     public GameObject Projectile;
+    public GameObject Grenade;
 
     public ParticleSystem muzzle_Flash;
 
@@ -43,9 +44,12 @@ public class UserHandler : MonoBehaviour
     public bool is_Scoped;
 
     public float fire_Rate;
+    public float grenade_Rate;
+    public float throw_force;
 
     public int max_Ammo;
     public int Ammo;
+    public int grenades, max_Grenades;
 
     public GameObject secondary_Obj;
     private Transform obj_Transform;
@@ -134,6 +138,9 @@ public class UserHandler : MonoBehaviour
                 ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
                 obj_Data.walk_Speed /= .75f;
             }
+
+            if (Input.GetButtonDown("Grenade"))
+                Throw_Grenade();
         }
         else
         {
@@ -212,6 +219,17 @@ public class UserHandler : MonoBehaviour
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
     }
+
+    void Throw_Grenade()
+    {
+        can_Attack = false;
+        StartCoroutine(AttackCooldown(grenade_Rate));
+        grenades--;
+        GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
+        Rigidbody GrenadeRB = gre.GetComponent<Rigidbody>();
+        LinearJump(user_Camera.transform.forward, throw_force, gre);
+    }
+
     IEnumerator FireRate()
     {
         yield return new WaitForSeconds(fire_Rate);
@@ -232,6 +250,5 @@ public class UserHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(length);
         can_Attack = true;
-        Debug.Log("can attack again");
     }
 }
