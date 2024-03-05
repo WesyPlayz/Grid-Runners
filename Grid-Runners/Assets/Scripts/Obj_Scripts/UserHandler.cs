@@ -17,6 +17,8 @@ public class UserHandler : MonoBehaviour
     [Header("Data Variables")]
     private Obj_State obj_Data;
 
+    private bool changing_Mode;
+
     public float Health;
 
     [Range(0, 1)]
@@ -27,6 +29,7 @@ public class UserHandler : MonoBehaviour
     public GameObject Camera_Pos0, Camera_Pos1;
 
     private float origin_FOV;
+    public float ADS_FOV;
 
     // Movement Variables:
     private bool is_Sprinting;
@@ -40,8 +43,12 @@ public class UserHandler : MonoBehaviour
 
     public ParticleSystem muzzle_Flash;
 
+    public bool Ranged;
+    public bool Melee;
+
     public bool can_Attack = true;
-    public bool is_Scoped;
+    private bool can_Use_Action = true;
+    private bool is_Using_Action;
 
     public float fire_Rate;
     public float grenade_Rate;
@@ -68,8 +75,6 @@ public class UserHandler : MonoBehaviour
     public bool on_Floor;
     public bool on_Wall;
 
-    private bool is_scoping;
-
     // Variable Initialization System:
     private void Start()
     {
@@ -80,125 +85,158 @@ public class UserHandler : MonoBehaviour
         obj_Data = GetComponent<Obj_State>();
 
         origin_FOV = ui_Camera.fieldOfView;
-
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
         obj_Transform = GetComponent<Transform>();
     }
 
     private void Update()
     {
-        // Camera Systems:
-        if (Input.GetKeyDown(KeyCode.Tab)) // Will be changed.
-            SwapMode();
-
         bool mode_State = Mode == 0; // Mode Check.
 
-        // Movement_Systems:
-        is_Sprinting = Input.GetKey(KeyCode.LeftShift); // Sprint Check.
-        Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
-
-        Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), (mode_State ? 0 : Input.GetAxis("ThirdAxis")), Input.GetAxis("Vertical"))); // Movement Direction Calculation.
-        current_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
-
-        Vector3 clamped_Velocity = Vector3.ClampMagnitude( // Velocty Clamp Calculation:
-            (mode_State ? new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z) : 
-            user_Spectate_Physics.velocity), 
-            (move_Direction == Vector3.zero ? 0 : 
-            is_Sprinting ? obj_Data.sprint_Speed : 
-            obj_Data.walk_Speed));
-        current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z);
-
-        // Jump System:
-        if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
-            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
-
-        // Attack Systems:
-        if (Mode == 0)
+        if (!changing_Mode)
         {
-            if (can_Attack && Input.GetKeyDown(KeyCode.Mouse0) && Ammo > 0) // Ranged System:
-            {
-                can_Attack = false;
-                Range();
-            }
-            else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
-                Ammo = max_Ammo;
-            if (Input.GetKeyDown(KeyCode.Mouse1)) // Zoom System:
-            {
-                is_Scoped = true;
-                item_Holder.transform.position -= item_Holder.transform.right * 0.4f;
-                item_Holder.transform.position += item_Holder.transform.up * 0.06f;
-                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, 40, 25 * Time.deltaTime);
-                obj_Data.walk_Speed *= 0.75f;
-            }
-            else if(Input.GetKeyUp(KeyCode.Mouse1))
-            {
-                is_Scoped = false;
-                item_Holder.transform.position += item_Holder.transform.right * 0.4f;
-                item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
-                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
-                obj_Data.walk_Speed /= .75f;
-            }
+            if (!Damage()) // Health Check:
+                Respawn();
 
-            if (Input.GetButtonDown("Grenade"))
-                Throw_Grenade();
-        }
-        else
-        {
-            if (is_Scoped)
-            {
-                is_Scoped = false;
-                item_Holder.transform.position += item_Holder.transform.right * 0.4f;
-                item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
-                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
-                obj_Data.walk_Speed /= .75f;
-            }
-        }
+            // Camera Systems:
+            if (Input.GetKeyDown(KeyCode.Tab)) // Will be changed.
+                SwapMode(mode_State);
 
-        if (can_Attack) //attack system
-        {
-            
-            if (secondary_Data.collided_Entity != null && Input.GetAxis("Knife") != 0)
+            // Movement_Systems:
+            is_Sprinting = Input.GetKey(KeyCode.LeftShift); // Sprint Check.
+            Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
+
+            Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), (mode_State ? 0 : Input.GetAxis("ThirdAxis")), Input.GetAxis("Vertical"))); // Movement Direction Calculation.
+            current_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
+
+            Vector3 clamped_Velocity = Vector3.ClampMagnitude( // Velocty Clamp Calculation:
+                (mode_State ? new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z) :
+                user_Spectate_Physics.velocity),
+                (move_Direction == Vector3.zero ? 0 :
+                is_Sprinting ? obj_Data.sprint_Speed :
+                obj_Data.walk_Speed));
+            current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
+
+            // Jump System:
+            if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
+                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
+
+            // Action Systems:
+            if (mode_State)
             {
-                can_Attack = false;
-                Melee();
-                StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
+                if (Ranged) // Ranged Attack System:
+                {
+                    if (can_Attack && Input.GetKeyDown(KeyCode.Mouse0) && Ammo > 0)
+                    {
+                        can_Attack = false;
+                        RangedAttack();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                        Ammo = max_Ammo;
+                }
+                else if (Melee) // Melee Attack System:
+                {
+                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetAxis("Knife") != 0)
+                    {
+                        can_Attack = false;
+                        MeleeAttack();
+                        StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
+                    }
+                }
+
+                if (can_Use_Action && !is_Using_Action && Input.GetKeyDown(KeyCode.Mouse1)) // Action System:
+                {
+                    can_Use_Action = false;
+                    if (Ranged) // Ranged Action System:
+                        ADS(is_Using_Action = true);
+                    else if (Melee) // Melee Action System:
+                    {
+
+                    }
+                }
+                else if (!can_Use_Action && is_Using_Action && Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    if (Ranged) // Ranged Action System:
+                        ADS(is_Using_Action = false);
+                    else if (Melee) // Melee Action System:
+                    {
+
+                    }
+                    can_Use_Action = true;
+                }
+
+                if (Input.GetButtonDown("Grenade"))
+                    Throw_Grenade();
             }
-            
         }
     }
 
-    // Mode Systems:
-    public void SwapMode()
+    // Health System:
+    public bool Damage(float dmg = 0) // Damage System:
     {
+        if (Health <= 0)
+            return false;
+        else if (dmg > 0)
+            Health = Mathf.Max(Health - dmg, 0);
+        return true;
+    }
+    public void Respawn() // Respawn System:
+    {
+
+    }
+
+    // Mode Systems:
+    public void SwapMode(bool mode_State)
+    {
+        changing_Mode = true;
+
         // Mode State ID:
-        bool mode_State = Mode == 0;
         Transform cam_Pos = mode_State ? Camera_Pos0.transform : Camera_Pos1.transform;
-        Mode = 1 - Mode;
+
+        // User Protection System:
+        if (mode_State)
+        {
+            body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
+            if (!can_Use_Action && is_Using_Action)
+            {
+                ADS(is_Using_Action = false);
+                can_Use_Action = true;
+            }
+        }
 
         // Object Swapping System:
         User.SetActive(!mode_State);
         user_Spectate.SetActive(mode_State);
 
-        // User Protection System: (Tutorial Only)
-        if (mode_State)
-            body_Hitbox_Bounds = body_Hitbox.bounds;
-
         // Camera Repositioning System:
         user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
         user_Camera.transform.parent = cam_Pos;
+
+        Mode = 1 - Mode; // Mode Swapping.
+        changing_Mode = false;
     }
 
-    public void hit(int dmg)
+    // Action Systems:
+    void RangedAttack() // Ranged Attack System:
     {
-        obj_Data.Health -= (dmg);
-        if (obj_Data.Health <= 0)
-        {
-
-        }
+        Ammo--;
+        GameObject new_Projectile = Instantiate(Projectile);
+        new_Projectile.transform.position = fire_Point.transform.position;
+        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
+        muzzle_Flash.Play();
+        StartCoroutine(FireRate());
+    }
+    void ADS(bool is_ADSing) // ADSing System:
+    {
+        float direction = is_ADSing ? -1 : 1;
+        item_Holder.transform.position += direction * item_Holder.transform.right * 0.4f;
+        item_Holder.transform.position -= direction * item_Holder.transform.up * 0.06f;
+        obj_Data.walk_Speed *= is_ADSing ? 0.5f : 2;
+        ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : origin_FOV, 25 * Time.deltaTime);
     }
     
     // Action Systems:
-    void Melee()
+    void MeleeAttack()
     {   
         switch(secondary_Data.collided_Entity.tag)
         {
@@ -209,15 +247,6 @@ public class UserHandler : MonoBehaviour
                 break;
 
         }
-    }
-    void Range()
-    {
-        Ammo--;
-        GameObject new_Projectile = Instantiate(Projectile);
-        new_Projectile.transform.position = fire_Point.transform.position;
-        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
-        muzzle_Flash.Play();
-        StartCoroutine(FireRate());
     }
 
     void Throw_Grenade()
