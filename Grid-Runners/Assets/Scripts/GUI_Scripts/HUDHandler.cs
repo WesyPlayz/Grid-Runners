@@ -18,7 +18,7 @@ public class HUDHandler : MonoBehaviour
     }
     void Update()
     {
-        Health_Bar.fillAmount = user_Handler.Health / 100;
+        Health_Bar.fillAmount = user_Handler.Health / user_Handler.max_Health;
         ammo_Counter.fillAmount = (float)user_Handler.Ammo / user_Handler.max_Ammo;
     }
 }

@@ -24,6 +24,9 @@ public class Hitboxhandler : MonoBehaviour
     void OnCollisionStay(Collision sender)
     {
         GameObject current_Obj = sender.gameObject;
+        if (current_Obj.CompareTag("Kill"))
+            user_Handler.Damage(user_Handler.max_Health);
+
         if (current_Obj.layer == LayerMask.NameToLayer("Terrain")) // Terrain Collision:
         {
             bool found_Floor = FindSurfaceType("Floor", sender, Player);

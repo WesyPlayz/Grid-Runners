@@ -15,10 +15,13 @@ public class UserHandler : MonoBehaviour
     public Bounds body_Hitbox_Bounds;
 
     [Header("Data Variables")]
+    public GameObject Spawn;
+
     private Obj_State obj_Data;
 
     private bool changing_Mode;
 
+    public float max_Health;
     public float Health;
 
     [Range(0, 1)]
@@ -83,6 +86,8 @@ public class UserHandler : MonoBehaviour
         user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
 
         obj_Data = GetComponent<Obj_State>();
+
+        Health = max_Health;
 
         origin_FOV = ui_Camera.fieldOfView;
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
@@ -182,7 +187,8 @@ public class UserHandler : MonoBehaviour
     }
     public void Respawn() // Respawn System:
     {
-
+        User.transform.position = Spawn.transform.position;
+        Health = max_Health;
     }
 
     // Mode Systems:

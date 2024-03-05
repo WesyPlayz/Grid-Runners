@@ -56,7 +56,7 @@ public class GrenadeHandler : MonoBehaviour
 
                     if (!Physics.Raycast(hit.point, (Hits[i].transform.position - hit.point).normalized, distance, Block_Layer.value))
                     {
-                        UH.hit(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
+                        UH.Damage(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
                     }
                 }
             }
