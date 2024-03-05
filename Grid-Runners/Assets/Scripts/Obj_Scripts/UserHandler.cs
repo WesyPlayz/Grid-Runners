@@ -39,6 +39,9 @@ public class UserHandler : MonoBehaviour
 
     public ParticleSystem muzzle_Flash;
 
+    public bool can_Attack = true;
+    public bool is_Scoped;
+
     public float fire_Rate;
 
     public int max_Ammo;
@@ -56,7 +59,6 @@ public class UserHandler : MonoBehaviour
     private Obj_State secondary_Data;
 
     // Jumping Variables:
-    public bool can_Attack = true;
 
     // Collision Variables:
     public bool on_Floor;
@@ -82,51 +84,29 @@ public class UserHandler : MonoBehaviour
     private void Update()
     {
         // Camera Systems:
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            // Object Swapping System:
-            User.SetActive(Mode == 0 ? false : true);
-            user_Spectate.SetActive(Mode == 0 ? true : false);
+        if (Input.GetKeyDown(KeyCode.Tab)) // Will be changed.
+            SwapMode();
 
-            // User Protection System:
-            if (Mode == 0)
-                body_Hitbox_Bounds = body_Hitbox.bounds;
-
-            // Camera Mode System:
-            user_Camera.transform.position = Mode == 0 ? Camera_Pos0.transform.position : Camera_Pos1.transform.position;
-            user_Camera.transform.rotation = Mode == 0 ? Camera_Pos0.transform.rotation : Camera_Pos1.transform.rotation;
-            user_Camera.transform.parent = Mode == 0 ? Camera_Pos0.transform : Camera_Pos1.transform;
-            // Mode switch:
-            Mode = 1 - Mode;
-        }
+        bool mode_State = Mode == 0; // Mode Check.
 
         // Movement_Systems:
-        Vector3 move_Direction = User.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"))); // Basic Move Direction Calculation.
-        Vector3 spec_Move_Direction = user_Spectate.transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("ThirdAxis"), Input.GetAxis("Vertical"))); // Spectator Move Direction Calculation.
-        if (Input.GetKey(KeyCode.LeftShift)) // Sprint System:
-            is_Sprinting = true;
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-            is_Sprinting = false;
-        if (Mode == 1) // Movement Mode System:
-        {
-            user_Spectate_Physics.AddForce(spec_Move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
-        }
-        else if (Mode == 0)
-        {
-            user_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
-            if (on_Floor && Input.GetKeyDown(KeyCode.Space)) // Jump System:
-                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
-        }
-        user_Spectate_Physics.velocity = Vector3.ClampMagnitude(user_Spectate_Physics.velocity, // Max Speed Calculation:
-            (spec_Move_Direction == Vector3.zero ? 0 : 
-            is_Sprinting ? obj_Data.sprint_Speed : 
-            obj_Data.walk_Speed));
-        Vector3 horizontalVelocity = new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z);
-        Vector3 clampedHorizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, 
+        is_Sprinting = Input.GetKey(KeyCode.LeftShift); // Sprint Check.
+        Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
+
+        Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), (mode_State ? 0 : Input.GetAxis("ThirdAxis")), Input.GetAxis("Vertical"))); // Movement Direction Calculation.
+        current_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
+
+        Vector3 clamped_Velocity = Vector3.ClampMagnitude( // Velocty Clamp Calculation:
+            (mode_State ? new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z) : 
+            user_Spectate_Physics.velocity), 
             (move_Direction == Vector3.zero ? 0 : 
             is_Sprinting ? obj_Data.sprint_Speed : 
             obj_Data.walk_Speed));
-        user_Physics.velocity = new Vector3(clampedHorizontalVelocity.x, user_Physics.velocity.y, clampedHorizontalVelocity.z);
+        current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z);
+
+        // Jump System:
+        if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
+            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
 
         // Attack Systems:
         if (Mode == 0)
@@ -140,29 +120,30 @@ public class UserHandler : MonoBehaviour
                 Ammo = max_Ammo;
             if (Input.GetKeyDown(KeyCode.Mouse1)) // Zoom System:
             {
+                is_Scoped = true;
                 item_Holder.transform.position -= item_Holder.transform.right * 0.4f;
                 item_Holder.transform.position += item_Holder.transform.up * 0.06f;
+                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, 40, 25 * Time.deltaTime);
                 obj_Data.walk_Speed *= 0.75f;
             }
             else if(Input.GetKeyUp(KeyCode.Mouse1))
             {
+                is_Scoped = false;
                 item_Holder.transform.position += item_Holder.transform.right * 0.4f;
                 item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
+                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
                 obj_Data.walk_Speed /= .75f;
             }
-            if (Input.GetKey(KeyCode.Mouse1))
-                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, 40, 25 * Time.deltaTime);
-            else
-                ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
         }
         else
         {
-            if (Input.GetKeyUp(KeyCode.Mouse1))
+            if (is_Scoped)
             {
+                is_Scoped = false;
                 item_Holder.transform.position += item_Holder.transform.right * 0.4f;
                 item_Holder.transform.position -= item_Holder.transform.up * 0.06f;
-                obj_Data.walk_Speed /= .75f;
                 ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, origin_FOV, 25 * Time.deltaTime);
+                obj_Data.walk_Speed /= .75f;
             }
         }
 
@@ -177,6 +158,27 @@ public class UserHandler : MonoBehaviour
             }
             
         }
+    }
+
+    // Mode Systems:
+    public void SwapMode()
+    {
+        // Mode State ID:
+        bool mode_State = Mode == 0;
+        Transform cam_Pos = mode_State ? Camera_Pos0.transform : Camera_Pos1.transform;
+        Mode = 1 - Mode;
+
+        // Object Swapping System:
+        User.SetActive(!mode_State);
+        user_Spectate.SetActive(mode_State);
+
+        // User Protection System: (Tutorial Only)
+        if (mode_State)
+            body_Hitbox_Bounds = body_Hitbox.bounds;
+
+        // Camera Repositioning System:
+        user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
+        user_Camera.transform.parent = cam_Pos;
     }
 
     public void hit(int dmg)
