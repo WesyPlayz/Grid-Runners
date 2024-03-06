@@ -61,6 +61,9 @@ public class UserHandler : MonoBehaviour
     public int Ammo;
     public int grenades, max_Grenades;
 
+    // Grid Variables:
+    private Grid_Data grid_Data;
+
     public GameObject secondary_Obj;
     private Transform obj_Transform;
     public GameObject current_Primary, current_Secondary, current_Knife;
@@ -92,6 +95,8 @@ public class UserHandler : MonoBehaviour
         origin_FOV = ui_Camera.fieldOfView;
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
         obj_Transform = GetComponent<Transform>();
+
+        grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
     }
 
     private void Update()
@@ -173,6 +178,19 @@ public class UserHandler : MonoBehaviour
                 if (Input.GetButtonDown("Grenade"))
                     Throw_Grenade();
             }
+            else
+            {
+                if (Input.GetKeyUp(KeyCode.Mouse0)) // Build System:
+                {
+                    RaycastHit target;
+                    if (Physics.Raycast(user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+                    {
+                        GameObject selected_Target = target.transform.gameObject;
+                        if (selected_Target.CompareTag("Grid_Tile"))
+                            PlaceObject(selected_Target, target.normal);
+                    }
+                }
+            }
         }
     }
 
@@ -223,7 +241,7 @@ public class UserHandler : MonoBehaviour
     }
 
     // Action Systems:
-    void RangedAttack() // Ranged Attack System:
+    private void RangedAttack() // Ranged Attack System:
     {
         Ammo--;
         GameObject new_Projectile = Instantiate(Projectile);
@@ -232,7 +250,7 @@ public class UserHandler : MonoBehaviour
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
     }
-    void ADS(bool is_ADSing) // ADSing System:
+    private void ADS(bool is_ADSing) // ADSing System:
     {
         float direction = is_ADSing ? -1 : 1;
         item_Holder.transform.position += direction * item_Holder.transform.right * 0.4f;
@@ -240,7 +258,16 @@ public class UserHandler : MonoBehaviour
         obj_Data.walk_Speed *= is_ADSing ? 0.5f : 2;
         ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : origin_FOV, 25 * Time.deltaTime);
     }
-    
+    private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
+    {
+        Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
+        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= 10)
+        {
+            GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
+            new_Grid_Obj.transform.position = placement_Bounds.center;
+        }
+    }
+
     // Action Systems:
     void MeleeAttack()
     {   
