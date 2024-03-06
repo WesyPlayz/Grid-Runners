@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public float RoundTimer;
     public int players;
     public int players_Alive;
+    public float map_size;
     public GameObject[] weapons;
     public GameObject[] basic_Weapons;
     public GameObject[] water_Weapons;
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RoundTimer = 45f * players;
+        RoundTimer = 45f * players * (map_size);
         
     }
 

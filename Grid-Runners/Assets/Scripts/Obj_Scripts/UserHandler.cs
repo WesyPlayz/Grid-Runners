@@ -142,11 +142,15 @@ public class UserHandler : MonoBehaviour
                         RangedAttack();
                     }
                     else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                    {
                         Ammo = max_Ammo;
+                        can_Attack = false;
+                        StartCoroutine(AttackCooldown(1.5f));
+                    }
                 }
                 else if (Melee) // Melee Attack System:
                 {
-                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetAxis("Knife") != 0)
+                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetButtonDown("Knife"))
                     {
                         can_Attack = false;
                         MeleeAttack();
@@ -276,7 +280,7 @@ public class UserHandler : MonoBehaviour
             case "Dummy":
                 DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
                 dummy_Handler.StopAllCoroutines();
-                dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
+                StartCoroutine(dummy_Handler.Shake(0f));
                 break;
 
         }

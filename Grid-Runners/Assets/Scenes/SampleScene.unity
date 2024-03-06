@@ -3743,7 +3743,7 @@ MonoBehaviour:
   Primary_ID: 0
   Secondary_ID: 0
   Ability_ID: 0
-  Reach: 0
+  Reach: 1
   walk_Speed: 0
   sprint_Speed: 0
   jump_Force: 0
@@ -3768,7 +3768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31238126c3a05aa44b550dc2d567ba18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 0}
+  Entity: {fileID: 764515805}
 --- !u!4 &785908459 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d51be7b4fcaf1ea46b5423c838817997, type: 3}
@@ -33009,8 +33009,8 @@ MonoBehaviour:
   Projectile: {fileID: 6856166401642355416, guid: db91c0f02706042488e9a5eeda4dac40, type: 3}
   Grenade: {fileID: 8723284107201366428, guid: 38076166db13ec442b30708cb497d7fe, type: 3}
   muzzle_Flash: {fileID: 470429569}
-  Ranged: 1
-  Melee: 0
+  Ranged: 0
+  Melee: 1
   can_Attack: 1
   fire_Rate: 0.1
   grenade_Rate: 0

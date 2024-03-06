@@ -8,5 +8,7 @@ public class ProjectileHandler : MonoBehaviour
     {
         if (obj.gameObject.layer == LayerMask.NameToLayer("Terrain") && !obj.collider.isTrigger)
             Destroy(gameObject);
+        if (obj.gameObject.CompareTag("Grenade"))
+            Destroy(gameObject);
     }
 }
