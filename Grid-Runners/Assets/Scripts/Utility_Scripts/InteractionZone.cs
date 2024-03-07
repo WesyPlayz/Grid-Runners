@@ -21,12 +21,13 @@ public class InteractionZone : MonoBehaviour
         obj_Data.collided_Entity = null;
 
         // finds entities:
-        Collider2D[] entities = Physics2D.OverlapCircleAll(transform.position, obj_Data.Reach / 2);
+        Collider[] entities = Physics.OverlapSphere(transform.position, obj_Data.Reach / 2);
+        //OverlapCircleAll(transform.position, obj_Data.Reach / 2);
 
         GameObject closest_Entity = null;
         float closest_Distance = Mathf.Infinity;
 
-        foreach (Collider2D entity in entities)
+        foreach (Collider entity in entities)
         {
             GameObject entity_Obj = entity.gameObject;
             if (entity_Obj.layer == LayerMask.NameToLayer("Entity"))

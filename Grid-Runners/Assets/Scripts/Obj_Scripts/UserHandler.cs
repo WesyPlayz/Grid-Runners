@@ -39,6 +39,14 @@ public class UserHandler : MonoBehaviour
 
     [Header("Weapon Variables")]
     public GameObject item_Holder;
+    public GameObject Weapon;
+
+    private Item_Data item_Data;
+
+    public int selected_Weapon;
+
+    public int primary_Weapon;
+    public int secondary_Weapon;
 
     public GameObject fire_Point;
     public GameObject Projectile;
@@ -66,8 +74,6 @@ public class UserHandler : MonoBehaviour
 
     public GameObject secondary_Obj;
     private Transform obj_Transform;
-    public GameObject current_Primary, current_Secondary, current_Knife;
-    public GameObject new_Weapon;
     public LayerMask enemyTeam;
     public string enemyTeamTag;
 
@@ -97,6 +103,7 @@ public class UserHandler : MonoBehaviour
         obj_Transform = GetComponent<Transform>();
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
+        item_Data = GameObject.Find("Items").GetComponent<Item_Data>();
     }
 
     private void Update()
@@ -134,6 +141,17 @@ public class UserHandler : MonoBehaviour
             // Action Systems:
             if (mode_State)
             {
+                if (selected_Weapon != 0 && Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    selected_Weapon = 0;
+                    EquipWeapon(primary_Weapon);
+                }
+                else if (selected_Weapon != 1 && Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    selected_Weapon = 1;
+                    EquipWeapon(secondary_Weapon);
+                }
+
                 if (Ranged) // Ranged Attack System:
                 {
                     if (can_Attack && Input.GetKeyDown(KeyCode.Mouse0) && Ammo > 0)
@@ -142,11 +160,15 @@ public class UserHandler : MonoBehaviour
                         RangedAttack();
                     }
                     else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                    {
                         Ammo = max_Ammo;
+                        can_Attack = false;
+                        StartCoroutine(AttackCooldown(1.5f));
+                    }
                 }
                 else if (Melee) // Melee Attack System:
                 {
-                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetAxis("Knife") != 0)
+                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetButtonDown("Knife"))
                     {
                         can_Attack = false;
                         MeleeAttack();
@@ -240,6 +262,37 @@ public class UserHandler : MonoBehaviour
         changing_Mode = false;
     }
 
+    // Inventory System:
+    public void EquipWeapon(int weapon)
+    {
+        if (Weapon != null)
+            Destroy(Weapon);
+
+        Item_Data.Weapon selected_Weapon = item_Data.Weapons[weapon];
+        GameObject new_Weapon = Instantiate(selected_Weapon.weapon_Prefab);
+        new_Weapon.transform.parent = item_Holder.transform;
+        new_Weapon.transform.SetPositionAndRotation(item_Holder.transform.position, item_Holder.transform.rotation);
+
+        Weapon = new_Weapon;
+        foreach (Transform child in new_Weapon.transform)
+        {
+            switch (child.name)
+            {
+                case "Fire_Point":
+                    fire_Point = child.gameObject;
+                    break;
+                case "Muzzle_Flash":
+                    muzzle_Flash = child.GetComponent<ParticleSystem>();
+                    break;
+            }
+        }
+        Melee = selected_Weapon.is_Melee;
+        Ranged = selected_Weapon.is_Ranged;
+        Projectile = selected_Weapon.projectile;
+        fire_Rate = selected_Weapon.fire_Rate;
+        max_Ammo = selected_Weapon.max_Ammo;
+    }
+
     // Action Systems:
     private void RangedAttack() // Ranged Attack System:
     {
@@ -276,7 +329,7 @@ public class UserHandler : MonoBehaviour
             case "Dummy":
                 DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
                 dummy_Handler.StopAllCoroutines();
-                dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
+                StartCoroutine(dummy_Handler.Shake(0f));
                 break;
 
         }
@@ -296,16 +349,6 @@ public class UserHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(fire_Rate);
         can_Attack = true;
-    }
-
-    void getNewWeapon()
-    {
-        NWD = new_Weapon.GetComponent<Obj_State>();
-
-        if (NWD.Primary_ID == 1)
-            current_Primary = new_Weapon;
-        else if (NWD.Secondary_ID == 2)
-            current_Secondary = new_Weapon;
     }
 
     public IEnumerator AttackCooldown(float length)

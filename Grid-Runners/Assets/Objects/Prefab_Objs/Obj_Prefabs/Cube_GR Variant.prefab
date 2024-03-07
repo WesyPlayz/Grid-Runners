@@ -70,11 +70,19 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 25a73fc0cf2b2cd4da610804b53f9716, type: 2}
     - target: {fileID: 919132149155446097, guid: 36ebd2c56f112994ab4a8f11ca1045e5, type: 3}
       propertyPath: m_Name
-      value: Cube_GR
+      value: Cube_GR Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36ebd2c56f112994ab4a8f11ca1045e5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 36ebd2c56f112994ab4a8f11ca1045e5, type: 3}
       propertyPath: m_Name
       value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 36ebd2c56f112994ab4a8f11ca1045e5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -144,6 +152,10 @@ PrefabInstance:
     - target: {fileID: 1422522681118221825, guid: a3f4d27ab957f5540883e9b278d6a186, type: 3}
       propertyPath: m_Name
       value: Hover_Particles
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422522681118221825, guid: a3f4d27ab957f5540883e9b278d6a186, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
