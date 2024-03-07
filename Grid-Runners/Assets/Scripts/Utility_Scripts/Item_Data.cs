@@ -18,9 +18,6 @@ public class Item_Data : MonoBehaviour
         public bool is_Ranged;
 
         public GameObject projectile;
-        public GameObject fire_Point;
-
-        public ParticleSystem muzzle_Flash;
 
         public float fire_Rate;
 
