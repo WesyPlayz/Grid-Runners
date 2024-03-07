@@ -42,6 +42,7 @@ public class UserHandler : MonoBehaviour
     public GameObject Weapon;
 
     private Item_Data item_Data;
+    private Item_Data current_weapon;
 
     public int selected_Weapon;
 
@@ -67,7 +68,12 @@ public class UserHandler : MonoBehaviour
 
     public int max_Ammo;
     public int Ammo;
-    public int grenades, max_Grenades;
+
+    public int primary_Ammo;
+    public int secondary_Ammo;
+
+    public int grenades;
+    public int max_Grenades;
 
     // Grid Variables:
     private Grid_Data grid_Data;
@@ -104,6 +110,7 @@ public class UserHandler : MonoBehaviour
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<Item_Data>();
+        current_weapon = GameObject.Find("Items").GetComponent<Item_Data>();
     }
 
     private void Update()
@@ -144,12 +151,14 @@ public class UserHandler : MonoBehaviour
                 if (selected_Weapon != 0 && Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     selected_Weapon = 0;
-                    EquipWeapon(primary_Weapon);
+                    secondary_Ammo = Ammo;
+                    EquipWeapon(selected_Weapon, primary_Weapon);
                 }
                 else if (selected_Weapon != 1 && Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     selected_Weapon = 1;
-                    EquipWeapon(secondary_Weapon);
+                    primary_Ammo = Ammo;
+                    EquipWeapon(selected_Weapon, secondary_Weapon);
                 }
 
                 if (Ranged) // Ranged Attack System:
@@ -263,7 +272,7 @@ public class UserHandler : MonoBehaviour
     }
 
     // Inventory System:
-    public void EquipWeapon(int weapon)
+    public void EquipWeapon(int weapon_Slot, int weapon)
     {
         if (Weapon != null)
             Destroy(Weapon);
@@ -286,6 +295,8 @@ public class UserHandler : MonoBehaviour
                     break;
             }
         }
+        Ammo = weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo : weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo : selected_Weapon.max_Ammo;
+
         Melee = selected_Weapon.is_Melee;
         Ranged = selected_Weapon.is_Ranged;
         Projectile = selected_Weapon.projectile;

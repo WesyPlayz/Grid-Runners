@@ -22,6 +22,8 @@ public class Item_Data : MonoBehaviour
         public float fire_Rate;
 
         public int max_Ammo;
+
+        public int damage;
     }
     public List<Weapon> Weapons;
 

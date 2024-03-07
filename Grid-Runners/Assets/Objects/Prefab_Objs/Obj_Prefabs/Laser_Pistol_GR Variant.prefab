@@ -218,6 +218,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2383372596785896840}
     m_Modifications:
     - target: {fileID: -1803980967093944890, guid: a59e8343de9caf147a08bbaa27a24ae8, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1803980967093944890, guid: a59e8343de9caf147a08bbaa27a24ae8, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 2
       objectReference: {fileID: 0}
@@ -305,7 +309,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 18c9b100ffb89e244b4b9d8e785b7137, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18c9b100ffb89e244b4b9d8e785b7137, type: 3}
       propertyPath: m_LocalPosition.x
