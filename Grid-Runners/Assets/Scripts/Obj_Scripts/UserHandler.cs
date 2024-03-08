@@ -18,6 +18,7 @@ public class UserHandler : MonoBehaviour
     public GameObject Spawn;
 
     private Obj_State obj_Data;
+    private HUDHandler hud_Handler;
 
     private bool changing_Mode;
 
@@ -42,7 +43,6 @@ public class UserHandler : MonoBehaviour
     public GameObject Weapon;
 
     private Item_Data item_Data;
-    private Item_Data current_weapon;
 
     public int selected_Weapon;
 
@@ -80,11 +80,6 @@ public class UserHandler : MonoBehaviour
 
     public GameObject secondary_Obj;
     private Transform obj_Transform;
-    public LayerMask enemyTeam;
-    public string enemyTeamTag;
-
-    //script data
-    private Obj_State NWD; //new weapon data
     private Obj_State secondary_Data;
 
     // Jumping Variables:
@@ -101,7 +96,7 @@ public class UserHandler : MonoBehaviour
         user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
 
         obj_Data = GetComponent<Obj_State>();
-
+        hud_Handler = GetComponent<HUDHandler>();
         Health = max_Health;
 
         origin_FOV = ui_Camera.fieldOfView;
@@ -110,7 +105,6 @@ public class UserHandler : MonoBehaviour
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<Item_Data>();
-        current_weapon = GameObject.Find("Items").GetComponent<Item_Data>();
     }
 
     private void Update()
@@ -283,6 +277,8 @@ public class UserHandler : MonoBehaviour
         new_Weapon.transform.SetPositionAndRotation(item_Holder.transform.position, item_Holder.transform.rotation);
 
         Weapon = new_Weapon;
+        hud_Handler.current_Weapon_Name.text = selected_Weapon.weapon_Prefab.name;
+
         foreach (Transform child in new_Weapon.transform)
         {
             switch (child.name)
@@ -295,13 +291,24 @@ public class UserHandler : MonoBehaviour
                     break;
             }
         }
-        Ammo = weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo : weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo : selected_Weapon.max_Ammo;
-
+        if (weapon_Slot == 0 && selected_Weapon.Icon != hud_Handler.primary_Weapon_Icon)
+            hud_Handler.primary_Weapon_Icon = selected_Weapon.Icon;
+        else if (weapon_Slot == 1 && selected_Weapon.Icon != hud_Handler.secondary_Weapon_Icon)
+            hud_Handler.secondary_Weapon_Icon = selected_Weapon.Icon;
+        else
+        {
+            hud_Handler.holstered_Weapon_Icon.sprite = hud_Handler.current_Weapon_Icon.sprite;
+            hud_Handler.current_Weapon_Icon.sprite = selected_Weapon.Icon;
+        }
         Melee = selected_Weapon.is_Melee;
         Ranged = selected_Weapon.is_Ranged;
         Projectile = selected_Weapon.projectile;
         fire_Rate = selected_Weapon.fire_Rate;
         max_Ammo = selected_Weapon.max_Ammo;
+        Ammo = 
+            weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo : 
+            weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo : 
+            selected_Weapon.max_Ammo;
     }
 
     // Action Systems:

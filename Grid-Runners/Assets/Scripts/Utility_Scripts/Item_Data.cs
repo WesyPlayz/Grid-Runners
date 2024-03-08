@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Item_Data : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Item_Data : MonoBehaviour
     public class Weapon
     {
         public GameObject weapon_Prefab;
+        public Sprite Icon;
 
         public int upgrade_Lvl;
 

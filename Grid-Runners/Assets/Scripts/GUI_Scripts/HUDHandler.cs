@@ -1,13 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+using TMPro;
+
 public class HUDHandler : MonoBehaviour
 {
     public GameObject Player;
-    public GameObject User;
+    private GameObject User;
     private UserHandler user_Handler;
 
     public Image Health_Bar;
+
+    public TextMeshProUGUI current_Weapon_Name;
+
+    public Image current_Weapon_Icon;
+    public Image holstered_Weapon_Icon;
+
+    public Sprite primary_Weapon_Icon;
+    public Sprite secondary_Weapon_Icon;
+
     public Image ammo_Counter;
 
     void Start()
