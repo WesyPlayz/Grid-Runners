@@ -54,6 +54,8 @@ public class UserHandler : MonoBehaviour
     public GameObject Grenade;
 
     public ParticleSystem muzzle_Flash;
+    public AudioSource pewpew;
+    public AudioSource ReloadSound;
 
     public bool Ranged;
     public bool Melee;
@@ -166,6 +168,7 @@ public class UserHandler : MonoBehaviour
                     {
                         Ammo = max_Ammo;
                         can_Attack = false;
+                        ReloadSound.Play();
                         StartCoroutine(AttackCooldown(1.5f));
                     }
                 }
@@ -319,6 +322,7 @@ public class UserHandler : MonoBehaviour
         new_Projectile.transform.position = fire_Point.transform.position;
         new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
         muzzle_Flash.Play();
+        pewpew.Play();
         StartCoroutine(FireRate());
     }
     private void ADS(bool is_ADSing) // ADSing System:
