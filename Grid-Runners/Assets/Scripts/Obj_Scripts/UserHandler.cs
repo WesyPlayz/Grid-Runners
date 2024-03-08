@@ -65,6 +65,7 @@ public class UserHandler : MonoBehaviour
     public float fire_Rate;
     public float grenade_Rate;
     public float throw_force;
+    public float bulleter_Speed;
 
     public int max_Ammo;
     public int Ammo;
@@ -317,7 +318,7 @@ public class UserHandler : MonoBehaviour
         Ammo--;
         GameObject new_Projectile = Instantiate(Projectile);
         new_Projectile.transform.position = fire_Point.transform.position;
-        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
+        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bulleter_Speed, ForceMode.Impulse);
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
     }

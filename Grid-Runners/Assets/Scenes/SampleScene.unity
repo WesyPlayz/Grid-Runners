@@ -17826,6 +17826,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
+    - target: {fileID: 7172284910441885703, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8192
+      objectReference: {fileID: 0}
     - target: {fileID: 7733027329107618788, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -23966,6 +23970,10 @@ PrefabInstance:
     - target: {fileID: 2009473609953789700, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172284910441885703, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8192
       objectReference: {fileID: 0}
     - target: {fileID: 7733027329107618788, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_RootOrder
@@ -36193,6 +36201,7 @@ MonoBehaviour:
   fire_Rate: 0.1
   grenade_Rate: 0
   throw_force: 12
+  bulleter_Speed: 0
   max_Ammo: 25
   Ammo: 25
   primary_Ammo: 0
@@ -36784,6 +36793,10 @@ PrefabInstance:
     - target: {fileID: 2009473609953789700, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172284910441885703, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8192
       objectReference: {fileID: 0}
     - target: {fileID: 7733027329107618788, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_RootOrder
@@ -47632,7 +47645,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8159
+    m_Bits: 16351
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -47887,6 +47900,10 @@ PrefabInstance:
     - target: {fileID: 2009473609953789700, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172284910441885703, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8192
       objectReference: {fileID: 0}
     - target: {fileID: 7733027329107618788, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_RootOrder
@@ -53556,6 +53573,10 @@ PrefabInstance:
     - target: {fileID: 2009473609953789700, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172284910441885703, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8192
       objectReference: {fileID: 0}
     - target: {fileID: 7733027329107618788, guid: e5e2f20314bd92d418a44136a8cbf933, type: 3}
       propertyPath: m_RootOrder
