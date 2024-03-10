@@ -57,6 +57,7 @@ public class UserHandler : MonoBehaviour
 
     public bool Ranged;
     public bool Melee;
+    public bool hit_Scan;
 
     public bool can_Attack = true;
     private bool can_Use_Action = true;
@@ -65,7 +66,7 @@ public class UserHandler : MonoBehaviour
     public float fire_Rate;
     public float grenade_Rate;
     public float throw_force;
-    public float bulleter_Speed;
+    public float bullet_Speed;
 
     public int max_Ammo;
     public int Ammo;
@@ -303,7 +304,9 @@ public class UserHandler : MonoBehaviour
         }
         Melee = selected_Weapon.is_Melee;
         Ranged = selected_Weapon.is_Ranged;
+        hit_Scan = selected_Weapon.is_Hit_Scan;
         Projectile = selected_Weapon.projectile;
+        bullet_Speed = selected_Weapon.bullet_Speed;
         fire_Rate = selected_Weapon.fire_Rate;
         max_Ammo = selected_Weapon.max_Ammo;
         Ammo = 
@@ -316,9 +319,24 @@ public class UserHandler : MonoBehaviour
     private void RangedAttack() // Ranged Attack System:
     {
         Ammo--;
+        if (hit_Scan)
+        {
+            RaycastHit target;
+            int layerMask = 9 << LayerMask.NameToLayer("Entity");
+            if (Physics.Raycast(fire_Point.transform.position, fire_Point.transform.forward, out target, Mathf.Infinity, layerMask))
+            {
+                GameObject selected_Target = target.transform.gameObject;
+                if (selected_Target.CompareTag("Dummy"))
+                {
+                    DummyHandler dummy_Handler = selected_Target.GetComponent<DummyHandler>();
+                    dummy_Handler.StopAllCoroutines();
+                    dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
+                }
+            }
+        }
         GameObject new_Projectile = Instantiate(Projectile);
         new_Projectile.transform.position = fire_Point.transform.position;
-        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bulleter_Speed, ForceMode.Impulse);
+        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
     }

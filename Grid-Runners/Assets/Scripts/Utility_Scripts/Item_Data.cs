@@ -18,8 +18,10 @@ public class Item_Data : MonoBehaviour
 
         [Header("Ranged")]
         public bool is_Ranged;
+        public bool is_Hit_Scan;
 
         public GameObject projectile;
+        public float bullet_Speed;
 
         public float fire_Rate;
 
