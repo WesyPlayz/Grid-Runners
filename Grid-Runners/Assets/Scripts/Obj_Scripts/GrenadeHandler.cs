@@ -5,6 +5,7 @@ using UnityEngine;
 public class GrenadeHandler : MonoBehaviour
 {
     public bool imediate_Explosion = false;
+    private bool startedCharging = false;
 
     public LayerMask hit_Layer;
     public LayerMask Block_Layer;
@@ -19,6 +20,11 @@ public class GrenadeHandler : MonoBehaviour
 
     private Collider[] Hits;
 
+    public AudioSource mySpeaker;
+    public float volume;
+    public AudioClip charge;
+    public AudioClip boom;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +35,13 @@ public class GrenadeHandler : MonoBehaviour
     void Update()
     {
         blast_Delay -= Time.deltaTime;
+
+        if (!startedCharging)
+        {
+            mySpeaker.PlayOneShot(charge);
+            startedCharging = true;
+        }
+
 
         if (blast_Delay <= 0)
             explode();
@@ -43,7 +56,7 @@ public class GrenadeHandler : MonoBehaviour
     void explode()
     {
         //Instantiate(explosion_Effect, transform.position, transform.rotation); need effect
-
+        mySpeaker.PlayOneShot(boom, volume);
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);
@@ -61,7 +74,6 @@ public class GrenadeHandler : MonoBehaviour
                 }
             }
         }
-
         Destroy(gameObject);
     }
 }

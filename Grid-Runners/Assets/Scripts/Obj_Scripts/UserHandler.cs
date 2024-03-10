@@ -77,6 +77,14 @@ public class UserHandler : MonoBehaviour
     public int grenades;
     public int max_Grenades;
 
+    [Header("Sound Resources")]
+    public float volume;
+    public AudioSource mySpeaker;
+    public AudioClip laser_Reload;
+    public AudioClip hit_SFX;
+    public AudioClip melee;
+    public GameObject walkSFX;
+
     // Grid Variables:
     private Grid_Data grid_Data;
 
@@ -137,6 +145,12 @@ public class UserHandler : MonoBehaviour
                 obj_Data.walk_Speed));
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
 
+
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                walkSFX.SetActive(true);
+            else
+                walkSFX.SetActive(false);
+
             // Jump System:
             if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
                 nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
@@ -164,8 +178,9 @@ public class UserHandler : MonoBehaviour
                         can_Attack = false;
                         RangedAttack();
                     }
-                    else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                    else if (Input.GetButtonDown("Reload") && Ammo != max_Ammo && can_Use_Action)
                     {
+                        mySpeaker.PlayOneShot(laser_Reload, volume);
                         Ammo = max_Ammo;
                         can_Attack = false;
                         StartCoroutine(AttackCooldown(1.5f));
@@ -175,6 +190,7 @@ public class UserHandler : MonoBehaviour
                 {
                     if (can_Attack && secondary_Data.collided_Entity != null && Input.GetButtonDown("Knife"))
                     {
+                        mySpeaker.PlayOneShot(melee, volume);
                         can_Attack = false;
                         MeleeAttack();
                         StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
@@ -328,6 +344,7 @@ public class UserHandler : MonoBehaviour
                 GameObject selected_Target = target.transform.gameObject;
                 if (selected_Target.CompareTag("Dummy"))
                 {
+                    mySpeaker.PlayOneShot(hit_SFX, volume);
                     DummyHandler dummy_Handler = selected_Target.GetComponent<DummyHandler>();
                     dummy_Handler.StopAllCoroutines();
                     dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
@@ -360,7 +377,8 @@ public class UserHandler : MonoBehaviour
 
     // Action Systems:
     void MeleeAttack()
-    {   
+    {
+        mySpeaker.PlayOneShot(melee, volume);
         switch(secondary_Data.collided_Entity.tag)
         {
             case "Dummy":
@@ -392,5 +410,10 @@ public class UserHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(length);
         can_Attack = true;
+    }
+
+    public void hitSFX()
+    {
+        mySpeaker.PlayOneShot(hit_SFX, volume);
     }
 }
