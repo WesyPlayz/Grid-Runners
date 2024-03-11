@@ -59,6 +59,7 @@ public class UserHandler : MonoBehaviour
 
     public bool Ranged;
     public bool Melee;
+    public bool hit_Scan;
 
     public bool can_Attack = true;
     private bool can_Use_Action = true;
@@ -67,6 +68,7 @@ public class UserHandler : MonoBehaviour
     public float fire_Rate;
     public float grenade_Rate;
     public float throw_force;
+    public float bullet_Speed;
 
     public int max_Ammo;
     public int Ammo;
@@ -76,6 +78,14 @@ public class UserHandler : MonoBehaviour
 
     public int grenades;
     public int max_Grenades;
+
+    [Header("Sound Resources")]
+    public float volume;
+    public AudioSource mySpeaker;
+    public AudioClip laser_Reload;
+    public AudioClip hit_SFX;
+    public AudioClip melee;
+    public GameObject walkSFX;
 
     // Grid Variables:
     private Grid_Data grid_Data;
@@ -137,6 +147,12 @@ public class UserHandler : MonoBehaviour
                 obj_Data.walk_Speed));
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
 
+
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                walkSFX.SetActive(true);
+            else
+                walkSFX.SetActive(false);
+
             // Jump System:
             if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
                 nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
@@ -164,8 +180,9 @@ public class UserHandler : MonoBehaviour
                         can_Attack = false;
                         RangedAttack();
                     }
-                    else if (Input.GetKeyDown(KeyCode.R) && Ammo != max_Ammo)
+                    else if (Input.GetButtonDown("Reload") && Ammo != max_Ammo && can_Use_Action)
                     {
+                        mySpeaker.PlayOneShot(laser_Reload, volume);
                         Ammo = max_Ammo;
                         can_Attack = false;
                         ReloadSound.Play();
@@ -176,6 +193,7 @@ public class UserHandler : MonoBehaviour
                 {
                     if (can_Attack && secondary_Data.collided_Entity != null && Input.GetButtonDown("Knife"))
                     {
+                        mySpeaker.PlayOneShot(melee, volume);
                         can_Attack = false;
                         MeleeAttack();
                         StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
@@ -305,7 +323,9 @@ public class UserHandler : MonoBehaviour
         }
         Melee = selected_Weapon.is_Melee;
         Ranged = selected_Weapon.is_Ranged;
+        hit_Scan = selected_Weapon.is_Hit_Scan;
         Projectile = selected_Weapon.projectile;
+        bullet_Speed = selected_Weapon.bullet_Speed;
         fire_Rate = selected_Weapon.fire_Rate;
         max_Ammo = selected_Weapon.max_Ammo;
         Ammo = 
@@ -318,9 +338,25 @@ public class UserHandler : MonoBehaviour
     private void RangedAttack() // Ranged Attack System:
     {
         Ammo--;
+        if (hit_Scan)
+        {
+            RaycastHit target;
+            int layerMask = 9 << LayerMask.NameToLayer("Entity");
+            if (Physics.Raycast(fire_Point.transform.position, fire_Point.transform.forward, out target, Mathf.Infinity, layerMask))
+            {
+                GameObject selected_Target = target.transform.gameObject;
+                if (selected_Target.CompareTag("Dummy"))
+                {
+                    mySpeaker.PlayOneShot(hit_SFX, volume);
+                    DummyHandler dummy_Handler = selected_Target.GetComponent<DummyHandler>();
+                    dummy_Handler.StopAllCoroutines();
+                    dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
+                }
+            }
+        }
         GameObject new_Projectile = Instantiate(Projectile);
         new_Projectile.transform.position = fire_Point.transform.position;
-        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * 100, ForceMode.Impulse);
+        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
         muzzle_Flash.Play();
         pewpew.Play();
         StartCoroutine(FireRate());
@@ -345,7 +381,8 @@ public class UserHandler : MonoBehaviour
 
     // Action Systems:
     void MeleeAttack()
-    {   
+    {
+        mySpeaker.PlayOneShot(melee, volume);
         switch(secondary_Data.collided_Entity.tag)
         {
             case "Dummy":
@@ -377,5 +414,10 @@ public class UserHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(length);
         can_Attack = true;
+    }
+
+    public void hitSFX()
+    {
+        mySpeaker.PlayOneShot(hit_SFX, volume);
     }
 }
