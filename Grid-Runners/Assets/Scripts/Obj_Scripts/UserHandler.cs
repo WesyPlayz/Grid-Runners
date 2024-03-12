@@ -81,9 +81,10 @@ public class UserHandler : MonoBehaviour
     public float volume;
     public AudioSource mySpeaker;
     public AudioClip laser_Reload;
+    public AudioSource laser_Fire;
     public AudioClip hit_SFX;
     public AudioClip melee;
-    public GameObject walkSFX;
+    public AudioSource walkSFX;
 
     // Grid Variables:
     private Grid_Data grid_Data;
@@ -147,9 +148,15 @@ public class UserHandler : MonoBehaviour
 
 
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-                walkSFX.SetActive(true);
+            {
+                if (!walkSFX.isPlaying)
+                {
+                    walkSFX.loop = true;
+                    walkSFX.Play();
+                }
+            }
             else
-                walkSFX.SetActive(false);
+                walkSFX.loop = false;
 
             // Jump System:
             if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
@@ -173,7 +180,7 @@ public class UserHandler : MonoBehaviour
 
                 if (Ranged) // Ranged Attack System:
                 {
-                    if (can_Attack && Input.GetKeyDown(KeyCode.Mouse0) && Ammo > 0)
+                    if (can_Attack && Input.GetKey(KeyCode.Mouse0) && Ammo > 0)
                     {
                         can_Attack = false;
                         RangedAttack();
@@ -352,8 +359,9 @@ public class UserHandler : MonoBehaviour
             }
         }
         GameObject new_Projectile = Instantiate(Projectile);
-        new_Projectile.transform.position = fire_Point.transform.position;
+        new_Projectile.transform.SetPositionAndRotation(fire_Point.transform.position, fire_Point.transform.rotation);
         new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
+        laser_Fire.Play();
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
     }
