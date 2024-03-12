@@ -361,6 +361,7 @@ public class UserHandler : MonoBehaviour
         GameObject new_Projectile = Instantiate(Projectile);
         new_Projectile.transform.SetPositionAndRotation(fire_Point.transform.position, fire_Point.transform.rotation);
         new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
+        Destroy(new_Projectile, 3);
         laser_Fire.Play();
         muzzle_Flash.Play();
         StartCoroutine(FireRate());
