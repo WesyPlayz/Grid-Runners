@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379594032}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.055, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8537478505193231470}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &379594035
 ParticleSystem:
@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1086,7 +1086,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 250
+      scalar: 200
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1094,21 +1094,21 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 1
-          inSlope: -0.12834144
-          outSlope: -0.12834144
-          tangentMode: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.27612332
-          outWeight: 0.10103092
+          inWeight: 0
+          outWeight: 0
         - serializedVersion: 3
           time: 1
-          value: 0
-          inSlope: -2.0340161
-          outSlope: -2.0340161
-          tangentMode: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.11958766
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -4765,6 +4765,8 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4803,13 +4805,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 0
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: -2432090755550338912, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -4833,15 +4837,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.4364176
+      value: 4.712058
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.811
+      value: 0.53437513
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.65551436
+      value: 0.11640024
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4872,7 +4876,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7635826562936255635, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: cfc451668da43c14fb8eb6d95cc1ef2b, type: 2}
     - target: {fileID: 919132149155446097, guid: c3a3821063ec07345b356340f7ffb07f, type: 3}
