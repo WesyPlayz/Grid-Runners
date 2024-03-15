@@ -87,6 +87,7 @@ public class UserHandler : MonoBehaviour
     public AudioClip hit_SFX;
     public AudioClip melee;
     public AudioSource walkSFX;
+    private float WalkSoundTimer;
 
     // Grid Variables:
     private Grid_Data grid_Data;
@@ -147,14 +148,19 @@ public class UserHandler : MonoBehaviour
                 is_Sprinting ? obj_Data.sprint_Speed :
                 obj_Data.walk_Speed));
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
-
-
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            if (mode_State)
             {
-                if (!walkSFX.isPlaying)
+                if (!on_Floor) { user_Physics.AddForce(new Vector3(0, -6, 0)); }
+                // Walk Sounds
+                WalkSoundTimer -= Time.deltaTime;
+                if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
                 {
-                    walkSFX.loop = true;
-                    walkSFX.Play();
+                    if (WalkSoundTimer <= 0 && on_Floor)
+                    {
+                        WalkSoundTimer = .65f;
+                        walkSFX.volume = Vector3.Magnitude(user_Physics.velocity) * .35f;
+                        walkSFX.Play();
+                    }
                 }
             }
             else
@@ -162,7 +168,10 @@ public class UserHandler : MonoBehaviour
 
             // Jump System:
             if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
+            {
                 nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
+                WalkSoundTimer = 0.1f;
+            }
 
             // Action Systems:
             if (mode_State)
@@ -335,9 +344,9 @@ public class UserHandler : MonoBehaviour
         bullet_Speed = selected_Weapon.bullet_Speed;
         fire_Rate = selected_Weapon.fire_Rate;
         max_Ammo = selected_Weapon.max_Ammo;
-        Ammo = 
-            weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo : 
-            weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo : 
+        Ammo =
+            weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo :
+            weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :
             selected_Weapon.max_Ammo;
     }
 
@@ -392,7 +401,7 @@ public class UserHandler : MonoBehaviour
     void MeleeAttack()
     {
         mySpeaker.PlayOneShot(melee, volume);
-        switch(secondary_Data.collided_Entity.tag)
+        switch (secondary_Data.collided_Entity.tag)
         {
             case "Dummy":
                 DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();

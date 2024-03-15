@@ -10,7 +10,7 @@ public class GrenadeHandler : MonoBehaviour
     public LayerMask hit_Layer;
     public LayerMask Block_Layer;
 
-    public GameObject explosion_Effect;
+    public GameObject boomparticle;
     public AudioSource boomy;
 
     public float blast_Radius;
@@ -29,7 +29,7 @@ public class GrenadeHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        blast_Delay = 3;
     }
 
     // Update is called once per frame
@@ -58,6 +58,7 @@ public class GrenadeHandler : MonoBehaviour
     {
         //Instantiate(explosion_Effect, transform.position, transform.rotation); need effect
         mySpeaker.PlayOneShot(boom, volume);
+        Instantiate(boomparticle);
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);
