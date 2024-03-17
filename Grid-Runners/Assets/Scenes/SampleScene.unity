@@ -48464,10 +48464,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6fbea33ef537245a491201b77ceef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: 1
   Body: {fileID: 1513848533}
   Head: {fileID: 1823013924}
   Neck: {fileID: 1327651168}
   Sensitivity: 525
+  down_Limit: -15
+  up_Limit: -170
+  peak_Angle: 30
 --- !u!1 &2002008729
 GameObject:
   m_ObjectHideFlags: 0
