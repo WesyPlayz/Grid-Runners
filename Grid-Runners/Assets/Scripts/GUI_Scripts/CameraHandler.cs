@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraHandler : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class CameraHandler : MonoBehaviour
     public GameObject Body;
     public GameObject Head;
     public GameObject Neck;
+
+    private PlayerInput playerInput;
+    private PlayerInputActions playerInputActions;
 
     // User Rotation Variables:
     private float rotationX_Spec;
@@ -43,6 +47,10 @@ public class CameraHandler : MonoBehaviour
 
         // Head & Neck DIstance Calculation:
         distance = Vector3.Distance(Head.transform.position, Neck.transform.position);
+
+        playerInput = player_Obj.GetComponent<PlayerInput>();
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
     }
 
     // Look Direction System:
@@ -51,8 +59,8 @@ public class CameraHandler : MonoBehaviour
         if (!Input.GetKey(KeyCode.Tab)) // Checks to ensure mode change is not in progress (will be changed)
         {
             // Rotation Value Calculation:
-            float lookHorizontal = Sensitivity * Input.GetAxis("Mouse X") * Time.deltaTime;
-            float lookVertical = -Sensitivity * Input.GetAxis("Mouse Y") * Time.deltaTime;
+            float lookHorizontal = Sensitivity * playerInputActions.Player.MouseX.ReadValue<float>() * Time.deltaTime;
+            float lookVertical = -Sensitivity * playerInputActions.Player.MouseY.ReadValue<float>() * Time.deltaTime;
 
             // Rotation System:
             if ((lookHorizontal != 0 || lookVertical != 0))

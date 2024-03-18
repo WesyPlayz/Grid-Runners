@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 using static Utilities.Collisions;
 using static Utilities.Generic;
@@ -11,8 +12,12 @@ public class UserHandler : MonoBehaviour
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
 
+    private PlayerInput playerInput;
+    private PlayerInputActions playerInputActions;
+
     public Collider body_Hitbox;
     public Bounds body_Hitbox_Bounds;
+
 
     [Header("Data Variables")]
     public GameObject Spawn;
@@ -118,12 +123,18 @@ public class UserHandler : MonoBehaviour
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<Item_Data>();
+
+        playerInput = GetComponent<PlayerInput>();
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
+        playerInputActions.Player.Jump.performed += Jump;
+
     }
 
     private void Update()
     {
+        
         bool mode_State = Mode == 0; // Mode Check.
-
         if (!changing_Mode)
         {
             if (!Damage()) // Health Check:
@@ -134,10 +145,11 @@ public class UserHandler : MonoBehaviour
                 SwapMode(mode_State);
 
             // Movement_Systems:
-            is_Sprinting = Input.GetKey(KeyCode.LeftShift); // Sprint Check.
+            is_Sprinting = playerInputActions.Player.Sprint.IsInProgress(); // Sprint Check.
             Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
 
-            Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), (mode_State ? 0 : Input.GetAxis("ThirdAxis")), Input.GetAxis("Vertical"))); // Movement Direction Calculation.
+            Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
+            Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, (mode_State ? 0 : inputVector.y), inputVector.z)); // Movement Direction Calculation.
             current_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
 
             Vector3 clamped_Velocity = Vector3.ClampMagnitude( // Velocty Clamp Calculation:
@@ -149,7 +161,7 @@ public class UserHandler : MonoBehaviour
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
 
 
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            if (playerInputActions.Player.Movement.IsInProgress())
             {
                 if (!walkSFX.isPlaying)
                 {
@@ -159,10 +171,6 @@ public class UserHandler : MonoBehaviour
             }
             else
                 walkSFX.loop = false;
-
-            // Jump System:
-            if (mode_State && on_Floor && Input.GetKeyDown(KeyCode.Space))
-                nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
 
             // Action Systems:
             if (mode_State)
@@ -207,7 +215,7 @@ public class UserHandler : MonoBehaviour
                     }
                 }
 
-                if (can_Use_Action && !is_Using_Action && Input.GetKeyDown(KeyCode.Mouse1)) // Action System:
+                if (can_Use_Action && !is_Using_Action && playerInputActions.Player.Scope.IsInProgress()) // Action System:
                 {
                     can_Use_Action = false;
                     if (Ranged) // Ranged Action System:
@@ -217,7 +225,7 @@ public class UserHandler : MonoBehaviour
 
                     }
                 }
-                else if (!can_Use_Action && is_Using_Action && Input.GetKeyUp(KeyCode.Mouse1))
+                else if (!can_Use_Action && is_Using_Action && !playerInputActions.Player.Scope.IsInProgress())
                 {
                     if (Ranged) // Ranged Action System:
                         ADS(is_Using_Action = false);
@@ -370,6 +378,7 @@ public class UserHandler : MonoBehaviour
         pewpew.Play();
         StartCoroutine(FireRate());
     }
+
     private void ADS(bool is_ADSing) // ADSing System:
     {
         float direction = is_ADSing ? -1 : 1;
@@ -428,5 +437,14 @@ public class UserHandler : MonoBehaviour
     public void hitSFX()
     {
         mySpeaker.PlayOneShot(hit_SFX, volume);
+    }
+
+    //new input action cmds
+
+    private void Jump(InputAction.CallbackContext phase)
+    {
+        print("asfl;djksfad;jklslfjk;ad");
+        if (on_Floor && Input.GetKeyDown(KeyCode.Space) && phase.performed)
+            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
     }
 }
