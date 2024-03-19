@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -135.41336, y: -21.994558, z: 27.218357}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -156,7 +156,7 @@ MonoBehaviour:
   Block_Layer:
     serializedVersion: 2
     m_Bits: 0
-  boomparticle: {fileID: 0}
+  boomparticle: {fileID: 7635759339377272397, guid: 356f751edcd6b254c9666c700a272a6a, type: 3}
   boomy: {fileID: -8440566171060452763}
   blast_Radius: 20
   blast_Delay: 4

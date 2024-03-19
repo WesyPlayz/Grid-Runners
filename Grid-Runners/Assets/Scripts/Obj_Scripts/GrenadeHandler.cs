@@ -26,26 +26,19 @@ public class GrenadeHandler : MonoBehaviour
     public AudioClip charge;
     public AudioClip boom;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        blast_Delay = 3;
-    }
 
-    // Update is called once per frame
     void Update()
     {
-        blast_Delay -= Time.deltaTime;
-
         if (!startedCharging)
         {
             mySpeaker.PlayOneShot(charge);
             startedCharging = true;
         }
 
-
         if (blast_Delay <= 0)
             explode();
+        else
+            blast_Delay -= Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -56,9 +49,9 @@ public class GrenadeHandler : MonoBehaviour
 
     void explode()
     {
-        //Instantiate(explosion_Effect, transform.position, transform.rotation); need effect
+        GameObject b = Instantiate(boomparticle, transform.position, transform.rotation);
+        Destroy(b, 1);
         mySpeaker.PlayOneShot(boom, volume);
-        Instantiate(boomparticle);
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);
