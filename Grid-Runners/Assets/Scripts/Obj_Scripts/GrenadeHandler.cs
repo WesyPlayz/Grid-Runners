@@ -56,9 +56,10 @@ public class GrenadeHandler : MonoBehaviour
 
     void explode()
     {
-        //Instantiate(explosion_Effect, transform.position, transform.rotation); need effect
+        /*
         mySpeaker.PlayOneShot(boom, volume);
         Instantiate(boomparticle);
+        */
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);

@@ -128,6 +128,9 @@ public class UserHandler : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         playerInputActions.Player.Jump.performed += Jump;
+        playerInputActions.Player.Grenade.performed += Throw_Grenade;
+        playerInputActions.Player.Scope.performed += Scope;
+        playerInputActions.Player.Scope.canceled += unScope;
     }
 
     private void Update()
@@ -199,7 +202,7 @@ public class UserHandler : MonoBehaviour
                         can_Attack = false;
                         RangedAttack();
                     }
-                    else if (playerInputActions.Player.Reload.IsPressed() && Ammo != max_Ammo && can_Use_Action)
+                    else if (playerInputActions.Player.Reload.IsPressed() && Ammo != max_Ammo)
                     {
                         mySpeaker.PlayOneShot(laser_Reload, volume);
                         Ammo = max_Ammo;
@@ -210,7 +213,7 @@ public class UserHandler : MonoBehaviour
                 }
                 else if (Melee) // Melee Attack System:
                 {
-                    if (can_Attack && secondary_Data.collided_Entity != null && Input.GetButtonDown("Knife"))
+                    if (can_Attack && secondary_Data.collided_Entity != null && playerInputActions.Player.Knife.IsPressed())
                     {
                         mySpeaker.PlayOneShot(melee, volume);
                         can_Attack = false;
@@ -218,30 +221,6 @@ public class UserHandler : MonoBehaviour
                         StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
                     }
                 }
-
-                if (can_Use_Action && !is_Using_Action && playerInputActions.Player.Scope.inProgress) // Action System:
-                {
-                    can_Use_Action = false;
-                    if (Ranged) // Ranged Action System:
-                        ADS(is_Using_Action = true);
-                    else if (Melee) // Melee Action System:
-                    {
-
-                    }
-                }
-                else if (!can_Use_Action && is_Using_Action && !playerInputActions.Player.Scope.inProgress)
-                {
-                    if (Ranged) // Ranged Action System:
-                        ADS(is_Using_Action = false);
-                    else if (Melee) // Melee Action System:
-                    {
-
-                    }
-                    can_Use_Action = true;
-                }
-
-                if (Input.GetButtonDown("Grenade"))
-                    Throw_Grenade();
             }
             else
             {
@@ -415,16 +394,6 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-    void Throw_Grenade()
-    {
-        can_Attack = false;
-        StartCoroutine(AttackCooldown(grenade_Rate));
-        grenades--;
-        GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
-        Rigidbody GrenadeRB = gre.GetComponent<Rigidbody>();
-        LinearJump(user_Camera.transform.forward, throw_force, gre);
-    }
-
     IEnumerator FireRate()
     {
         yield return new WaitForSeconds(fire_Rate);
@@ -446,5 +415,53 @@ public class UserHandler : MonoBehaviour
     {
         if (on_Floor && Input.GetKeyDown(KeyCode.Space) && phase.performed)
             nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
+    }
+
+    void Throw_Grenade(InputAction.CallbackContext phase)
+    {
+        if (grenades > 0)
+        {
+            GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
+            if (phase.performed)
+            {
+                can_Attack = false;
+                StartCoroutine(AttackCooldown(grenade_Rate));
+                grenades--;
+            }
+            else if (phase.canceled)
+            {
+                Rigidbody GrenadeRB = gre.GetComponent<Rigidbody>();
+                LinearJump(user_Camera.transform.forward, throw_force, gre);
+            }
+        }
+    }
+
+    void Scope(InputAction.CallbackContext phase)
+    {
+        if (can_Use_Action && !is_Using_Action && phase.performed) // Action System:
+        {
+            can_Use_Action = false;
+            if (Ranged) // Ranged Action System:
+                ADS(is_Using_Action = true);
+            else if (Melee) // Melee Action System:
+            {
+
+            }
+        }
+        
+    }
+
+    void unScope(InputAction.CallbackContext phase)
+    {
+        if (!can_Use_Action && is_Using_Action && phase.canceled)
+        {
+            if (Ranged) // Ranged Action System:
+                ADS(is_Using_Action = false);
+            else if (Melee) // Melee Action System:
+            {
+
+            }
+            can_Use_Action = true;
+        }
     }
 }
