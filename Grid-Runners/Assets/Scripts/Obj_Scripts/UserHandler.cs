@@ -126,11 +126,22 @@ public class UserHandler : MonoBehaviour
 
         playerInput = GetComponent<PlayerInput>();
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
-        playerInputActions.Player.Jump.performed += Jump;
-        playerInputActions.Player.Grenade.performed += Throw_Grenade;
-        playerInputActions.Player.Scope.performed += Scope;
-        playerInputActions.Player.Scope.canceled += unScope;
+        if (gameObject.name == "Player_1")
+        {
+            playerInputActions.Player.Enable();
+            playerInputActions.Player.Jump.performed += Jump;
+            playerInputActions.Player.Grenade.performed += Throw_Grenade;
+            playerInputActions.Player.Scope.performed += Scope;
+            playerInputActions.Player.Scope.canceled += unScope;
+        }
+        else
+        {
+            playerInputActions.Player1.Enable();
+            playerInputActions.Player1.Jump.performed += Jump;
+            playerInputActions.Player1.Grenade.performed += Throw_Grenade;
+            playerInputActions.Player1.Scope.performed += Scope;
+            playerInputActions.Player1.Scope.canceled += unScope;
+        }
     }
 
     private void Update()

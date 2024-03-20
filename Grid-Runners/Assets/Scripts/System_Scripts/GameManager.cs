@@ -8,10 +8,6 @@ public class GameManager : MonoBehaviour
     public int players;
     public int players_Alive;
     public float map_size;
-    public GameObject[] weapons;
-    public GameObject[] basic_Weapons;
-    public GameObject[] water_Weapons;
-    public GameObject[] medieval_Weapons;
 
     // Start is called before the first frame update
     void Start()
