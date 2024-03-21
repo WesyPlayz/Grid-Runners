@@ -56,6 +56,7 @@ public class UserHandler : MonoBehaviour
     public GameObject fire_Point;
     public GameObject Projectile;
     public GameObject Grenade;
+    private GameObject held_Grenade;
 
     public ParticleSystem muzzle_Flash;
     public AudioSource pewpew;
@@ -138,7 +139,8 @@ public class UserHandler : MonoBehaviour
         {
             playerInputActions.Player1.Enable();
             playerInputActions.Player1.Jump.performed += Jump;
-            playerInputActions.Player1.Grenade.performed += Throw_Grenade;
+            playerInputActions.Player1.Grenade.performed += Hold_Grenade;
+            playerInputActions.Player1.Grenade.canceled += Throw_Grenade;
             playerInputActions.Player1.Scope.performed += Scope;
             playerInputActions.Player1.Scope.canceled += unScope;
         }
@@ -428,22 +430,29 @@ public class UserHandler : MonoBehaviour
             nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
     }
 
+    void Hold_Grenade(InputAction.CallbackContext phase)
+    {
+        print(phase);
+        if (phase.performed)
+        {
+            if (grenades > 0)
+            {
+                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
+                held_Grenade = gre;
+                can_Attack = false;
+                grenades--;
+
+            }
+        }
+    }
+
     void Throw_Grenade(InputAction.CallbackContext phase)
     {
-        if (grenades > 0)
+        print(phase);
+        if (phase.canceled)
         {
-            GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
-            if (phase.performed)
-            {
-                can_Attack = false;
-                StartCoroutine(AttackCooldown(grenade_Rate));
-                grenades--;
-            }
-            else if (phase.canceled)
-            {
-                Rigidbody GrenadeRB = gre.GetComponent<Rigidbody>();
-                LinearJump(user_Camera.transform.forward, throw_force, gre);
-            }
+            StartCoroutine(AttackCooldown(grenade_Rate));
+            LinearJump(user_Camera.transform.forward, throw_force, held_Grenade);
         }
     }
 

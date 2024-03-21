@@ -28,7 +28,7 @@ public class CameraHandler : MonoBehaviour
     private float distance;
 
     [Header("Rotation Variables")]
-    [Range(100, 1000)]
+    [Range(50, 250)]
     public float Sensitivity;
 
     [Range(-360, 360)]
