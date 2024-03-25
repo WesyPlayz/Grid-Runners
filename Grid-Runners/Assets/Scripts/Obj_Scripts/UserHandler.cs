@@ -16,12 +16,12 @@ public class UserHandler : MonoBehaviour
     public Bounds body_Hitbox_Bounds;
 
     private PlayerInput playerInput;
-    private PlayerInputActions playerInputActions;
+    public PlayerInputActions playerInputActions;
 
     [Header("Data Variables")]
     public GameObject Spawn;
 
-    private Obj_State obj_Data;
+    public Obj_State obj_Data;
     private HUDHandler hud_Handler;
 
     private bool changing_Mode;
@@ -36,7 +36,7 @@ public class UserHandler : MonoBehaviour
     public Camera user_Camera, ui_Camera;
     public GameObject Camera_Pos0, Camera_Pos1;
 
-    private float origin_FOV;
+    public float origin_FOV;
     public float ADS_FOV;
 
     // Movement Variables:
@@ -45,8 +45,9 @@ public class UserHandler : MonoBehaviour
     [Header("Weapon Variables")]
     public GameObject item_Holder;
     public GameObject Weapon;
+    public GameObject Projectiles;
 
-    private Item_Data item_Data;
+    public new_Item_Data item_Data;
 
     public int selected_Weapon;
 
@@ -67,8 +68,8 @@ public class UserHandler : MonoBehaviour
     public bool hit_Scan;
 
     public bool can_Attack = true;
-    private bool can_Use_Action = true;
-    private bool is_Using_Action;
+    public bool can_Use_Action = true;
+    public bool is_Using_Action;
 
     public float fire_Rate;
     public float grenade_Rate;
@@ -123,17 +124,22 @@ public class UserHandler : MonoBehaviour
         obj_Transform = GetComponent<Transform>();
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
-        item_Data = GameObject.Find("Items").GetComponent<Item_Data>();
+        item_Data = GameObject.Find("Items").GetComponent<new_Item_Data>();
 
         playerInput = GetComponent<PlayerInput>();
         playerInputActions = new PlayerInputActions();
+
+        // Movement Systems:
+        playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
+        playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
+
+        playerInputActions.Player.Movement.performed += Move;
+
         if (gameObject.name == "Player_1")
         {
             playerInputActions.Player.Enable();
             playerInputActions.Player.Jump.performed += Jump;
             playerInputActions.Player.Grenade.performed += Throw_Grenade;
-            playerInputActions.Player.Scope.performed += Scope;
-            playerInputActions.Player.Scope.canceled += unScope;
         }
         else
         {
@@ -141,8 +147,6 @@ public class UserHandler : MonoBehaviour
             playerInputActions.Player1.Jump.performed += Jump;
             playerInputActions.Player1.Grenade.performed += Hold_Grenade;
             playerInputActions.Player1.Grenade.canceled += Throw_Grenade;
-            playerInputActions.Player1.Scope.performed += Scope;
-            playerInputActions.Player1.Scope.canceled += unScope;
         }
     }
 
@@ -160,7 +164,7 @@ public class UserHandler : MonoBehaviour
                 SwapMode(mode_State);
 
             // Movement_Systems:
-            is_Sprinting = playerInputActions.Player.Sprint.inProgress; // Sprint Check.
+            /*
             Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
 
             Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
@@ -174,9 +178,9 @@ public class UserHandler : MonoBehaviour
                 is_Sprinting ? obj_Data.sprint_Speed :
                 obj_Data.walk_Speed));
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
+            */
             if (mode_State)
             {
-                if (!on_Floor) { user_Physics.AddForce(new Vector3(0, -6, 0)); }
                 // Walk Sounds
                 WalkSoundTimer -= Time.deltaTime;
                 if (playerInputActions.Player.Movement.inProgress)
@@ -207,21 +211,20 @@ public class UserHandler : MonoBehaviour
                     primary_Ammo = Ammo;
                     EquipWeapon(selected_Weapon, secondary_Weapon);
                 }
-
-                if (Ranged) // Ranged Attack System:
+                Item current_Item = item_Data.Items[(selected_Weapon == 0 ? primary_Weapon : secondary_Weapon)];
+                if (current_Item is Ranged ranged_Item) // Ranged Attack System:
                 {
                     if (can_Attack && playerInputActions.Player.Shooting.inProgress && Ammo > 0)
                     {
                         can_Attack = false;
-                        RangedAttack();
+                        ranged_Item.Attack(this);
                     }
-                    else if (playerInputActions.Player.Reload.IsPressed() && Ammo != max_Ammo)
+                    else if (can_Attack && playerInputActions.Player.Reload.IsPressed() && Ammo < max_Ammo)
                     {
                         mySpeaker.PlayOneShot(laser_Reload, volume);
-                        Ammo = max_Ammo;
                         can_Attack = false;
                         ReloadSound.Play();
-                        StartCoroutine(AttackCooldown(1.5f));
+                        ranged_Item.Reload(this);
                     }
                 }
                 else if (Melee) // Melee Attack System:
@@ -280,7 +283,9 @@ public class UserHandler : MonoBehaviour
             body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
             if (!can_Use_Action && is_Using_Action)
             {
-                ADS(is_Using_Action = false);
+                Item current_Item = item_Data.Items[(selected_Weapon == 0 ? primary_Weapon : secondary_Weapon)];
+                if (current_Item is Ranged ranged_Item)
+                    ranged_Item.Aim(this, is_Using_Action = false);
                 can_Use_Action = true;
             }
         }
@@ -303,7 +308,7 @@ public class UserHandler : MonoBehaviour
         if (Weapon != null)
             Destroy(Weapon);
 
-        Item_Data.Weapon selected_Weapon = item_Data.Weapons[weapon];
+        Item selected_Weapon = item_Data.Items[weapon];
         GameObject new_Weapon = Instantiate(selected_Weapon.weapon_Prefab);
         new_Weapon.transform.parent = item_Holder.transform;
         new_Weapon.transform.SetPositionAndRotation(item_Holder.transform.position, item_Holder.transform.rotation);
@@ -332,56 +337,16 @@ public class UserHandler : MonoBehaviour
             hud_Handler.holstered_Weapon_Icon.sprite = hud_Handler.current_Weapon_Icon.sprite;
             hud_Handler.current_Weapon_Icon.sprite = selected_Weapon.Icon;
         }
-        Melee = selected_Weapon.is_Melee;
-        Ranged = selected_Weapon.is_Ranged;
-        hit_Scan = selected_Weapon.is_Hit_Scan;
-        Projectile = selected_Weapon.projectile;
-        bullet_Speed = selected_Weapon.bullet_Speed;
-        fire_Rate = selected_Weapon.fire_Rate;
-        max_Ammo = selected_Weapon.max_Ammo;
-        Ammo =
+        if (selected_Weapon is Ranged ranged_Item)
+        {
+            Ammo =
             weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo :
             weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :
-            selected_Weapon.max_Ammo;
+            ranged_Item.max_Ammo;
+        }
     }
 
     // Action Systems:
-    private void RangedAttack() // Ranged Attack System:
-    {
-        Ammo--;
-        if (hit_Scan)
-        {
-            RaycastHit target;
-            int layerMask = 9 << LayerMask.NameToLayer("Entity");
-            if (Physics.Raycast(fire_Point.transform.position, fire_Point.transform.forward, out target, Mathf.Infinity, layerMask))
-            {
-                GameObject selected_Target = target.transform.gameObject;
-                if (selected_Target.CompareTag("Dummy"))
-                {
-                    mySpeaker.PlayOneShot(hit_SFX, volume);
-                    DummyHandler dummy_Handler = selected_Target.GetComponent<DummyHandler>();
-                    dummy_Handler.StopAllCoroutines();
-                    dummy_Handler.StartCoroutine(dummy_Handler.Shake(0));
-                }
-            }
-        }
-        GameObject new_Projectile = Instantiate(Projectile);
-        new_Projectile.transform.SetPositionAndRotation(fire_Point.transform.position, fire_Point.transform.rotation);
-        new_Projectile.GetComponent<Rigidbody>().AddForce(fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
-        Destroy(new_Projectile, 3);
-        laser_Fire.Play();
-        muzzle_Flash.Play();
-        pewpew.Play();
-        StartCoroutine(FireRate());
-    }
-    private void ADS(bool is_ADSing) // ADSing System:
-    {
-        float direction = is_ADSing ? -1 : 1;
-        item_Holder.transform.position += direction * item_Holder.transform.right * 0.4f;
-        item_Holder.transform.position -= direction * item_Holder.transform.up * 0.06f;
-        obj_Data.walk_Speed *= is_ADSing ? 0.5f : 2;
-        ui_Camera.fieldOfView = Mathf.Lerp(ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : origin_FOV, 25 * Time.deltaTime);
-    }
     private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
     {
         Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
@@ -407,12 +372,6 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-    IEnumerator FireRate()
-    {
-        yield return new WaitForSeconds(fire_Rate);
-        can_Attack = true;
-    }
-
     public IEnumerator AttackCooldown(float length)
     {
         yield return new WaitForSeconds(length);
@@ -422,12 +381,6 @@ public class UserHandler : MonoBehaviour
     public void hitSFX()
     {
         mySpeaker.PlayOneShot(hit_SFX, volume);
-    }
-
-    private void Jump(InputAction.CallbackContext phase)
-    {
-        if (on_Floor && Input.GetKeyDown(KeyCode.Space) && phase.performed)
-            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
     }
 
     void Hold_Grenade(InputAction.CallbackContext phase)
@@ -455,33 +408,20 @@ public class UserHandler : MonoBehaviour
             LinearJump(user_Camera.transform.forward, throw_force, held_Grenade);
         }
     }
-
-    void Scope(InputAction.CallbackContext phase)
+    // Movement Systems:
+    public void Move(InputAction.CallbackContext phase)
     {
-        if (can_Use_Action && !is_Using_Action && phase.performed) // Action System:
-        {
-            can_Use_Action = false;
-            if (Ranged) // Ranged Action System:
-                ADS(is_Using_Action = true);
-            else if (Melee) // Melee Action System:
-            {
-
-            }
-        }
         
     }
 
-    void unScope(InputAction.CallbackContext phase)
+    public void Sprint(InputAction.CallbackContext phase)
     {
-        if (!can_Use_Action && is_Using_Action && phase.canceled)
-        {
-            if (Ranged) // Ranged Action System:
-                ADS(is_Using_Action = false);
-            else if (Melee) // Melee Action System:
-            {
+        is_Sprinting = phase.performed ? true : false; // Sprint Check:
+    }
 
-            }
-            can_Use_Action = true;
-        }
+    private void Jump(InputAction.CallbackContext phase)
+    {
+        if (on_Floor && phase.performed) // Jump Active:
+            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
     }
 }

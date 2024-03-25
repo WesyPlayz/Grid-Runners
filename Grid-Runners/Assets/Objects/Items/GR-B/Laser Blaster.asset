@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Laser Blaster
+  m_EditorClassIdentifier: Assembly-CSharp::Ranged
+  weapon_Prefab: {fileID: 3051364752558294834, guid: 6a5ec16e370ad914a8ace18891b8c155, type: 3}
+  Damage: 12
+  speed_Mod: 1
+  Icon: {fileID: 21300000, guid: a6f3ed7fa7cdde24bb8d7a09eb39b7a0, type: 3}
+  Ammo: {fileID: 21300000, guid: 37e47645e0e03734b969a049f1e9ecbc, type: 3}
+  is_Hit_Scan: 0
+  is_Spread: 0
+  is_Auto: 0
+  projectile_Prefab: {fileID: 411529898347834023, guid: 000cdfec05192964eabb6c39bdc783a3, type: 3}
+  max_Ammo: 24
+  bullet_Speed: 40
+  reload_Speed: 0.1
+  fire_Rate: 0.25
+  ADS_FOV: 30
+  ADS_Speed: 25

@@ -9,6 +9,7 @@ public class CameraHandler : MonoBehaviour
     private GameObject player_Obj;
 
     private UserHandler user_Handler;
+    private new_Item_Data item_Data;
 
     [Header("user Variables")]
     [Range(1, 2)]
@@ -17,9 +18,6 @@ public class CameraHandler : MonoBehaviour
     public GameObject Body;
     public GameObject Head;
     public GameObject Neck;
-
-    private PlayerInput playerInput;
-    private PlayerInputActions playerInputActions;
 
     // User Rotation Variables:
     private float rotationX_Spec;
@@ -43,14 +41,15 @@ public class CameraHandler : MonoBehaviour
     {
         // Player Binding System:
         player_Obj = GameObject.Find((Player == 1 ? "Player_1" : "Player_2"));
+
         user_Handler = player_Obj.GetComponent<UserHandler>();
+        item_Data = user_Handler.item_Data;
 
         // Head & Neck DIstance Calculation:
         distance = Vector3.Distance(Head.transform.position, Neck.transform.position);
 
-        playerInput = player_Obj.GetComponent<PlayerInput>();
-        playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
+        user_Handler.playerInputActions.Player.Scope.performed += ADS; // ADS Active
+        user_Handler.playerInputActions.Player.Scope.canceled += ADS; // ADS Inactive
     }
 
     // Look Direction System:
@@ -59,8 +58,8 @@ public class CameraHandler : MonoBehaviour
         if (!Input.GetKey(KeyCode.Tab)) // Checks to ensure mode change is not in progress (will be changed)
         {
             // Rotation Value Calculation:
-            float lookHorizontal = Sensitivity * playerInputActions.Player.MouseX.ReadValue<float>() * Time.deltaTime;
-            float lookVertical = -Sensitivity * playerInputActions.Player.MouseY.ReadValue<float>() * Time.deltaTime;
+            float lookHorizontal = Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>() * Time.deltaTime;
+            float lookVertical = -Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>() * Time.deltaTime;
 
             // Rotation System:
             if ((lookHorizontal != 0 || lookVertical != 0))
@@ -105,6 +104,35 @@ public class CameraHandler : MonoBehaviour
     }
 
     // View Mechanics:
+    public void ADS(InputAction.CallbackContext phase)
+    {
+        if (user_Handler.can_Use_Action && !user_Handler.is_Using_Action && phase.performed) // ADS Active:
+        {
+            user_Handler.can_Use_Action = false;
+            Item current_Item = item_Data.Items[(user_Handler.selected_Weapon == 0 ? user_Handler.primary_Weapon : user_Handler.secondary_Weapon)];
+
+            if (current_Item is Ranged ranged_Item) // Ranged ADS Active:
+                ranged_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
+            else if (current_Item is Melee melee_Item) // Melee ADS Active:
+                melee_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
+            else if (current_Item is Ordinance ordinance_Item) // Ordinance ADS Active:
+                ordinance_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
+        }
+        else if (!user_Handler.can_Use_Action && user_Handler.is_Using_Action && phase.canceled) // ADS Inactive:
+        {
+            Item current_Item = item_Data.Items[(user_Handler.selected_Weapon == 0 ? user_Handler.primary_Weapon : user_Handler.secondary_Weapon)];
+
+            if (current_Item is Ranged ranged_Item) // Ranged ADS Inactive:
+                ranged_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
+            else if (current_Item is Melee melee_Item) // Melee ADS Inactive:
+                melee_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
+            else if (current_Item is Ordinance ordinance_Item) // Ordinance ADS Inactive:
+                ordinance_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
+
+            user_Handler.can_Use_Action = true;
+        }
+    }
+
     public void Peak(bool enabled)
     {
         Quaternion rotation = Quaternion.AngleAxis((enabled ? peak_Angle : -peak_Angle), Head.transform.up);

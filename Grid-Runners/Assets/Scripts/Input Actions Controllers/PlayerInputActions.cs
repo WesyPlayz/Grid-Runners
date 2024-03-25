@@ -118,7 +118,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Switch_Weapon"",
+                    ""name"": ""Swap_Weapon"",
                     ""type"": ""Value"",
                     ""id"": ""0c3e6960-ae65-432a-90a0-85d92f2abb24"",
                     ""expectedControlType"": ""Axis"",
@@ -432,7 +432,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""womp"",
-                    ""action"": ""Switch_Weapon"",
+                    ""action"": ""Swap_Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -443,7 +443,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": ""Invert"",
                     ""groups"": ""womp"",
-                    ""action"": ""Switch_Weapon"",
+                    ""action"": ""Swap_Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -918,7 +918,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MouseY = m_Player.FindAction("MouseY", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Knife = m_Player.FindAction("Knife", throwIfNotFound: true);
-        m_Player_Switch_Weapon = m_Player.FindAction("Switch_Weapon", throwIfNotFound: true);
+        m_Player_Swap_Weapon = m_Player.FindAction("Swap_Weapon", throwIfNotFound: true);
         // Player1
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Jump = m_Player1.FindAction("Jump", throwIfNotFound: true);
@@ -1003,7 +1003,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseY;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Knife;
-    private readonly InputAction m_Player_Switch_Weapon;
+    private readonly InputAction m_Player_Swap_Weapon;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1018,7 +1018,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MouseY => m_Wrapper.m_Player_MouseY;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Knife => m_Wrapper.m_Player_Knife;
-        public InputAction @Switch_Weapon => m_Wrapper.m_Player_Switch_Weapon;
+        public InputAction @Swap_Weapon => m_Wrapper.m_Player_Swap_Weapon;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1058,9 +1058,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Knife.started += instance.OnKnife;
             @Knife.performed += instance.OnKnife;
             @Knife.canceled += instance.OnKnife;
-            @Switch_Weapon.started += instance.OnSwitch_Weapon;
-            @Switch_Weapon.performed += instance.OnSwitch_Weapon;
-            @Switch_Weapon.canceled += instance.OnSwitch_Weapon;
+            @Swap_Weapon.started += instance.OnSwap_Weapon;
+            @Swap_Weapon.performed += instance.OnSwap_Weapon;
+            @Swap_Weapon.canceled += instance.OnSwap_Weapon;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1095,9 +1095,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Knife.started -= instance.OnKnife;
             @Knife.performed -= instance.OnKnife;
             @Knife.canceled -= instance.OnKnife;
-            @Switch_Weapon.started -= instance.OnSwitch_Weapon;
-            @Switch_Weapon.performed -= instance.OnSwitch_Weapon;
-            @Switch_Weapon.canceled -= instance.OnSwitch_Weapon;
+            @Swap_Weapon.started -= instance.OnSwap_Weapon;
+            @Swap_Weapon.performed -= instance.OnSwap_Weapon;
+            @Swap_Weapon.canceled -= instance.OnSwap_Weapon;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1271,7 +1271,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMouseY(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnKnife(InputAction.CallbackContext context);
-        void OnSwitch_Weapon(InputAction.CallbackContext context);
+        void OnSwap_Weapon(InputAction.CallbackContext context);
     }
     public interface IPlayer1Actions
     {
