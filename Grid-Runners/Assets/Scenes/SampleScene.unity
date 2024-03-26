@@ -5595,7 +5595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &830765414
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43430,6 +43430,7 @@ MonoBehaviour:
   item_Holder: {fileID: 40435960}
   Weapon: {fileID: 1210534459}
   Projectiles: {fileID: 211706216}
+  item_Data: {fileID: 0}
   selected_Weapon: 0
   primary_Weapon: 0
   secondary_Weapon: 1
@@ -43443,6 +43444,8 @@ MonoBehaviour:
   Melee: 0
   hit_Scan: 0
   can_Attack: 1
+  can_Use_Action: 1
+  is_Using_Action: 0
   fire_Rate: 0.25
   grenade_Rate: 0
   throw_force: 12
@@ -43461,7 +43464,7 @@ MonoBehaviour:
   melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
   walkSFX: {fileID: 1760973981}
   secondary_Obj: {fileID: 764515805}
-  on_Floor: 0
+  on_Floor: 1
   on_Wall: 0
 --- !u!4 &1760973976
 Transform:

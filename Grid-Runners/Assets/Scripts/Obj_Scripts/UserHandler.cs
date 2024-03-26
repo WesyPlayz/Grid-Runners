@@ -11,6 +11,7 @@ public class UserHandler : MonoBehaviour
     [Header("User Variables")]
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
+    private CharacterController character_Controller;
 
     public Collider body_Hitbox;
     public Bounds body_Hitbox_Bounds;
@@ -114,6 +115,7 @@ public class UserHandler : MonoBehaviour
         // Initiate User Variables:
         user_Physics = User.GetComponent<Rigidbody>();
         user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
+        character_Controller = User.GetComponent<CharacterController>();
 
         obj_Data = GetComponent<Obj_State>();
         hud_Handler = GetComponent<HUDHandler>();
@@ -139,14 +141,15 @@ public class UserHandler : MonoBehaviour
         {
             playerInputActions.Player.Enable();
             playerInputActions.Player.Jump.performed += Jump;
-            playerInputActions.Player.Grenade.performed += Throw_Grenade;
+            playerInputActions.Player.Grenade.performed += Use_Grenade;
+            playerInputActions.Player.Grenade.canceled += Use_Grenade;
         }
         else
         {
             playerInputActions.Player1.Enable();
             playerInputActions.Player1.Jump.performed += Jump;
-            playerInputActions.Player1.Grenade.performed += Hold_Grenade;
-            playerInputActions.Player1.Grenade.canceled += Throw_Grenade;
+            playerInputActions.Player1.Grenade.performed += Use_Grenade;
+            playerInputActions.Player1.Grenade.canceled += Use_Grenade;
         }
     }
 
@@ -179,6 +182,9 @@ public class UserHandler : MonoBehaviour
                 obj_Data.walk_Speed));
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
             */
+
+
+
             if (mode_State)
             {
                 // Walk Sounds
@@ -188,7 +194,7 @@ public class UserHandler : MonoBehaviour
                     if (WalkSoundTimer <= 0 && on_Floor)
                     {
                         WalkSoundTimer = .65f;
-                        walkSFX.volume = Vector3.Magnitude(user_Physics.velocity) * .35f;
+                        //walkSFX.volume = Vector3.Magnitude(user_Physics.velocity) * .35f;
                         walkSFX.Play();
                     }
                 }
@@ -227,13 +233,13 @@ public class UserHandler : MonoBehaviour
                         ranged_Item.Reload(this);
                     }
                 }
-                else if (Melee) // Melee Attack System:
+                else if (current_Item is Melee melee_Item) // Melee Attack System:
                 {
                     if (can_Attack && secondary_Data.collided_Entity != null && playerInputActions.Player.Knife.IsPressed())
                     {
                         mySpeaker.PlayOneShot(melee, volume);
                         can_Attack = false;
-                        MeleeAttack();
+                        melee_Item.Attack(this);
                         StartCoroutine(AttackCooldown(obj_Data.Attack_Cooldown));
                     }
                 }
@@ -252,6 +258,13 @@ public class UserHandler : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
+        Vector3 move_Direction = User.transform.TransformDirection(new Vector3(inputVector.x, 0, inputVector.z)); // Movement Direction Calculation.
+        character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3);
     }
 
     // Health System:
@@ -356,22 +369,7 @@ public class UserHandler : MonoBehaviour
             new_Grid_Obj.transform.position = placement_Bounds.center;
         }
     }
-
     // Action Systems:
-    void MeleeAttack()
-    {
-        mySpeaker.PlayOneShot(melee, volume);
-        switch (secondary_Data.collided_Entity.tag)
-        {
-            case "Dummy":
-                DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
-                dummy_Handler.StopAllCoroutines();
-                StartCoroutine(dummy_Handler.Shake(0f));
-                break;
-
-        }
-    }
-
     public IEnumerator AttackCooldown(float length)
     {
         yield return new WaitForSeconds(length);
@@ -383,27 +381,22 @@ public class UserHandler : MonoBehaviour
         mySpeaker.PlayOneShot(hit_SFX, volume);
     }
 
-    void Hold_Grenade(InputAction.CallbackContext phase)
+    void Use_Grenade(InputAction.CallbackContext phase)
     {
-        print(phase);
         if (phase.performed)
         {
             if (grenades > 0)
             {
-                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation);
+                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation, user_Camera.transform);
                 held_Grenade = gre;
                 can_Attack = false;
                 grenades--;
-
             }
         }
-    }
-
-    void Throw_Grenade(InputAction.CallbackContext phase)
-    {
-        print(phase);
         if (phase.canceled)
         {
+            held_Grenade.transform.parent = null;
+            held_Grenade.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             StartCoroutine(AttackCooldown(grenade_Rate));
             LinearJump(user_Camera.transform.forward, throw_force, held_Grenade);
         }
@@ -411,7 +404,7 @@ public class UserHandler : MonoBehaviour
     // Movement Systems:
     public void Move(InputAction.CallbackContext phase)
     {
-        
+        //cant have movement in here becuase it will only happen once and will have to repress the button to move the player
     }
 
     public void Sprint(InputAction.CallbackContext phase)
@@ -422,6 +415,6 @@ public class UserHandler : MonoBehaviour
     private void Jump(InputAction.CallbackContext phase)
     {
         if (on_Floor && phase.performed) // Jump Active:
-            nonLinearJump(on_Floor, obj_Data.jump_Force, gameObject, User);
+            character_Controller.SimpleMove(Vector3.up * 1000);
     }
 }

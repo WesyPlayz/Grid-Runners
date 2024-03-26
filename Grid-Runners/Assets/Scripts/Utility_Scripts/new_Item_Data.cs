@@ -62,9 +62,23 @@ public abstract class Item : ScriptableObject
 [CreateAssetMenu(fileName = "New Melee", menuName = "Items/Melee")]
 public class Melee : Item
 {
+    private Obj_State secondary_Data;
+    public GameObject melee_prefab;
+
+    public float range;
+    public float attack_rate;
+
     public override void Attack(UserHandler user_Handler)
     {
-        
+        switch (secondary_Data.collided_Entity.tag)
+        {
+            case "Dummy":
+                DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
+                dummy_Handler.StopAllCoroutines();
+                dummy_Handler.StartCoroutine(dummy_Handler.Shake(0f));
+                break;
+
+        }
     }
 
     public override void Aim(UserHandler user_Handler, bool is_ADSing)
