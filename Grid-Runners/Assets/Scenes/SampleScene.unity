@@ -3581,8 +3581,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items:
-  - {fileID: 11400000, guid: 81521ee89c11b28408a26f28038bf9a6, type: 2}
-  - {fileID: 11400000, guid: e8c743968829fa14d8c0188172c58ea4, type: 2}
+  - {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
+  - {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
+  Abilities: []
   min_Speed_Mod: 0.5
   max_Speed_Mod: 2
   entity_Mask: 0
@@ -43456,6 +43457,7 @@ MonoBehaviour:
   secondary_Ammo: 0
   grenades: 4
   max_Grenades: 4
+  velocity: {x: 0, y: 0, z: 0}
   volume: 0
   mySpeaker: {fileID: 1760973980}
   laser_Reload: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}

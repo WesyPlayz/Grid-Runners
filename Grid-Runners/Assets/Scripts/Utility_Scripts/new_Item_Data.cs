@@ -7,6 +7,9 @@ public class new_Item_Data : MonoBehaviour
     [Header("Item Collection")]
     [SerializeField] public List<Item> Items = new List<Item>{};
 
+    [Header("Ability Collection")]
+    [SerializeField] public List<Ability> Abilities = new List<Ability> { };
+
     [Header("General Data")]
     public float min_Speed_Mod;
     public float max_Speed_Mod;
@@ -39,7 +42,6 @@ public class new_Item_Data : MonoBehaviour
     }
 }
 
-[CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
 public abstract class Item : ScriptableObject
 {
     [Header("Object Data")]
@@ -202,5 +204,77 @@ public class Ordinance : Item
     public override void Action(UserHandler user_Handler)
     {
         
+    }
+}
+
+public abstract class Ability : ScriptableObject
+{
+    [Header("Ability Data")]
+    public static new_Item_Data item_Data;
+
+    public float Cooldown;
+
+    public abstract void Use(UserHandler user_Handler);
+}
+
+[CreateAssetMenu(fileName = "New Utility", menuName = "Abilities/Utility")]
+public class Utility : Ability
+{
+    public override void Use(UserHandler user_Handler)
+    {
+        switch (this.name)
+        {
+            case "Scan":
+                break;
+            case "Cloak":
+                break;
+        }
+    }
+}
+
+[CreateAssetMenu(fileName = "New Mobility", menuName = "Abilities/Mobility")]
+public class Mobility : Ability
+{
+    public override void Use(UserHandler user_Handler)
+    {
+        switch (this.name)
+        {
+            case "Double Jump":
+                break;
+            case "Teleportation":
+                break;
+            case "Phase":
+                break;
+        }
+    }
+}
+
+[CreateAssetMenu(fileName = "New Offensive", menuName = "Abilities/Offensive")]
+public class Offensive : Ability
+{
+    public override void Use(UserHandler user_Handler)
+    {
+        switch (this.name)
+        {
+            case "Pinpoint Accuracy":
+                break;
+            case "Self Destruct":
+                break;
+        }
+    }
+}
+
+[CreateAssetMenu(fileName = "New Defensive", menuName = "Abilities/Defensive")]
+public class Defensive : Ability
+{
+    public override void Use(UserHandler user_Handler)
+    {
+        switch (this.name)
+        {
+            case "Deflector":
+                break;
+            case "Heal":
+                break;
+        }
     }
 }
