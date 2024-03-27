@@ -48,18 +48,18 @@ namespace Utilities
         public static bool nonLinearJump(bool on_Floor, float jump_Force, GameObject holder, GameObject retriever) // ID : 01 // Parameters are as follows (current surface collision for direction calculation) (force applied) (object being affected)
         {
             Obj_State obj_Data = holder.GetComponent<Obj_State>();
-            Rigidbody obj_Physics = retriever.GetComponent<Rigidbody>();
+            CharacterController obj_Physics = retriever.GetComponent<CharacterController>();
             Vector3 jump_Direction =
                 on_Floor ? obj_Data.last_Floor_Contact :
                 obj_Data.last_Floor_Contact != Vector3.zero ? obj_Data.last_Floor_Contact :
                 Vector3.up;
-            obj_Physics.AddForce(jump_Direction * jump_Force);
+            obj_Physics.SimpleMove(jump_Direction * jump_Force);
             return true;
         }
         public static bool LinearJump(Vector3 jump_Direction, float jump_Force, GameObject retriever) // ID : 02 // Parameters are as follows (direction of movement) (force applied) (object being affected)
         {
-            Rigidbody obj_Physics = retriever.GetComponent<Rigidbody>();
-            obj_Physics.AddForce(jump_Direction.normalized * jump_Force, ForceMode.Impulse);
+            CharacterController obj_Physics = retriever.GetComponent<CharacterController>();
+            obj_Physics.SimpleMove(jump_Direction.normalized * jump_Force);
             return true;
         }
     }

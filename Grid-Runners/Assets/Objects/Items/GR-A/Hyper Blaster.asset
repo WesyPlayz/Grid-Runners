@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Hyper Blaster
   m_EditorClassIdentifier: Assembly-CSharp::Ranged
-  weapon_Prefab: {fileID: 8392791533106628191, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
-  Damage: 8
-  speed_Mod: 0.95
-  Icon: {fileID: 21300000, guid: 8f66244be5f0c9c4e9cbe45f36d44765, type: 3}
-  Ammo: {fileID: 21300000, guid: 98156cfc6b851164681178e4a1c0ad48, type: 3}
+  weapon_Prefab: {fileID: 0}
+  Damage: 0
+  speed_Mod: 0
+  Icon: {fileID: 0}
+  Ammo: {fileID: 0}
   is_Hit_Scan: 0
   is_Spread: 0
-  is_Auto: 1
-  projectile_Prefab: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
-  max_Ammo: 30
-  bullet_Speed: 50
-  reload_Speed: 0.75
-  fire_Rate: 0.5
-  ADS_FOV: 50
-  ADS_Speed: 5
+  is_Auto: 0
+  projectile_Prefab: {fileID: 0}
+  max_Ammo: 0
+  bullet_Speed: 0
+  reload_Speed: 0
+  fire_Rate: 0
+  ADS_FOV: 0
+  ADS_Speed: 0

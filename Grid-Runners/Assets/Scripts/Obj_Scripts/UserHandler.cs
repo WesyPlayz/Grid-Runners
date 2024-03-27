@@ -86,6 +86,8 @@ public class UserHandler : MonoBehaviour
     public int grenades;
     public int max_Grenades;
 
+    public Vector3 velocity;
+
     [Header("Sound Resources")]
     public float volume;
     public AudioSource mySpeaker;
@@ -135,19 +137,17 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
         playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
 
-        playerInputActions.Player.Movement.performed += Move;
+        playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
         if (gameObject.name == "Player_1")
         {
             playerInputActions.Player.Enable();
-            playerInputActions.Player.Jump.performed += Jump;
             playerInputActions.Player.Grenade.performed += Use_Grenade;
             playerInputActions.Player.Grenade.canceled += Use_Grenade;
         }
         else
         {
             playerInputActions.Player1.Enable();
-            playerInputActions.Player1.Jump.performed += Jump;
             playerInputActions.Player1.Grenade.performed += Use_Grenade;
             playerInputActions.Player1.Grenade.canceled += Use_Grenade;
         }
@@ -260,25 +260,18 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
-        Vector3 move_Direction = User.transform.TransformDirection(new Vector3(inputVector.x, 0, inputVector.z)); // Movement Direction Calculation.
-        character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3);
-    }
-
     // Health System:
     public bool Damage(float dmg = 0) // Damage System:
     {
-        if (Health <= 0)
+        if (Health <= 0) // Health Check:
             return false;
-        else if (dmg > 0)
+        else if (dmg > 0) // Damage Check:
             Health = Mathf.Max(Health - dmg, 0);
         return true;
     }
     public void Respawn() // Respawn System:
     {
-        User.transform.position = Spawn.transform.position;
+        User.transform.position = Spawn.transform.position; // Relocate User
         Health = max_Health;
     }
 
@@ -401,20 +394,31 @@ public class UserHandler : MonoBehaviour
             LinearJump(user_Camera.transform.forward, throw_force, held_Grenade);
         }
     }
+
     // Movement Systems:
-    public void Move(InputAction.CallbackContext phase)
+    private void FixedUpdate() // Movement System:
     {
-        //cant have movement in here becuase it will only happen once and will have to repress the button to move the player
+        if (on_Floor) // Gravity Modifier
+            velocity.y = 0;
+        else
+        {
+            velocity.y -= 12 * Time.deltaTime;
+            character_Controller.Move(velocity * Time.deltaTime);
+        }
+        Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
+        if (inputVector != Vector3.zero) // Move Active:
+        {
+            Vector3 move_Direction = User.transform.TransformDirection(new Vector3(inputVector.x, Mode == 0 ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
+            character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3);
+        }
     }
-
-    public void Sprint(InputAction.CallbackContext phase)
+    public void Sprint(InputAction.CallbackContext phase) // Sprint System:
     {
-        is_Sprinting = phase.performed ? true : false; // Sprint Check:
+        is_Sprinting = phase.performed ? true : false; // Sprint Check
     }
-
-    private void Jump(InputAction.CallbackContext phase)
+    private void Jump(InputAction.CallbackContext phase) // Jump System:
     {
         if (on_Floor && phase.performed) // Jump Active:
-            character_Controller.SimpleMove(Vector3.up * 1000);
+            character_Controller.SimpleMove(Vector3.up * 100);
     }
 }
