@@ -245,6 +245,8 @@ public class Mobility : Ability
                 break;
             case "Phase":
                 break;
+            case "Speed Boost":
+                break;
         }
     }
 }
