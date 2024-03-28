@@ -8,7 +8,7 @@ public class new_Item_Data : MonoBehaviour
     [SerializeField] public List<Item> Items = new List<Item>{};
 
     [Header("Ability Collection")]
-    [SerializeField] public List<Ability> Abilities = new List<Ability> { };
+    [SerializeField] public List<Ability> Abilities = new List<Ability>{};
 
     [Header("General Data")]
     public float min_Speed_Mod;
@@ -28,16 +28,27 @@ public class new_Item_Data : MonoBehaviour
 
     }
 
+    // Item Coroutines:
+    public IEnumerator Attack_Rate(UserHandler user_Handler, float length)
+    {
+        yield return new WaitForSeconds(length);
+        user_Handler.can_Attack = true;
+    }
+
+    // Range Specific Coroutines:
     public IEnumerator Reload_Cooldown(UserHandler user_Handler, int capacity, float length)
     {
         yield return new WaitForSeconds(length);
         user_Handler.Ammo = capacity;
         user_Handler.can_Attack = true;
     }
-
-    public IEnumerator Fire_Rate(UserHandler user_Handler, float length)
+    public IEnumerator Fire_Rate(UserHandler user_Handler, Ranged weapon, bool state)
     {
-        yield return new WaitForSeconds(length);
+        while (user_Handler.is_Attacking)
+        {
+            weapon.Attack(user_Handler);
+            yield return new WaitForSeconds(weapon.fire_Rate);
+        }
         user_Handler.can_Attack = true;
     }
 }
@@ -143,7 +154,9 @@ public class Ranged : Item
         new_Projectile.transform.SetPositionAndRotation(user_Handler.fire_Point.transform.position, user_Handler.fire_Point.transform.rotation);
         new_Projectile.GetComponent<Rigidbody>().AddForce(user_Handler.fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
         user_Handler.muzzle_Flash.Play();
-        item_Data.StartCoroutine(item_Data.Fire_Rate(user_Handler, fire_Rate));
+
+        if (!is_Auto)
+            item_Data.StartCoroutine(item_Data.Attack_Rate(user_Handler, fire_Rate));
     }
 
     public GameObject Get_Projectile(UserHandler user_Handler)

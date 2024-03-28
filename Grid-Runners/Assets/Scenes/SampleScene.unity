@@ -24375,7 +24375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.525
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36648,7 +36648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.525
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -43433,6 +43433,7 @@ MonoBehaviour:
   Projectiles: {fileID: 211706216}
   item_Data: {fileID: 0}
   selected_Weapon: 0
+  current_Weapon: {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
   primary_Weapon: 0
   secondary_Weapon: 1
   fire_Point: {fileID: 772654173}
@@ -43468,6 +43469,8 @@ MonoBehaviour:
   secondary_Obj: {fileID: 764515805}
   on_Floor: 1
   on_Wall: 0
+  is_Walking: 0
+  is_Attacking: 0
 --- !u!4 &1760973976
 Transform:
   m_ObjectHideFlags: 0
