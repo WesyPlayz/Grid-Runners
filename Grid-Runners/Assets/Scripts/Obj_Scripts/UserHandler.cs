@@ -105,7 +105,7 @@ public class UserHandler : MonoBehaviour
 
     public GameObject secondary_Obj;
     private Transform obj_Transform;
-    private Obj_State secondary_Data;
+    public Obj_State secondary_Data;
 
     // Jumping Variables:
 
@@ -338,6 +338,10 @@ public class UserHandler : MonoBehaviour
             weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo :
             weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :
             ranged_Item.max_Ammo;
+        }
+        if (selected_Weapon is Ordinance ordinance_Item)
+        {
+
         }
     }
 

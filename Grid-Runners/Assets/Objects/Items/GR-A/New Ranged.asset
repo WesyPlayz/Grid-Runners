@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: Hyper Blaster
+  m_Name: New Ranged
   m_EditorClassIdentifier: Assembly-CSharp::Ranged
   weapon_Prefab: {fileID: 8392791533106628191, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
-  Damage: 8
-  speed_Mod: 0.942
+  Damage: 0
+  speed_Mod: 0.937
   Icon: {fileID: 21300000, guid: 8f66244be5f0c9c4e9cbe45f36d44765, type: 3}
   Ammo: {fileID: 21300000, guid: 98156cfc6b851164681178e4a1c0ad48, type: 3}
   is_Hit_Scan: 0
@@ -22,8 +22,8 @@ MonoBehaviour:
   is_Auto: 1
   projectile_Prefab: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
   max_Ammo: 30
-  bullet_Speed: 52.3
-  reload_Speed: 0.81
-  fire_Rate: 0.31
-  ADS_FOV: 46.6
-  ADS_Speed: 17
+  bullet_Speed: 63
+  reload_Speed: 0.74
+  fire_Rate: 0.23
+  ADS_FOV: 51.1
+  ADS_Speed: 59.6

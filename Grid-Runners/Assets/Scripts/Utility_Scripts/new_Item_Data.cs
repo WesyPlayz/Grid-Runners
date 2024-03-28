@@ -75,23 +75,24 @@ public abstract class Item : ScriptableObject
 [CreateAssetMenu(fileName = "New Melee", menuName = "Items/Melee")]
 public class Melee : Item
 {
-    private Obj_State secondary_Data;
     public GameObject melee_prefab;
 
     public float range;
-    public float attack_rate;
+    public float fire_Rate;
 
     public override void Attack(UserHandler user_Handler)
     {
-        switch (secondary_Data.collided_Entity.tag)
+        switch (user_Handler.secondary_Data.collided_Entity.tag)
         {
             case "Dummy":
-                DummyHandler dummy_Handler = secondary_Data.collided_Entity.GetComponent<DummyHandler>();
+                DummyHandler dummy_Handler = user_Handler.secondary_Data.collided_Entity.GetComponent<DummyHandler>();
                 dummy_Handler.StopAllCoroutines();
                 dummy_Handler.StartCoroutine(dummy_Handler.Shake(0f));
                 break;
 
         }
+
+        item_Data.StartCoroutine(item_Data.Attack_Rate(user_Handler, fire_Rate));
     }
 
     public override void Aim(UserHandler user_Handler, bool is_ADSing)
@@ -204,9 +205,31 @@ public class Ranged : Item
 [CreateAssetMenu(fileName = "New Ordinance", menuName = "Items/Ordinance")]
 public class Ordinance : Item
 {
+    [Header("Ordinace Attributes")]
+    public bool is_Auto;
+    public bool is_Impact;
+    public bool is_cooking;
+
+    [Header("Projectile Attributes")]
+    public GameObject projectile_Prefab;
+    public GameObject held_Grenade;
+
+    public int max_Ammo;
+    public int ammo;
+    public float fuse_Time;
+
+    [Range(1, 100)] public float bullet_Speed;
+    [Range(0.025f, 5)] public float reload_Speed;
+    [Range(0.025f, 5)] public float fire_Rate;
     public override void Attack(UserHandler user_Handler)
     {
-        
+        if (!is_cooking)
+        {
+            GameObject gre = Instantiate(projectile_Prefab, user_Handler.fire_Point.transform.position, user_Handler.user_Camera.transform.rotation, user_Handler.user_Camera.transform);
+            held_Grenade = gre;
+            user_Handler.can_Attack = false;
+            ammo--;
+        }
     }
 
     public override void Aim(UserHandler user_Handler, bool is_ADSing)

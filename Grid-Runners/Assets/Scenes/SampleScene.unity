@@ -3495,7 +3495,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430095511}
-  - component: {fileID: 430095510}
   - component: {fileID: 430095512}
   m_Layer: 0
   m_Name: Items
@@ -3504,55 +3503,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!114 &430095510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430095509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f826c88517e2524b8424fc715339508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Weapons:
-  - weapon_Prefab: {fileID: 3051364752558294834, guid: 6a5ec16e370ad914a8ace18891b8c155, type: 3}
-    Icon: {fileID: 21300000, guid: 207e13012898cbb45917cba7dc8a5631, type: 3}
-    upgrade_Lvl: 0
-    is_Melee: 0
-    is_Ranged: 1
-    is_Hit_Scan: 0
-    projectile: {fileID: 6856166401642355416, guid: db91c0f02706042488e9a5eeda4dac40, type: 3}
-    bullet_Speed: 0
-    fire_Rate: 0.1
-    max_Ammo: 25
-    damage: 1
-  - weapon_Prefab: {fileID: 3051364752558294834, guid: 6a5ec16e370ad914a8ace18891b8c155, type: 3}
-    Icon: {fileID: 21300000, guid: 2cad32b560f2c534b96a86bbc5fd30d1, type: 3}
-    upgrade_Lvl: 0
-    is_Melee: 0
-    is_Ranged: 1
-    is_Hit_Scan: 0
-    projectile: {fileID: 6856166401642355416, guid: db91c0f02706042488e9a5eeda4dac40, type: 3}
-    bullet_Speed: 0
-    fire_Rate: 1
-    max_Ammo: 5
-    damage: 5
-  - weapon_Prefab: {fileID: 8392791533106628191, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
-    Icon: {fileID: 21300000, guid: 8f66244be5f0c9c4e9cbe45f36d44765, type: 3}
-    upgrade_Lvl: 0
-    is_Melee: 0
-    is_Ranged: 1
-    is_Hit_Scan: 0
-    projectile: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
-    bullet_Speed: 50
-    fire_Rate: 0.25
-    max_Ammo: 30
-    damage: 8
-  Ordinances:
-  - ordinance_Prefab: {fileID: 0}
-    explosion: {fileID: 0}
 --- !u!4 &430095511
 Transform:
   m_ObjectHideFlags: 0
@@ -3581,8 +3531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items:
-  - {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
-  - {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
+  - {fileID: 11400000, guid: 2d3d27062a7e4a84c882011993415d48, type: 2}
+  - {fileID: 11400000, guid: 2d3d27062a7e4a84c882011993415d48, type: 2}
   Abilities: []
   min_Speed_Mod: 0.5
   max_Speed_Mod: 2
@@ -43433,7 +43383,7 @@ MonoBehaviour:
   Projectiles: {fileID: 211706216}
   item_Data: {fileID: 0}
   selected_Weapon: 0
-  current_Weapon: {fileID: 11400000, guid: 2deee17d47959c6499fbb48ca4a0c799, type: 2}
+  current_Weapon: {fileID: 0}
   primary_Weapon: 0
   secondary_Weapon: 1
   fire_Point: {fileID: 772654173}
@@ -43467,6 +43417,7 @@ MonoBehaviour:
   melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
   walkSFX: {fileID: 1760973981}
   secondary_Obj: {fileID: 764515805}
+  secondary_Data: {fileID: 0}
   on_Floor: 1
   on_Wall: 0
   is_Walking: 0
