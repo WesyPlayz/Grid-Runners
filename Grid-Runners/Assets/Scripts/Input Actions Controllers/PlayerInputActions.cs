@@ -125,6 +125,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7f3b3b4-eaa1-40d4-b894-1fe78565d92e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Peek_Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""db2ff66c-8d08-41dd-9527-aefed1c310dd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Peek_Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f0f9a6a-64c1-44e9-9a8b-e25f89563151"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -444,6 +471,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": ""Invert"",
                     ""groups"": ""womp"",
                     ""action"": ""Swap_Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99fb96b7-e6c8-4e7b-b516-7115ebf30ce0"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(max=5)"",
+                    ""groups"": ""womp"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78f26cd3-ff91-4276-8976-2523fd3d9d3d"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(max=5)"",
+                    ""groups"": ""womp"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c2a2184-dc7f-46c6-b499-b0b33325666e"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""womp"",
+                    ""action"": ""Peek_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d3cf3f1-cf46-404b-b783-231ac08017b0"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""womp"",
+                    ""action"": ""Peek_Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -919,6 +990,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Knife = m_Player.FindAction("Knife", throwIfNotFound: true);
         m_Player_Swap_Weapon = m_Player.FindAction("Swap_Weapon", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Peek_Right = m_Player.FindAction("Peek_Right", throwIfNotFound: true);
+        m_Player_Peek_Left = m_Player.FindAction("Peek_Left", throwIfNotFound: true);
         // Player1
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Jump = m_Player1.FindAction("Jump", throwIfNotFound: true);
@@ -1004,6 +1078,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Knife;
     private readonly InputAction m_Player_Swap_Weapon;
+    private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Peek_Right;
+    private readonly InputAction m_Player_Peek_Left;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1019,6 +1096,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Knife => m_Wrapper.m_Player_Knife;
         public InputAction @Swap_Weapon => m_Wrapper.m_Player_Swap_Weapon;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Peek_Right => m_Wrapper.m_Player_Peek_Right;
+        public InputAction @Peek_Left => m_Wrapper.m_Player_Peek_Left;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1061,6 +1141,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Swap_Weapon.started += instance.OnSwap_Weapon;
             @Swap_Weapon.performed += instance.OnSwap_Weapon;
             @Swap_Weapon.canceled += instance.OnSwap_Weapon;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Peek_Right.started += instance.OnPeek_Right;
+            @Peek_Right.performed += instance.OnPeek_Right;
+            @Peek_Right.canceled += instance.OnPeek_Right;
+            @Peek_Left.started += instance.OnPeek_Left;
+            @Peek_Left.performed += instance.OnPeek_Left;
+            @Peek_Left.canceled += instance.OnPeek_Left;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1098,6 +1187,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Swap_Weapon.started -= instance.OnSwap_Weapon;
             @Swap_Weapon.performed -= instance.OnSwap_Weapon;
             @Swap_Weapon.canceled -= instance.OnSwap_Weapon;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Peek_Right.started -= instance.OnPeek_Right;
+            @Peek_Right.performed -= instance.OnPeek_Right;
+            @Peek_Right.canceled -= instance.OnPeek_Right;
+            @Peek_Left.started -= instance.OnPeek_Left;
+            @Peek_Left.performed -= instance.OnPeek_Left;
+            @Peek_Left.canceled -= instance.OnPeek_Left;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1272,6 +1370,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnKnife(InputAction.CallbackContext context);
         void OnSwap_Weapon(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnPeek_Right(InputAction.CallbackContext context);
+        void OnPeek_Left(InputAction.CallbackContext context);
     }
     public interface IPlayer1Actions
     {

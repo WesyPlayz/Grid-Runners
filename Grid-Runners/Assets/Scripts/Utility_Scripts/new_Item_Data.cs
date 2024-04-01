@@ -44,12 +44,18 @@ public class new_Item_Data : MonoBehaviour
     }
     public IEnumerator Fire_Rate(UserHandler user_Handler, Ranged weapon, bool state)
     {
-        while (user_Handler.is_Attacking)
+        while (user_Handler.is_Attacking && user_Handler.Ammo > 0)
         {
             weapon.Attack(user_Handler);
             yield return new WaitForSeconds(weapon.fire_Rate);
         }
         user_Handler.can_Attack = true;
+    }
+
+    // Ability Coroutines:
+    public IEnumerator Ability_Cooldown(UserHandler user_Handler, float length)
+    {
+        yield return new WaitForSeconds(length);
     }
 }
 
@@ -188,12 +194,14 @@ public class Ranged : Item
         user_Handler.item_Holder.transform.position += direction * user_Handler.item_Holder.transform.right * 0.4f;
         user_Handler.item_Holder.transform.position -= direction * user_Handler.item_Holder.transform.up * 0.06f;
         user_Handler.obj_Data.walk_Speed *= is_ADSing ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
-        user_Handler.ui_Camera.fieldOfView = Mathf.Lerp(user_Handler.ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : user_Handler.origin_FOV, ADS_Speed * Time.deltaTime);
+        user_Handler.camera_Handler.ui_Camera.fieldOfView = Mathf.Lerp(user_Handler.camera_Handler.ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : user_Handler.camera_Handler.origin_FOV, ADS_Speed * Time.deltaTime);
     }
 
-    public void Peek(UserHandler user_Handler)
+    public void Peek(UserHandler user_Handler, float angle, int side, bool enabled)
     {
-
+        user_Handler.Neck.transform.Rotate(Vector3.forward, (enabled ? -angle : angle), Space.Self);
+        if (!enabled)
+            user_Handler.Neck.transform.localRotation = Quaternion.Euler(user_Handler.Neck.transform.localEulerAngles.x, 0, 0);
     }
 
     public override void Action(UserHandler user_Handler)
@@ -225,7 +233,7 @@ public class Ordinance : Item
     {
         if (!is_cooking)
         {
-            GameObject gre = Instantiate(projectile_Prefab, user_Handler.fire_Point.transform.position, user_Handler.user_Camera.transform.rotation, user_Handler.user_Camera.transform);
+            GameObject gre = Instantiate(projectile_Prefab, user_Handler.fire_Point.transform.position, user_Handler.camera_Handler.user_Camera.transform.rotation, user_Handler.camera_Handler.user_Camera.transform);
             held_Grenade = gre;
             user_Handler.can_Attack = false;
             ammo--;

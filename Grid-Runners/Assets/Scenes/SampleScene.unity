@@ -3531,8 +3531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items:
-  - {fileID: 11400000, guid: 2d3d27062a7e4a84c882011993415d48, type: 2}
-  - {fileID: 11400000, guid: 2d3d27062a7e4a84c882011993415d48, type: 2}
+  - {fileID: 11400000, guid: 010507c073e418f4fa548d183454aae0, type: 2}
+  - {fileID: 11400000, guid: 010507c073e418f4fa548d183454aae0, type: 2}
   Abilities: []
   min_Speed_Mod: 0.5
   max_Speed_Mod: 2
@@ -4942,9 +4942,6 @@ PrefabInstance:
       addedObject: {fileID: 1071496721}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 1823013925}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
-      insertIndex: 3
       addedObject: {fileID: 1327651169}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
@@ -17582,14 +17579,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038075389}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5, y: 5, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1065520439}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1038075394
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17729,6 +17726,7 @@ MonoBehaviour:
   - {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
   - {fileID: 4353819562254916220, guid: fdb9ba8e40189ef439ecf8dce1097b59, type: 3}
   current_Gird_Obj: 0
+  placement_Range: 10
 --- !u!1 &1046030029
 GameObject:
   m_ObjectHideFlags: 0
@@ -30134,10 +30132,11 @@ Transform:
   m_GameObject: {fileID: 1327651168}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.1233335, z: 0}
+  m_LocalPosition: {x: 0, y: 2.125, z: 0}
   m_LocalScale: {x: 0.16666667, y: 0.16666667, z: 0.16666667}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1823013925}
   m_Father: {fileID: 1513848537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1327651171
@@ -43363,6 +43362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   User: {fileID: 1513848533}
   user_Spectate: {fileID: 1038075389}
+  Neck: {fileID: 1327651168}
   body_Hitbox: {fileID: 1513848542}
   body_Hitbox_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -43372,12 +43372,7 @@ MonoBehaviour:
   max_Health: 100
   Health: 100
   Mode: 0
-  user_Camera: {fileID: 1996051634}
-  ui_Camera: {fileID: 1865609096}
-  Camera_Pos0: {fileID: 1065520438}
-  Camera_Pos1: {fileID: 1467745944}
-  origin_FOV: 0
-  ADS_FOV: 40
+  camera_Handler: {fileID: 1996051637}
   item_Holder: {fileID: 40435960}
   Weapon: {fileID: 1210534459}
   Projectiles: {fileID: 211706216}
@@ -43387,22 +43382,15 @@ MonoBehaviour:
   primary_Weapon: 0
   secondary_Weapon: 1
   fire_Point: {fileID: 772654173}
-  Projectile: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
   Grenade: {fileID: 8723284107201366428, guid: 38076166db13ec442b30708cb497d7fe, type: 3}
   muzzle_Flash: {fileID: 1916607744}
   pewpew: {fileID: 1760973979}
   ReloadSound: {fileID: 1760973980}
-  Ranged: 1
-  Melee: 0
-  hit_Scan: 0
   can_Attack: 1
   can_Use_Action: 1
   is_Using_Action: 0
-  fire_Rate: 0.25
   grenade_Rate: 0
   throw_force: 12
-  bullet_Speed: 50
-  max_Ammo: 30
   Ammo: 30
   primary_Ammo: 30
   secondary_Ammo: 0
@@ -44249,14 +44237,14 @@ Transform:
   m_GameObject: {fileID: 1823013924}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.39, z: 0}
-  m_LocalScale: {x: 0.5333334, y: 0.5333334, z: 0.5333334}
+  m_LocalPosition: {x: 0, y: 1.5999999, z: 0}
+  m_LocalScale: {x: 3.2000005, y: 3.2000005, z: 3.2000005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 944276655}
   - {fileID: 1467745945}
   - {fileID: 40435961}
-  m_Father: {fileID: 1513848537}
+  m_Father: {fileID: 1327651169}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!135 &1823013926
 SphereCollider:
@@ -55470,14 +55458,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6fbea33ef537245a491201b77ceef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  user_Camera: {fileID: 1996051634}
+  ui_Camera: {fileID: 1865609096}
+  Camera_Pos0: {fileID: 1065520438}
+  Camera_Pos1: {fileID: 1467745944}
+  origin_FOV: 0
   Player: 1
-  Body: {fileID: 1513848533}
-  Head: {fileID: 1823013924}
-  Neck: {fileID: 1327651168}
-  Sensitivity: 525
-  down_Limit: -15
-  up_Limit: -170
-  peak_Angle: 30
+  Sensitivity: 1
+  look_Limit: 75
+  peek_Angle: 30
+  Peek_Limit: 50
 --- !u!1 &1998730659 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}

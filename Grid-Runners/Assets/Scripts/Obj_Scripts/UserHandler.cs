@@ -13,6 +13,8 @@ public class UserHandler : MonoBehaviour
     private Rigidbody user_Physics, user_Spectate_Physics;
     private CharacterController character_Controller;
 
+    public GameObject Neck;
+
     public Collider body_Hitbox;
     public Bounds body_Hitbox_Bounds;
 
@@ -34,11 +36,7 @@ public class UserHandler : MonoBehaviour
     public int Mode;
 
     [Header("Camera Variables")]
-    public Camera user_Camera, ui_Camera;
-    public GameObject Camera_Pos0, Camera_Pos1;
-
-    public float origin_FOV;
-    public float ADS_FOV;
+    public CameraHandler camera_Handler;
 
     // Movement Variables:
     private bool is_Sprinting;
@@ -58,7 +56,6 @@ public class UserHandler : MonoBehaviour
     public int secondary_Weapon;
 
     public GameObject fire_Point;
-    public GameObject Projectile;
     public GameObject Grenade;
     private GameObject held_Grenade;
 
@@ -66,20 +63,13 @@ public class UserHandler : MonoBehaviour
     public AudioSource pewpew;
     public AudioSource ReloadSound;
 
-    public bool Ranged;
-    public bool Melee;
-    public bool hit_Scan;
-
     public bool can_Attack = true;
     public bool can_Use_Action = true;
     public bool is_Using_Action;
 
-    public float fire_Rate;
     public float grenade_Rate;
     public float throw_force;
-    public float bullet_Speed;
 
-    public int max_Ammo;
     public int Ammo;
 
     public int primary_Ammo;
@@ -128,7 +118,6 @@ public class UserHandler : MonoBehaviour
         hud_Handler = GetComponent<HUDHandler>();
         Health = max_Health;
 
-        origin_FOV = ui_Camera.fieldOfView;
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
         obj_Transform = GetComponent<Transform>();
 
@@ -137,14 +126,14 @@ public class UserHandler : MonoBehaviour
 
         playerInput = GetComponent<PlayerInput>();
         playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
 
         // Movement Systems:
-        playerInputActions.Player.Enable();
-        playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
-        playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
-
         playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, 0); // Move Active
         playerInputActions.Player.Move.canceled += phase => ControlledUpdate(phase, 0); // Move Inactive
+
+        playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
+        playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
 
         playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
@@ -197,25 +186,6 @@ public class UserHandler : MonoBehaviour
             current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
             */
 
-
-
-            if (mode_State)
-            {
-                // Walk Sounds
-                WalkSoundTimer -= Time.deltaTime;
-                if (playerInputActions.Player.Move.inProgress)
-                {
-                    if (WalkSoundTimer <= 0 && on_Floor)
-                    {
-                        WalkSoundTimer = .65f;
-                        //walkSFX.volume = Vector3.Magnitude(user_Physics.velocity) * .35f;
-                        walkSFX.Play();
-                    }
-                }
-            }
-            else
-                walkSFX.loop = false;
-
             // Action Systems:
             if (mode_State)
             {
@@ -237,7 +207,7 @@ public class UserHandler : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Mouse0)) // Build System:
                 {
                     RaycastHit target;
-                    if (Physics.Raycast(user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+                    if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
                     {
                         GameObject selected_Target = target.transform.gameObject;
                         if (selected_Target.CompareTag("Grid_Tile"))
@@ -269,7 +239,7 @@ public class UserHandler : MonoBehaviour
         changing_Mode = true;
 
         // Mode State ID:
-        Transform cam_Pos = mode_State ? Camera_Pos0.transform : Camera_Pos1.transform;
+        Transform cam_Pos = mode_State ? camera_Handler.Camera_Pos0.transform : camera_Handler.Camera_Pos1.transform;
 
         // User Protection System:
         if (mode_State)
@@ -289,8 +259,8 @@ public class UserHandler : MonoBehaviour
         user_Spectate.SetActive(mode_State);
 
         // Camera Repositioning System:
-        user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
-        user_Camera.transform.parent = cam_Pos;
+        camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
+        camera_Handler.user_Camera.transform.parent = cam_Pos;
 
         Mode = 1 - Mode; // Mode Swapping.
         changing_Mode = false;
@@ -339,35 +309,26 @@ public class UserHandler : MonoBehaviour
             weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :
             ranged_Item.max_Ammo;
         }
-        if (selected_Weapon is Ordinance ordinance_Item)
-        {
-
-        }
     }
 
     // Action Systems:
     private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
     {
         Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
-        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= 10)
+        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= grid_Data.placement_Range)
         {
             GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
             new_Grid_Obj.transform.position = placement_Bounds.center;
         }
     }
     // Action Systems:
-    public void hitSFX()
-    {
-        mySpeaker.PlayOneShot(hit_SFX, volume);
-    }
-
     void Use_Grenade(InputAction.CallbackContext phase)
     {
         if (phase.performed)
         {
             if (grenades > 0)
             {
-                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, user_Camera.transform.rotation, user_Camera.transform);
+                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, camera_Handler.user_Camera.transform.rotation, camera_Handler.user_Camera.transform);
                 held_Grenade = gre;
                 can_Attack = false;
                 grenades--;
@@ -377,47 +338,44 @@ public class UserHandler : MonoBehaviour
         {
             held_Grenade.transform.parent = null;
             held_Grenade.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            LinearJump(user_Camera.transform.forward, throw_force, held_Grenade);
+            LinearJump(camera_Handler.user_Camera.transform.forward, throw_force, held_Grenade);
         }
     }
 
     // Control Terminal:
     public void ControlledUpdate(InputAction.CallbackContext phase, int mode)
     {
-        switch (mode)
+        switch (mode) // Filter
         {
             case 0:
-                if (phase.performed && !is_Walking)
+                if (phase.performed && !is_Walking) // Move Active:
                     StartCoroutine(Move(is_Walking = true));
-                else if (phase.canceled && is_Walking)
+                else if (phase.canceled && is_Walking) // Move Inactive:
                     is_Walking = false;
                 break;
             case 2:
-                if (phase.performed && can_Attack && !is_Attacking)
+                if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
                 {
                     can_Attack = false;
-                    if (current_Weapon is Ranged ranged_Item && Ammo > 0)
+                    if (current_Weapon is Ranged ranged_Item && Ammo > 0) // Range Check:
                     {
-                        if (ranged_Item.is_Auto)
+                        if (ranged_Item.is_Auto) // Auto Check:
                             item_Data.StartCoroutine(item_Data.Fire_Rate(this, ranged_Item, is_Attacking = true));
                         else
                             ranged_Item.Attack(this);
-                        return;
                     }
-                    else if (current_Weapon is Melee melee_Item)
-                    {
+                    else if (current_Weapon is Melee melee_Item) // Melee Check:
                         melee_Item.Attack(this);
-                        return;
-                    }
-                    can_Attack = true;
+                    else
+                        can_Attack = true;
                 }
-                else if (phase.canceled && is_Attacking)
+                else if (phase.canceled && is_Attacking) // Attack Inactive:
                     is_Attacking = false;
                 break;
             case 3:
-                if (current_Weapon is Ranged ranged_Weapon)
+                if (current_Weapon is Ranged ranged_Weapon) // Range Check:
                 {
-                    if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo)
+                    if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo) // Reload Active:
                     {
                         can_Attack = false;
                         ranged_Weapon.Reload(this);
@@ -442,9 +400,9 @@ public class UserHandler : MonoBehaviour
     {
         while (is_Walking) // Movement Active:
         {
-            Vector3 inputVector = playerInputActions.Player.Move.ReadValue<Vector3>();
+            Vector3 inputVector = playerInputActions.Player.Move.ReadValue<Vector3>(); // Axis Values
             Vector3 move_Direction = User.transform.TransformDirection(new Vector3(inputVector.x, Mode == 0 ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
-            character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3);
+            character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3); // Move System & Speed Check
             yield return new WaitForSeconds(0.001f);
         }    
     }
@@ -457,4 +415,13 @@ public class UserHandler : MonoBehaviour
         if (phase.performed) // Jump Active:
             character_Controller.SimpleMove(Vector3.up * 100);
     }
+
+    // Inventory Systems:
+    public void Switch_Weapons(InputAction.CallbackContext phase, int slot)
+    {
+
+    }
+
+    // Action Systems:
+
 }
