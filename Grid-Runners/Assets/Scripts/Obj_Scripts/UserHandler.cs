@@ -138,8 +138,8 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
         // Action Systems:
-        playerInputActions.Player.Shooting.performed += phase => ControlledUpdate(phase, 2); // Attack Active
-        playerInputActions.Player.Shooting.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
+        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, 2); // Attack Active
+        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
 
         playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, 3); // Reload Active
 

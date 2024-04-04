@@ -112,9 +112,11 @@ public class Melee : Item
     }
 }
 
+// Ranged Item System:
 [CreateAssetMenu(fileName = "New Ranged", menuName = "Items/Ranged")]
 public class Ranged : Item
 {
+    // Ranged GUI Data:
     public Sprite Ammo;
 
     [Header("Ranged Attributes")]
@@ -158,8 +160,10 @@ public class Ranged : Item
             }
         }
         GameObject new_Projectile = Get_Projectile(user_Handler);
+
         new_Projectile.transform.SetPositionAndRotation(user_Handler.fire_Point.transform.position, user_Handler.fire_Point.transform.rotation);
         new_Projectile.GetComponent<Rigidbody>().AddForce(user_Handler.fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
+
         user_Handler.muzzle_Flash.Play();
 
         if (!is_Auto)
@@ -193,6 +197,7 @@ public class Ranged : Item
         float direction = is_ADSing ? -1 : 1;
         user_Handler.item_Holder.transform.position += direction * user_Handler.item_Holder.transform.right * 0.4f;
         user_Handler.item_Holder.transform.position -= direction * user_Handler.item_Holder.transform.up * 0.06f;
+
         user_Handler.obj_Data.walk_Speed *= is_ADSing ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
         user_Handler.camera_Handler.ui_Camera.fieldOfView = Mathf.Lerp(user_Handler.camera_Handler.ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : user_Handler.camera_Handler.origin_FOV, ADS_Speed * Time.deltaTime);
     }
@@ -261,66 +266,125 @@ public abstract class Ability : ScriptableObject
     public abstract void Use(UserHandler user_Handler);
 }
 
-[CreateAssetMenu(fileName = "New Utility", menuName = "Abilities/Utility")]
-public class Utility : Ability
+// Utility Abilities:
+public abstract class Utility : Ability
+{
+    public void Engineer()
+    {
+
+    }
+    public abstract override void Use(UserHandler user_Handler);
+}
+[CreateAssetMenu(fileName = "New Scan", menuName = "Abilities/Utility/Scan")]
+public class Scan : Utility
 {
     public override void Use(UserHandler user_Handler)
     {
-        switch (this.name)
-        {
-            case "Scan":
-                break;
-            case "Cloak":
-                break;
-        }
+
+    }
+}
+[CreateAssetMenu(fileName = "New Cloak", menuName = "Abilities/Utility/Cloak")]
+public class Cloak : Utility
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
     }
 }
 
-[CreateAssetMenu(fileName = "New Mobility", menuName = "Abilities/Mobility")]
-public class Mobility : Ability
+// Mobility Abilities:
+public abstract class Mobility : Ability
+{
+    public void Scout()
+    {
+
+    }
+    public abstract override void Use(UserHandler user_Handler);
+}
+[CreateAssetMenu(fileName = "New Double Jump", menuName = "Abilities/Mobility/Double Jump")]
+public class Double_Jump: Mobility
 {
     public override void Use(UserHandler user_Handler)
     {
-        switch (this.name)
-        {
-            case "Double Jump":
-                break;
-            case "Teleportation":
-                break;
-            case "Phase":
-                break;
-            case "Speed Boost":
-                break;
-        }
+
+    }
+}
+[CreateAssetMenu(fileName = "New Teleportation", menuName = "Abilities/Mobility/Teleportation")]
+public class Teleportation : Mobility
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
+    }
+}
+[CreateAssetMenu(fileName = "New Phase", menuName = "Abilities/Mobility/Phase")]
+public class Phase : Mobility
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
+    }
+}
+[CreateAssetMenu(fileName = "New Speed Boost", menuName = "Abilities/Mobility/Speed Boost")]
+public class Speed_Boost: Mobility
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
     }
 }
 
-[CreateAssetMenu(fileName = "New Offensive", menuName = "Abilities/Offensive")]
-public class Offensive : Ability
+// Offensive Abilities:
+public abstract class Offensive : Ability
+{
+    public void Assault()
+    {
+
+    }
+    public abstract override void Use(UserHandler user_Handler);
+}
+[CreateAssetMenu(fileName = "New Pinpoint Accuracy", menuName = "Abilities/Offensive/Pinpoint Accuracy")]
+public class Pinpoint_Accuracy: Offensive
 {
     public override void Use(UserHandler user_Handler)
     {
-        switch (this.name)
-        {
-            case "Pinpoint Accuracy":
-                break;
-            case "Self Destruct":
-                break;
-        }
+        
+    }
+}
+[CreateAssetMenu(fileName = "New Self Destruct", menuName = "Abilities/Offensive/Self Destruct")]
+public class Self_Destruct: Offensive
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
     }
 }
 
-[CreateAssetMenu(fileName = "New Defensive", menuName = "Abilities/Defensive")]
-public class Defensive : Ability
+// Defensive Abilities:
+public abstract class Defensive : Ability
+{
+    public void Defend()
+    {
+
+    }
+    public abstract override void Use(UserHandler user_Handler);
+}
+[CreateAssetMenu(fileName = "New Heal", menuName = "Abilities/Defensive/Heal")]
+public class Heal : Defensive
+{
+    [Header("Healing Attributes")]
+    public float heal_Value;
+
+    public override void Use(UserHandler user_Handler)
+    {
+        user_Handler.Health = Mathf.Max(user_Handler.Health + heal_Value, user_Handler.max_Health);
+    }
+}
+[CreateAssetMenu(fileName = "New Deflect", menuName = "Abilities/Defensive/Deflect")]
+public class Deflect : Defensive
 {
     public override void Use(UserHandler user_Handler)
     {
-        switch (this.name)
-        {
-            case "Deflector":
-                break;
-            case "Heal":
-                break;
-        }
+        
     }
 }
