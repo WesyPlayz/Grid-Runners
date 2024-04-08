@@ -9,134 +9,102 @@ public class CameraHandler : MonoBehaviour
     private GameObject player_Obj;
 
     private UserHandler user_Handler;
-    private new_Item_Data item_Data;
+
+    [Header("Camera Variables")]
+    public Camera user_Camera;
+    public Camera ui_Camera;
+
+    public GameObject 
+        Camera_Pos0, 
+        Camera_Pos1;
+
+    [HideInInspector] public float origin_FOV;
 
     [Header("user Variables")]
     [Range(1, 2)]
     public int Player;
 
-    public GameObject Body;
-    public GameObject Head;
-    public GameObject Neck;
-
-    // User Rotation Variables:
-    private float rotationX_Spec;
-    private float rotationY_Spec;
-
-    private float distance;
-
     [Header("Rotation Variables")]
-    [Range(50, 250)]
+    [Range(1, 5)]
     public float Sensitivity;
 
-    [Range(-360, 360)]
-    public float down_Limit;
-    [Range(-360, 360)]
-    public float up_Limit;
     [Range(0, 360)]
-    public float peak_Angle;
+    public float look_Limit;
+    [Range(-360, 360)]
+    public float peek_Angle;
+    [Range(0, 360)]
+    public float Peek_Limit;
+
+    private bool is_Peeking;
+    private int Side;
 
     // Variable Initialization System:
     void Start()
     {
         // Player Binding System:
-        player_Obj = GameObject.Find((Player == 1 ? "Player_1" : "Player_2"));
+        player_Obj = GameObject.Find((Player == 1 ? "Player_1" : "Player_2")); // Finds which player this script is assigned to
 
         user_Handler = player_Obj.GetComponent<UserHandler>();
-        item_Data = user_Handler.item_Data;
 
-        // Head & Neck DIstance Calculation:
-        distance = Vector3.Distance(Head.transform.position, Neck.transform.position);
+        // Camera Variable Setup:
+        origin_FOV = ui_Camera.fieldOfView; // Assigns base FOV
 
+        // Input Initalization:
         user_Handler.playerInputActions.Player.Scope.performed += ADS; // ADS Active
         user_Handler.playerInputActions.Player.Scope.canceled += ADS; // ADS Inactive
-    }
 
-    // Look Direction System:
-    void Update()
-    {
-        if (!Input.GetKey(KeyCode.Tab)) // Checks to ensure mode change is not in progress (will be changed)
-        {
-            // Rotation Value Calculation:
-            float lookHorizontal = Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>() * Time.deltaTime;
-            float lookVertical = -Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>() * Time.deltaTime;
-
-            // Rotation System:
-            if ((lookHorizontal != 0 || lookVertical != 0))
-            {
-                switch(user_Handler.Mode)
-                {
-                    // Play Mode:
-                    case 0:
-                        Body.transform.Rotate(0, lookHorizontal, 0);
-                        Head.transform.Rotate(lookVertical, 0, 0, Space.Self);
-                        Vector3 localRotation = Head.transform.localEulerAngles;
-                        if (localRotation.x > 180)
-                            localRotation.x -= 360;
-                        localRotation.x = Mathf.Clamp(localRotation.x, up_Limit, down_Limit);
-                        Head.transform.localEulerAngles = localRotation;
-                        if (!Input.GetKey(KeyCode.V))
-                            Head.transform.position = Neck.transform.position + Head.transform.rotation * Vector3.forward * distance;
-                        break;
-
-                    // Build Mode:
-                    case 1:
-                        rotationX_Spec += lookVertical;
-                        rotationY_Spec += lookHorizontal;
-                        user_Handler.user_Spectate.transform.rotation = Quaternion.Euler(rotationX_Spec, rotationY_Spec, 0);
-                        break;
-
-                    // Menu Mode: (nothing for now unless new mechanics are added)
-                    /* case 2:
-                        break; */
-                }
-            }
-
-            // Play Mode View Mechanics:
-            if (user_Handler.Mode == 0)
-            {
-                if (Input.GetKeyDown(KeyCode.V))
-                    Peak(true);
-                else if (Input.GetKeyUp(KeyCode.V))
-                    Peak(false);
-            }
-        }
+        user_Handler.playerInputActions.Player.Peek_Right.performed += phase => Peek(phase, 0); // Peek Right Active
+        user_Handler.playerInputActions.Player.Peek_Left.performed += phase => Peek(phase, 1); // Peek Left Active
+        user_Handler.playerInputActions.Player.Peek_Right.canceled += phase => Peek(phase, 0); // Peek Right Inactive
+        user_Handler.playerInputActions.Player.Peek_Left.canceled += phase => Peek(phase, 1); // Peek Left Inactive
     }
 
     // View Mechanics:
-    public void ADS(InputAction.CallbackContext phase)
+    public void Update() // Look System:
     {
-        if (user_Handler.can_Use_Action && !user_Handler.is_Using_Action && phase.performed) // ADS Active:
+        if (user_Handler.Mode != 2)
         {
-            user_Handler.can_Use_Action = false;
-            Item current_Item = item_Data.Items[(user_Handler.selected_Weapon == 0 ? user_Handler.primary_Weapon : user_Handler.secondary_Weapon)];
+            float lookHorizontal = Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
+            float lookVertical = -Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
 
-            if (current_Item is Ranged ranged_Item) // Ranged ADS Active:
-                ranged_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
-            else if (current_Item is Melee melee_Item) // Melee ADS Active:
-                melee_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
-            else if (current_Item is Ordinance ordinance_Item) // Ordinance ADS Active:
-                ordinance_Item.Aim(user_Handler, user_Handler.is_Using_Action = true);
-        }
-        else if (!user_Handler.can_Use_Action && user_Handler.is_Using_Action && phase.canceled) // ADS Inactive:
-        {
-            Item current_Item = item_Data.Items[(user_Handler.selected_Weapon == 0 ? user_Handler.primary_Weapon : user_Handler.secondary_Weapon)];
+            if (lookHorizontal != 0 || lookVertical != 0) // Movement Check:
+            {
+                (user_Handler.Mode == 0 ? user_Handler.User : user_Handler.user_Spectate).transform.Rotate(Vector3.up * lookHorizontal, Space.World); // Y-Axis Rotation
+                (user_Handler.Mode == 0 ? user_Handler.Neck : user_Handler.user_Spectate).transform.Rotate(Vector3.right * lookVertical); // X-Axis Rotation
 
-            if (current_Item is Ranged ranged_Item) // Ranged ADS Inactive:
-                ranged_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
-            else if (current_Item is Melee melee_Item) // Melee ADS Inactive:
-                melee_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
-            else if (current_Item is Ordinance ordinance_Item) // Ordinance ADS Inactive:
-                ordinance_Item.Aim(user_Handler, user_Handler.is_Using_Action = false);
-
-            user_Handler.can_Use_Action = true;
+                if (user_Handler.Mode == 0) // X-Axis Limit System:
+                {
+                    Vector3 local_Rot = user_Handler.Neck.transform.localEulerAngles; // Gets local angle values
+                    local_Rot.x = (local_Rot.x > 180) ? local_Rot.x - 360 : local_Rot.x; // creates a loop for the angle value
+                    local_Rot.x = Mathf.Clamp(local_Rot.x, (!is_Peeking ? -look_Limit : -Peek_Limit), (!is_Peeking ? look_Limit : Peek_Limit)); // Limits X-Axis
+                    if (is_Peeking)
+                    {
+                        local_Rot.z = (local_Rot.z > 180) ? local_Rot.z - 360 : local_Rot.z; // creates a loop for the angle value
+                        local_Rot.z = Mathf.Clamp(local_Rot.z, (Side == 0 ? -Peek_Limit : -peek_Angle), (Side == 0 ? -peek_Angle : Peek_Limit)); // Limits Z-Axis
+                        local_Rot.y = 0; // Locks Y-Axis
+                    }
+                    user_Handler.Neck.transform.localEulerAngles = local_Rot; // Sets Modified Rotation
+                }
+            }
         }
     }
-
-    public void Peak(bool enabled)
+    public void ADS(InputAction.CallbackContext phase) // Aim System:
     {
-        Quaternion rotation = Quaternion.AngleAxis((enabled ? peak_Angle : -peak_Angle), Head.transform.up);
-        Head.transform.rotation = rotation * Head.transform.rotation;
-        Head.transform.position = Neck.transform.position + Head.transform.rotation * Vector3.forward * distance + (enabled ? Body.transform.right * 0.1f : -Body.transform.right * 0.1f);
+        user_Handler.can_Use_Action = !phase.performed;
+        user_Handler.is_Using_Action = phase.performed;
+
+        if (user_Handler.current_Weapon is Ranged ranged_Item) // Range Check:
+            ranged_Item.Aim(user_Handler, user_Handler.is_Using_Action); // Aim Active or Inactive
+        else if (user_Handler.current_Weapon is Melee melee_Item) // Melee Check:
+            melee_Item.Aim(user_Handler, user_Handler.is_Using_Action); // Aim Active or Inactive
+        else if (user_Handler.current_Weapon is Ordinance ordinance_Item) // Ordinance Check:
+            ordinance_Item.Aim(user_Handler, user_Handler.is_Using_Action); // Aim Active or Inactive
+    }
+    public void Peek(InputAction.CallbackContext phase, int side) // Peek System:
+    {
+        peek_Angle = (Side = side) == 0 ? peek_Angle : -peek_Angle; // Side Check
+
+        if (user_Handler.current_Weapon is Ranged ranged_Item) // Range Check:
+            ranged_Item.Peek(user_Handler, peek_Angle, side, (is_Peeking = phase.performed ? true : false)); // Peek Active or Inactive
     }
 }
