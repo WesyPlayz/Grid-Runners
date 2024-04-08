@@ -24,9 +24,14 @@ public class GrenadeHandler : MonoBehaviour
     public AudioSource mySpeaker;
     public float volume;
     public AudioClip charge;
-    public AudioClip boom;
+    public AudioSource pin;
+    public AudioClip Fuse;
+    public AudioClip Boom;
 
-
+    void Start()
+    {
+        mySpeaker.PlayOneShot(Fuse, volume);
+    }
     void Update()
     {
         if (!startedCharging)
@@ -51,7 +56,7 @@ public class GrenadeHandler : MonoBehaviour
     {
         GameObject b = Instantiate(boomparticle, transform.position, transform.rotation);
         Destroy(b, 1);
-        mySpeaker.PlayOneShot(boom, volume);
+        mySpeaker.PlayOneShot(Boom, volume);
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);

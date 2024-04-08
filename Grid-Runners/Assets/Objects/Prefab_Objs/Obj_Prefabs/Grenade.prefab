@@ -162,10 +162,10 @@ MonoBehaviour:
   blast_Delay: 4
   max_dmg: 50
   min_dmg: 5
-  mySpeaker: {fileID: 0}
+  mySpeaker: {fileID: -8440566171060452763}
   volume: 0
-  charge: {fileID: 0}
-  boom: {fileID: 0}
+  charge: {fileID: 8300000, guid: cb81c3bd2e958a342a92d80d77171b1b, type: 3}
+  boom: {fileID: 8300000, guid: 17ca59dafe81a8d4c85865b11a09cfe1, type: 3}
 --- !u!82 &-8440566171060452763
 AudioSource:
   m_ObjectHideFlags: 0
@@ -176,8 +176,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 74b30771f1d357e459d7ebd621631585, type: 3}
+  m_Resource: {fileID: 8300000, guid: 74b30771f1d357e459d7ebd621631585, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
