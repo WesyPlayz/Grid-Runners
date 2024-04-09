@@ -303,6 +303,14 @@ public class Cloak : Utility
 
     }
 }
+[CreateAssetMenu(fileName = "New Jammer", menuName = "Abilities/Utility/Jammer")]
+public class Jammer : Utility
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
+    }
+}
 
 // Mobility Abilities:
 public abstract class Mobility : Ability
@@ -371,6 +379,14 @@ public class Self_Destruct: Offensive
 
     }
 }
+[CreateAssetMenu(fileName = "New Berserk", menuName = "Abilities/Offensive/Berserk")]
+public class Berserk : Offensive
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
+    }
+}
 
 // Defensive Abilities:
 public abstract class Defensive : Ability
@@ -398,5 +414,13 @@ public class Deflect : Defensive
     public override void Use(UserHandler user_Handler)
     {
         
+    }
+}
+[CreateAssetMenu(fileName = "New Armor Lock", menuName = "Abilities/Defensive/Armor Lock")]
+public class Armor_Lock : Defensive
+{
+    public override void Use(UserHandler user_Handler)
+    {
+
     }
 }
