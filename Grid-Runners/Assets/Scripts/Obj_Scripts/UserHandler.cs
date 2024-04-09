@@ -324,6 +324,7 @@ public class UserHandler : MonoBehaviour
     // Action Systems:
     void Use_Grenade(InputAction.CallbackContext phase)
     {
+        /*
         if (phase.performed)
         {
             if (grenades > 0)
@@ -340,6 +341,10 @@ public class UserHandler : MonoBehaviour
             held_Grenade.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             LinearJump(camera_Handler.user_Camera.transform.forward, throw_force, held_Grenade);
         }
+        */
+        if (current_Weapon is Ordinance ordinance)
+            ordinance.Attack(this);
+
     }
 
     // Control Terminal:
@@ -382,6 +387,7 @@ public class UserHandler : MonoBehaviour
                     }
                 }
                 break;
+                
         }
     }
 
@@ -423,5 +429,6 @@ public class UserHandler : MonoBehaviour
     }
 
     // Action Systems:
+
 
 }
