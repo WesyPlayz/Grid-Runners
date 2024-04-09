@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     public int players_Alive;
     public float map_size;
 
+    public GameObject main_Menu;
+    public GameObject levels;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,5 +32,24 @@ public class GameManager : MonoBehaviour
     public void EndRound()
     {
 
+    }
+
+    
+
+    //main menu options
+    
+    public void level_Select()
+    {
+
+    }
+
+    public void startGame(int map)
+    {
+
+    }
+
+    public void quit()
+    {
+        Application.Quit();
     }
 }
