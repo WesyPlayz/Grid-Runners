@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrenadeHandler : MonoBehaviour
 {
     public bool imediate_Explosion = false;
-    private bool startedCharging = false;
+    public bool startedCharging = false;
 
     public LayerMask hit_Layer;
     public LayerMask Block_Layer;
@@ -39,11 +39,6 @@ public class GrenadeHandler : MonoBehaviour
             mySpeaker.PlayOneShot(charge);
             startedCharging = true;
         }
-
-        if (blast_Delay <= 0)
-            explode();
-        else
-            blast_Delay -= Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -75,5 +70,11 @@ public class GrenadeHandler : MonoBehaviour
             }
         }
         Destroy(gameObject);
+    }
+
+    public IEnumerator fuse_delay()
+    {
+        yield return new WaitForSeconds(blast_Delay);
+        explode();
     }
 }
