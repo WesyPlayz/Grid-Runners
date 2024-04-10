@@ -38392,7 +38392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   User: {fileID: 1513848533}
   user_Spectate: {fileID: 1038075389}
-  Neck: {fileID: 0}
+  Neck: {fileID: 1327651168}
   body_Hitbox: {fileID: 1513848542}
   body_Hitbox_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -50488,13 +50488,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6fbea33ef537245a491201b77ceef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  user_Camera: {fileID: 0}
-  ui_Camera: {fileID: 0}
+  user_Camera: {fileID: 1996051634}
+  ui_Camera: {fileID: 1865609096}
   Camera_Pos0: {fileID: 0}
   Camera_Pos1: {fileID: 0}
   origin_FOV: 0
   Player: 1
-  Sensitivity: 525
+  Sensitivity: 5
   look_Limit: 0
   peek_Angle: 0
   Peek_Limit: 0

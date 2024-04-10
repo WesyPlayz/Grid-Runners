@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,8 +11,7 @@ public class GameManager : MonoBehaviour
     public int players_Alive;
     public float map_size;
 
-    public GameObject main_Menu;
-    public GameObject levels;
+
     
 
     // Start is called before the first frame update
@@ -38,15 +39,7 @@ public class GameManager : MonoBehaviour
 
     //main menu options
     
-    public void level_Select()
-    {
 
-    }
-
-    public void startGame(int map)
-    {
-
-    }
 
     public void quit()
     {
