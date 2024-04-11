@@ -35,7 +35,7 @@ public class CameraHandler : MonoBehaviour
     [Range(0, 360)]
     public float Peek_Limit;
 
-    private bool is_Peeking;
+    public bool is_Peeking;
     private int Side;
 
     // Variable Initialization System:
@@ -83,6 +83,8 @@ public class CameraHandler : MonoBehaviour
                         local_Rot.z = Mathf.Clamp(local_Rot.z, (Side == 0 ? -Peek_Limit : -peek_Angle), (Side == 0 ? -peek_Angle : Peek_Limit)); // Limits Z-Axis
                         local_Rot.y = 0; // Locks Y-Axis
                     }
+                    else
+                        local_Rot.z = 0; // Locks Z-Axis
                     user_Handler.Neck.transform.localEulerAngles = local_Rot; // Sets Modified Rotation
                 }
             }

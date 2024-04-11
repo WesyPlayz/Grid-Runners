@@ -464,6 +464,37 @@ Transform:
   - {fileID: 1693595523}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &37984426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37984427}
+  m_Layer: 0
+  m_Name: Projectiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &37984427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37984426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.100218, y: -0.9040904, z: 11.193616}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &40435960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,7 +2349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &256792965
 Transform:
   m_ObjectHideFlags: 0
@@ -4961,9 +4992,6 @@ PrefabInstance:
       addedObject: {fileID: 1071496721}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 1823013925}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
-      insertIndex: 3
       addedObject: {fileID: 1327651169}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
@@ -25197,7 +25225,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 2.1233335, z: 0}
   m_LocalScale: {x: 0.16666667, y: 0.16666667, z: 0.16666667}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1823013925}
   m_Father: {fileID: 1513848537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1327651171
@@ -25396,7 +25425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1352323133
 Transform:
   m_ObjectHideFlags: 0
@@ -38402,11 +38431,11 @@ MonoBehaviour:
   max_Health: 100
   Health: 100
   Mode: 0
-  camera_Handler: {fileID: 0}
+  camera_Handler: {fileID: 1996051637}
   item_Holder: {fileID: 40435960}
   Weapon: {fileID: 1210534459}
-  Projectiles: {fileID: 0}
-  item_Data: {fileID: 0}
+  Projectiles: {fileID: 37984426}
+  item_Data: {fileID: 430095512}
   selected_Weapon: 0
   current_Weapon: {fileID: 0}
   primary_Weapon: 0
@@ -39267,14 +39296,14 @@ Transform:
   m_GameObject: {fileID: 1823013924}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.39, z: 0}
-  m_LocalScale: {x: 0.5333334, y: 0.5333334, z: 0.5333334}
+  m_LocalPosition: {x: 0, y: 1.5999999, z: 0}
+  m_LocalScale: {x: 3.2000005, y: 3.2000005, z: 3.2000005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 944276655}
   - {fileID: 1467745945}
   - {fileID: 40435961}
-  m_Father: {fileID: 1513848537}
+  m_Father: {fileID: 1327651169}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!135 &1823013926
 SphereCollider:
@@ -50490,14 +50519,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   user_Camera: {fileID: 1996051634}
   ui_Camera: {fileID: 1865609096}
-  Camera_Pos0: {fileID: 0}
-  Camera_Pos1: {fileID: 0}
+  Camera_Pos0: {fileID: 1065520438}
+  Camera_Pos1: {fileID: 1467745944}
   origin_FOV: 0
   Player: 1
   Sensitivity: 5
-  look_Limit: 0
-  peek_Angle: 0
-  Peek_Limit: 0
+  look_Limit: 75
+  peek_Angle: 30
+  Peek_Limit: 50
+  is_Peeking: 0
 --- !u!1 &1998730659 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
@@ -56667,3 +56697,4 @@ SceneRoots:
   - {fileID: 34761841}
   - {fileID: 1038075393}
   - {fileID: 1760973976}
+  - {fileID: 37984427}
