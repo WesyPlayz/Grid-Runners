@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         RoundTimer = 45f * players * (map_size);
-        
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
