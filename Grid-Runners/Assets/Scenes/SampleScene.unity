@@ -8,8 +8,8 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: 9fc0d4010bbf28b4594072e72b8655ab
+  m_OcclusionCullingData: {fileID: 36300000, guid: 0382120a89ce08248828a8e0591af0c8, type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -3581,8 +3581,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
+  - {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   Abilities: []
   min_Speed_Mod: 0.5
   max_Speed_Mod: 2
@@ -19413,7 +19413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.525
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31687,7 +31687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.525
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 998133703833202653, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
       propertyPath: m_LocalPosition.z

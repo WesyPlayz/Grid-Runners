@@ -25,7 +25,7 @@ public class CameraHandler : MonoBehaviour
     public int Player;
 
     [Header("Rotation Variables")]
-    [Range(1, 5)]
+    [Range(.1f, 69)]
     public float Sensitivity;
 
     [Range(0, 360)]
@@ -81,10 +81,10 @@ public class CameraHandler : MonoBehaviour
                     {
                         local_Rot.z = (local_Rot.z > 180) ? local_Rot.z - 360 : local_Rot.z; // creates a loop for the angle value
                         local_Rot.z = Mathf.Clamp(local_Rot.z, (Side == 0 ? -Peek_Limit : -peek_Angle), (Side == 0 ? -peek_Angle : Peek_Limit)); // Limits Z-Axis
-                        local_Rot.y = 0; // Locks Y-Axis
                     }
                     else
                         local_Rot.z = 0; // Locks Z-Axis
+                    local_Rot.y = 0; // Locks Y-Axis
                     user_Handler.Neck.transform.localEulerAngles = local_Rot; // Sets Modified Rotation
                 }
             }
