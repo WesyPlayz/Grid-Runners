@@ -21,6 +21,8 @@ public class UserHandler : MonoBehaviour
     private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
 
+    public int points;
+
     [Header("Data Variables")]
     public GameObject Spawn;
 

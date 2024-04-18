@@ -181,11 +181,11 @@
                 },
                 {
                     "name": "",
-                    "id": "867ad658-e85c-4b7e-8bda-47bcb2a3b454",
+                    "id": "264c88e1-70d9-4b9d-ba4e-05694c9e3ba6",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "womp",
+                    "groups": "",
                     "action": "Scope",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -203,22 +203,22 @@
                 },
                 {
                     "name": "",
-                    "id": "2cde854d-a617-4d18-8b9f-65fb54331973",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "womp",
-                    "action": "Grenade",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b88ee64b-c2d8-4a94-b1e7-8bf6815567fa",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "womp",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70b11feb-aaac-4eae-a2a4-ae9097ce6807",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -258,6 +258,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2495149a-1518-4fc0-9aa1-1d62e6a46c0a",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap_Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6c2a2184-dc7f-46c6-b499-b0b33325666e",
                     "path": "<Keyboard>/v",
                     "interactions": "",
@@ -269,11 +280,33 @@
                 },
                 {
                     "name": "",
+                    "id": "d147cf2c-dd62-4bae-b1b9-262052897981",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Peek_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5d3cf3f1-cf46-404b-b783-231ac08017b0",
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "womp",
+                    "action": "Peek_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "52a54a46-55f0-476e-9940-6331d1544ec4",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Peek_Left",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -456,11 +489,33 @@
                 },
                 {
                     "name": "",
+                    "id": "cb741140-711f-4450-ae04-ad8fe857756f",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseX",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6d14f431-8bd1-45f8-85fb-d0dba25b84e0",
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "Normalize(max=5)",
                     "groups": "womp",
+                    "action": "MouseY",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e600397e-343f-45b3-8580-6348fcb4a441",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "MouseY",
                     "isComposite": false,
                     "isPartOfComposite": false
