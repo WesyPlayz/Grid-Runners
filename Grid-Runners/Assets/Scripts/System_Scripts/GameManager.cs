@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     [Header("player info")]
     public GameObject P1;
     public GameObject P2;
-    private UserHandler P1S;
-    private UserHandler P2S;
+    public UserHandler P1S;
+    public UserHandler P2S;
     public int players;
     public int players_Alive;
 

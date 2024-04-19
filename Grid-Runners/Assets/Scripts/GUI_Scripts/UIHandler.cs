@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class UIHandler : MonoBehaviour
 {
     private GameManager gameManager;
+    public CursorHandler cursor_Handler1;
+    public CursorHandler cursor_Handler2;
     public bool on_Main_Menu = false;
     public GameObject main_Menu;
     public GameObject levels;
@@ -39,8 +41,13 @@ public class UIHandler : MonoBehaviour
     {
         gameManager = GetComponent<GameManager>();
         if (on_Main_Menu)
-            EventSystem.current.SetSelectedGameObject(start);
-    }
+        {
+            cursor_Handler1.in_Menu = true;
+            cursor_Handler2.in_Menu = true;
+        }
+
+            //EventSystem.current.SetSelectedGameObject(start);
+        }
 
     // Update is called once per frame
     void Update()
@@ -55,13 +62,17 @@ public class UIHandler : MonoBehaviour
 
         if (going)
         {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(Back);
+            cursor_Handler1.in_Menu = true;
+            cursor_Handler2.in_Menu = true;
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(Back);
         }
         if (!going)
         {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(start);
+            cursor_Handler1.in_Menu = false;
+            cursor_Handler2.in_Menu = false;
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(start);
         }
 
         
@@ -86,25 +97,29 @@ public class UIHandler : MonoBehaviour
         }
         P1_Pause_Menu.SetActive(pausing);
         P2_Pause_Menu.SetActive(pausing);
-        Time.timeScale = pausing ? 0 : 1;
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(P1_Resume);
-        EventSystem.current.SetSelectedGameObject(P2_Resume);
+        cursor_Handler1.in_Menu = pausing;
+        cursor_Handler2.in_Menu = pausing;
+
+        //EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(P1_Resume);
+        //EventSystem.current.SetSelectedGameObject(P2_Resume);
     }
 
     public void Open_shop(int player)
     {
         if (player == 1)
         {
+            cursor_Handler1.in_Menu = true;
             P1_Shop_Menu.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(hyper_Blaster);
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(hyper_Blaster);
         }
         else
         {
+            cursor_Handler2.in_Menu = true;
             P2_Shop_Menu.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(hyper_Blaster2);
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(hyper_Blaster2);
         }
 
         
@@ -112,6 +127,8 @@ public class UIHandler : MonoBehaviour
 
     public void Close_shop()
     {
+        cursor_Handler1.in_Menu = false;
+        cursor_Handler2.in_Menu = false;
         P1_Shop_Menu.SetActive(false);
         P2_Shop_Menu.SetActive(false);
     }

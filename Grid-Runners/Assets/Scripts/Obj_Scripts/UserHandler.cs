@@ -152,6 +152,8 @@ public class UserHandler : MonoBehaviour
 
         playerInputActions.Player.Grenade.performed += Use_Grenade;
         playerInputActions.Player.Grenade.canceled += Use_Grenade;
+
+        playerInputActions.Player.Swap_Weapon.performed += phase => EquipWeapon(selected_Weapon, selected_Weapon == primary_Weapon ? secondary_Weapon : primary_Weapon, phase);
     }
 
     private void Update()
@@ -191,13 +193,13 @@ public class UserHandler : MonoBehaviour
                 {
                     selected_Weapon = 0;
                     secondary_Ammo = Ammo;
-                    EquipWeapon(selected_Weapon, primary_Weapon);
+                    //EquipWeapon(selected_Weapon, primary_Weapon);
                 }
                 else if (selected_Weapon != 1 && Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     selected_Weapon = 1;
                     primary_Ammo = Ammo;
-                    EquipWeapon(selected_Weapon, secondary_Weapon);
+                    //EquipWeapon(selected_Weapon, secondary_Weapon);
                 }
             }
             else
@@ -283,7 +285,7 @@ public class UserHandler : MonoBehaviour
     }
 
     // Inventory System:
-    public void EquipWeapon(int weapon_Slot, int weapon)
+    public void EquipWeapon(int weapon_Slot, int weapon, InputAction.CallbackContext phase)
     {
         if (Weapon != null)
             Destroy(Weapon);
