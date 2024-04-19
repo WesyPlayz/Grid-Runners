@@ -6,10 +6,12 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    private UIHandler UI;
     [Header("Round Info")]
     private int round;
     public float RoundTimer;
     public float map_size;
+    public int Players_Ready;
 
     [Header("Point info")]
     public int P1_Points;
@@ -31,8 +33,13 @@ public class GameManager : MonoBehaviour
     {
         RoundTimer = 45f * players * (map_size);
         Application.targetFrameRate = 60;
-        P1S = P1.GetComponent<UserHandler>();
-        P2S = P2.GetComponent<UserHandler>();
+
+        UI = GetComponent<UIHandler>();
+        if (!UI.on_Main_Menu)
+        {
+            P1S = P1.GetComponent<UserHandler>();
+            P2S = P2.GetComponent<UserHandler>();
+        }
         
     }
 
@@ -42,12 +49,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void EndRound()
-    {
-        if (round == 5)
-            EndGame();
-        round++;
-    }
+
 
     public void EndGame()
     {
@@ -55,15 +57,38 @@ public class GameManager : MonoBehaviour
         
     }
 
-    //main menu options
-    
+    public void EndRound()
+    {
+        if (round == 5)
+            EndGame();
+        round++;
+    }
+
+    public void StartRound()
+    {
+        StartCoroutine(Roundtime());
+        P1S.points = 0;
+        P2S.points = 0;
+    }
+
+    public void Ready()
+    {
+        Players_Ready++;
+        if (Players_Ready == 2)
+            StartRound();
+    }
+
     IEnumerator Roundtime()
     {
         yield return new WaitForSeconds(RoundTimer);
-        
+
         player_Point = P1S.points > P2S.points ? 1 : 2;
         EndRound();
     }
+
+    //main menu options
+
+
 
     public void quit()
     {
