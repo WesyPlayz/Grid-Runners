@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         RoundTimer = 45f * players * (map_size);
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 600;
 
         UI = GetComponent<UIHandler>();
         if (!UI.on_Main_Menu)

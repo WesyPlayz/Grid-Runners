@@ -528,6 +528,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13372163}
   m_CullTransparentMesh: 1
+--- !u!198 &26722468 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3220920294658932692, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
+  m_PrefabInstance: {fileID: 1442828809}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &34527687 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
@@ -7160,13 +7165,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 158527125}
-  Health_Bar: {fileID: 947078328}
-  current_Weapon_Name: {fileID: 13372165}
-  current_Weapon_Icon: {fileID: 47591994}
-  holstered_Weapon_Icon: {fileID: 395489618}
+  Health_Bar: {fileID: 1872660162}
+  current_Weapon_Name: {fileID: 698770666}
+  current_Weapon_Icon: {fileID: 424705380}
+  holstered_Weapon_Icon: {fileID: 958475502}
   primary_Weapon_Icon: {fileID: 21300000, guid: 207e13012898cbb45917cba7dc8a5631, type: 3}
   secondary_Weapon_Icon: {fileID: 21300000, guid: 2cad32b560f2c534b96a86bbc5fd30d1, type: 3}
-  ammo_Counter: {fileID: 940880293}
+  ammo_Counter: {fileID: 1745048137}
 --- !u!114 &158527130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7219,23 +7224,24 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   points: 0
+  points_Per_Kill: 0
   Spawn: {fileID: 1822019094}
   obj_Data: {fileID: 0}
   max_Health: 100
   Health: 100
   Mode: 0
   camera_Handler: {fileID: 1996051637}
-  item_Holder: {fileID: 40435960}
-  Weapon: {fileID: 1210534459}
-  Projectiles: {fileID: 37984426}
+  item_Holder: {fileID: 1303609967}
+  Weapon: {fileID: 460732113}
+  Projectiles: {fileID: 1495327272}
   item_Data: {fileID: 430095512}
   selected_Weapon: 0
-  current_Weapon: {fileID: 0}
+  current_Weapon: {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   primary_Weapon: 0
-  secondary_Weapon: 1
-  fire_Point: {fileID: 772654173}
+  secondary_Weapon: 0
+  fire_Point: {fileID: 1349175387}
   Grenade: {fileID: 8723284107201366428, guid: 38076166db13ec442b30708cb497d7fe, type: 3}
-  muzzle_Flash: {fileID: 1916607744}
+  muzzle_Flash: {fileID: 26722468}
   pewpew: {fileID: 158527128}
   ReloadSound: {fileID: 158527127}
   can_Attack: 1
@@ -7256,7 +7262,7 @@ MonoBehaviour:
   hit_SFX: {fileID: 8300000, guid: 938913b608013d84f9c6182b79968d06, type: 3}
   melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
   walkSFX: {fileID: 158527126}
-  secondary_Obj: {fileID: 764515805}
+  secondary_Obj: {fileID: 1377275249}
   secondary_Data: {fileID: 0}
   on_Floor: 0
   on_Wall: 0
@@ -14080,6 +14086,7 @@ MonoBehaviour:
   Items:
   - {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   - {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
+  - {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   Abilities: []
   min_Speed_Mod: 0.5
   max_Speed_Mod: 2
@@ -14330,6 +14337,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d51be7b4fcaf1ea46b5423c838817997, type: 3}
   m_PrefabInstance: {fileID: 1846427533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &460732113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8392791533106628191, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
+  m_PrefabInstance: {fileID: 1442828809}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &465790902 stripped
 Transform:
@@ -27849,7 +27861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc3b3054cc1344f8e4a6888b9d5b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1760973974}
+  Player: {fileID: 158527125}
   dmg_Type: 0
 --- !u!1001 &991015327
 PrefabInstance:
@@ -46443,6 +46455,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d51be7b4fcaf1ea46b5423c838817997, type: 3}
   m_PrefabInstance: {fileID: 498852987}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1349175387 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7226501361608991132, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
+  m_PrefabInstance: {fileID: 1442828809}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1350430612 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
@@ -53361,6 +53378,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d51be7b4fcaf1ea46b5423c838817997, type: 3}
   m_PrefabInstance: {fileID: 11744212}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1495327272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495327273}
+  m_Layer: 0
+  m_Name: Projectiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1495327273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495327272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.100218, y: -0.9040904, z: 11.193616}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1496133181
 GameObject:
   m_ObjectHideFlags: 0
@@ -60225,6 +60273,7 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   points: 0
+  points_Per_Kill: 0
   Spawn: {fileID: 1822019094}
   obj_Data: {fileID: 0}
   max_Health: 100
@@ -60236,9 +60285,9 @@ MonoBehaviour:
   Projectiles: {fileID: 37984426}
   item_Data: {fileID: 430095512}
   selected_Weapon: 0
-  current_Weapon: {fileID: 0}
+  current_Weapon: {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   primary_Weapon: 0
-  secondary_Weapon: 1
+  secondary_Weapon: 0
   fire_Point: {fileID: 772654173}
   Grenade: {fileID: 8723284107201366428, guid: 38076166db13ec442b30708cb497d7fe, type: 3}
   muzzle_Flash: {fileID: 1916607744}
@@ -78827,5 +78876,6 @@ SceneRoots:
   - {fileID: 1760973976}
   - {fileID: 158527132}
   - {fileID: 37984427}
+  - {fileID: 1495327273}
   - {fileID: 57543329}
   - {fileID: 330014967}

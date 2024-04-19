@@ -284,18 +284,6 @@ public class UserHandler : MonoBehaviour
         Weapon = new_Weapon;
         hud_Handler.current_Weapon_Name.text = selected_Weapon.weapon_Prefab.name;
 
-        foreach (Transform child in new_Weapon.transform)
-        {
-            switch (child.name)
-            {
-                case "Fire_Point":
-                    fire_Point = child.gameObject;
-                    break;
-                case "Muzzle_Flash":
-                    muzzle_Flash = child.GetComponent<ParticleSystem>();
-                    break;
-            }
-        }
         if (weapon_Slot == 0 && selected_Weapon.Icon != hud_Handler.primary_Weapon_Icon)
             hud_Handler.primary_Weapon_Icon = selected_Weapon.Icon;
         else if (weapon_Slot == 1 && selected_Weapon.Icon != hud_Handler.secondary_Weapon_Icon)
@@ -307,6 +295,18 @@ public class UserHandler : MonoBehaviour
         }
         if (selected_Weapon is Ranged ranged_Item)
         {
+            foreach (Transform child in new_Weapon.transform)
+            {
+                switch (child.name)
+                {
+                    case "Fire_Point":
+                        fire_Point = child.gameObject;
+                        break;
+                    case "Muzzle_Flash":
+                        muzzle_Flash = child.GetComponent<ParticleSystem>();
+                        break;
+                }
+            }
             Ammo =
             weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo :
             weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :

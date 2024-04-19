@@ -1,28 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Ranged))]
-public class Ranged_Editor : Editor
-{
-    SerializedObject ser_Obj;
-
-    void OnEnable()
-    {
-        ser_Obj = new SerializedObject(target);
-    }
-    public override void OnInspectorGUI()
-    {
-        ser_Obj.Update();
-        EditorGUI.BeginChangeCheck();
-        DrawDefaultInspector();
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorUtility.SetDirty(target);
-            AssetDatabase.SaveAssets();
-        }
-        ser_Obj.ApplyModifiedProperties();
-    }
-}
 // Ranged Item System:
 [CreateAssetMenu(fileName = "New Ranged", menuName = "Items/Ranged")]
 public class Ranged : Item
