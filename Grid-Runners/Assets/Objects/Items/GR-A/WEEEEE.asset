@@ -23,7 +23,7 @@ MonoBehaviour:
   projectile_Prefab: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
   max_Ammo: 30
   bullet_Speed: 56.4
-  reload_Speed: 0.26
-  fire_Rate: 0.09
+  reload_Speed: 0.25
+  fire_Rate: 0.15
   ADS_FOV: 55.4
   ADS_Speed: 49.7
