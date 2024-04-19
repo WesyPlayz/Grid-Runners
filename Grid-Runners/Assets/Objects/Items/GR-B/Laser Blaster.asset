@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
   m_Name: Laser Blaster
-  m_EditorClassIdentifier: Assembly-CSharp::Ranged
-  weapon_Prefab: {fileID: 3051364752558294834, guid: 6a5ec16e370ad914a8ace18891b8c155, type: 3}
+  m_EditorClassIdentifier: 
+  weapon_Prefab: {fileID: 919132149155446097, guid: 18c9b100ffb89e244b4b9d8e785b7137, type: 3}
   Damage: 12
   speed_Mod: 1
   Icon: {fileID: 21300000, guid: a6f3ed7fa7cdde24bb8d7a09eb39b7a0, type: 3}
@@ -20,10 +20,10 @@ MonoBehaviour:
   is_Hit_Scan: 0
   is_Spread: 0
   is_Auto: 0
-  projectile_Prefab: {fileID: 411529898347834023, guid: 000cdfec05192964eabb6c39bdc783a3, type: 3}
-  max_Ammo: 24
-  bullet_Speed: 40
-  reload_Speed: 0.1
-  fire_Rate: 0.25
-  ADS_FOV: 30
-  ADS_Speed: 25
+  projectile_Prefab: {fileID: 919132149155446097, guid: 80e35e397f662644ca6ae73cce4219c4, type: 3}
+  max_Ammo: 0
+  bullet_Speed: 55
+  reload_Speed: 0.15
+  fire_Rate: 0.1
+  ADS_FOV: 55.4
+  ADS_Speed: 49.7

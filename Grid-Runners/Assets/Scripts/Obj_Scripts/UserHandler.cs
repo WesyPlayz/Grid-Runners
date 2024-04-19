@@ -12,6 +12,7 @@ public class UserHandler : MonoBehaviour
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
     private CharacterController character_Controller;
+    private UIHandler ui_Handler;
 
     public GameObject Neck;
 
@@ -116,6 +117,7 @@ public class UserHandler : MonoBehaviour
         user_Physics = User.GetComponent<Rigidbody>();
         user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
         character_Controller = User.GetComponent<CharacterController>();
+        ui_Handler = GameObject.Find("GameManager").GetComponent<UIHandler>();
 
         obj_Data = GetComponent<Obj_State>();
         Health = max_Health;
@@ -432,6 +434,16 @@ public class UserHandler : MonoBehaviour
     }
 
     // Action Systems:
+
+    public void Set_Primary(int weapon)
+    {
+        primary_Weapon = weapon;
+    }
+
+    public void Set_Secondary(int weapon)
+    {
+        secondary_Weapon = weapon;
+    }
 
 
 }

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private UIHandler UI;
+    private UIHandler ui_Handler;
     [Header("Round Info")]
     private int round;
     public float RoundTimer;
@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     [Header("player info")]
     public GameObject P1;
     public GameObject P2;
-    private UserHandler P1S;
-    private UserHandler P2S;
+    public UserHandler P1S;
+    public UserHandler P2S;
     public int players;
     public int players_Alive;
 
@@ -31,14 +31,15 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RoundTimer = 45f * players * (map_size);
+        RoundTimer = 90f;
         Application.targetFrameRate = 60;
 
-        UI = GetComponent<UIHandler>();
-        if (!UI.on_Main_Menu)
+        ui_Handler = GetComponent<UIHandler>();
+        if (!ui_Handler.on_Main_Menu)
         {
             P1S = P1.GetComponent<UserHandler>();
             P2S = P2.GetComponent<UserHandler>();
+            StartRound();
         }
         
     }
@@ -62,6 +63,9 @@ public class GameManager : MonoBehaviour
         if (round == 5)
             EndGame();
         round++;
+        print(round);
+        ui_Handler.Open_shop(winner);
+        Time.timeScale = 0;
     }
 
     public void StartRound()
@@ -69,6 +73,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Roundtime());
         P1S.points = 0;
         P2S.points = 0;
+        ui_Handler.Close_shop();
+        Time.timeScale = 1;
     }
 
     public void Ready()
@@ -82,11 +88,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(RoundTimer);
 
-        player_Point = P1S.points > P2S.points ? 1 : 2;
+        P1_Points++;
+        //player_Point = P1S.points > P2S.points ? 1 : 2;
         EndRound();
     }
-
-    //main menu options
 
 
 

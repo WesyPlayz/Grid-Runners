@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
+    private GameManager gameManager;
     public bool on_Main_Menu = false;
     public GameObject main_Menu;
     public GameObject levels;
@@ -25,11 +26,16 @@ public class UIHandler : MonoBehaviour
     public GameObject Resume;
     public GameObject Main_Menu;
 
+    [Header("Shop")]
+    public GameObject P1_Shop_Menu;
+    public GameObject P2_Shop_Menu;
+    public GameObject hyper_Blaster;
+    public GameObject hyper_Blaster2;
+
     // Start is called before the first frame update
     void Start()
     {
-        //EventSystem.current.SetSelectedGameObject(null);
-
+        gameManager = GetComponent<GameManager>();
         if (on_Main_Menu)
             EventSystem.current.SetSelectedGameObject(start);
     }
@@ -66,10 +72,43 @@ public class UIHandler : MonoBehaviour
 
     public void Pause(bool pausing)
     {
-        print("worked + " + pausing);
+        if (pausing)
+        {
+            gameManager.P1S.playerInputActions.Player.Disable();
+            gameManager.P2S.playerInputActions.Player.Disable();
+        }
+        else if (!pausing)
+        {
+            gameManager.P1S.playerInputActions.Player.Enable();
+            gameManager.P2S.playerInputActions.Player.Enable();
+        }
         Pause_Menu.SetActive(pausing);
-        Time.timeScale = pausing ? 1 : 0;
+        Time.timeScale = pausing ? 0 : 1;
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(Resume);
+    }
+
+    public void Open_shop(int player)
+    {
+        if (player == 1)
+        {
+            P1_Shop_Menu.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(hyper_Blaster);
+        }
+        else
+        {
+            P2_Shop_Menu.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(hyper_Blaster2);
+        }
+
+        
+    }
+
+    public void Close_shop()
+    {
+        P1_Shop_Menu.SetActive(false);
+        P2_Shop_Menu.SetActive(false);
     }
 }
