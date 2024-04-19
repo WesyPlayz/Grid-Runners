@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class UserHandler : MonoBehaviour
     public GameObject User, user_Spectate;
     private Rigidbody user_Physics, user_Spectate_Physics;
     private CharacterController character_Controller;
+    public CharacterController spectator_Controller;
     private UIHandler ui_Handler;
 
     public GameObject Neck;
@@ -146,19 +148,10 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
 
         playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, 3); // Reload Active
-        //playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
+        playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
 
-        if (gameObject.name == "Player_1")
-        {
-            playerInputActions.Player.Grenade.performed += Use_Grenade;
-            playerInputActions.Player.Grenade.canceled += Use_Grenade;
-        }
-        else
-        {
-            playerInputActions.Player1.Enable();
-            playerInputActions.Player1.Grenade.performed += Use_Grenade;
-            playerInputActions.Player1.Grenade.canceled += Use_Grenade;
-        }
+        playerInputActions.Player.Grenade.performed += Use_Grenade;
+        playerInputActions.Player.Grenade.canceled += Use_Grenade;
     }
 
     private void Update()
@@ -211,15 +204,20 @@ public class UserHandler : MonoBehaviour
             {
                 if (Input.GetKeyUp(KeyCode.Mouse0)) // Build System:
                 {
-                    RaycastHit target;
-                    if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
-                    {
-                        GameObject selected_Target = target.transform.gameObject;
-                        if (selected_Target.CompareTag("Grid_Tile"))
-                            PlaceObject(selected_Target, target.normal);
-                    }
+                    
                 }
             }
+        }
+    }
+
+    public void Build(InputAction.CallbackContext phase)
+    {
+        RaycastHit target;
+        if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+        {
+            GameObject selected_Target = target.transform.gameObject;
+            if (selected_Target.CompareTag("Grid_Tile"))
+                PlaceObject(selected_Target, target.normal);
         }
     }
 
@@ -257,6 +255,19 @@ public class UserHandler : MonoBehaviour
                     ranged_Item.Aim(this, is_Using_Action = false);
                 can_Use_Action = true;
             }
+        }
+
+        if (mode_State)
+        {
+            playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, 2); // Attack Active
+            playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, 2); // Attack Inactive
+            playerInputActions.Player.Attack.performed += Build;
+        }
+        else
+        {
+            playerInputActions.Player.Attack.performed -= Build;
+            playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, 2); // Attack Active
+            playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
         }
 
         // Object Swapping System:
@@ -399,12 +410,15 @@ public class UserHandler : MonoBehaviour
     // Movement Systems:
     private void FixedUpdate() // Movement System:
     {
-        if (on_Floor) // Gravity Modifier
-            velocity.y = 0;
-        else
+        if (Mode == 0)
         {
-            velocity.y -= 12 * Time.deltaTime;
-            character_Controller.Move(velocity * Time.deltaTime);
+            if (on_Floor) // Gravity Modifier
+                velocity.y = 0;
+            else
+            {
+                velocity.y -= 12 * Time.deltaTime;
+                character_Controller.Move(velocity * Time.deltaTime);
+            }
         }
     }
     public IEnumerator Move(bool state)
@@ -412,8 +426,8 @@ public class UserHandler : MonoBehaviour
         while (is_Walking) // Movement Active:
         {
             Vector3 inputVector = playerInputActions.Player.Move.ReadValue<Vector3>(); // Axis Values
-            Vector3 move_Direction = User.transform.TransformDirection(new Vector3(inputVector.x, Mode == 0 ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
-            character_Controller.SimpleMove(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3); // Move System & Speed Check
+            Vector3 move_Direction = (Mode == 0 ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, Mode == 0 ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
+            (Mode == 0 ? character_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3); // Move System & Speed Check
             yield return new WaitForSeconds(0.001f);
         }    
     }

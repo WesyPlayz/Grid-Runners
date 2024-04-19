@@ -22,8 +22,10 @@ public class UIHandler : MonoBehaviour
     public GameObject Futuristic;
 
     [Header("Pause")]
-    public GameObject Pause_Menu;
-    public GameObject Resume;
+    public GameObject P1_Pause_Menu;
+    public GameObject P2_Pause_Menu;
+    public GameObject P1_Resume;
+    public GameObject P2_Resume;
     public GameObject Main_Menu;
 
     [Header("Shop")]
@@ -82,10 +84,12 @@ public class UIHandler : MonoBehaviour
             gameManager.P1S.playerInputActions.Player.Enable();
             gameManager.P2S.playerInputActions.Player.Enable();
         }
-        Pause_Menu.SetActive(pausing);
+        P1_Pause_Menu.SetActive(pausing);
+        P2_Pause_Menu.SetActive(pausing);
         Time.timeScale = pausing ? 0 : 1;
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(Resume);
+        EventSystem.current.SetSelectedGameObject(P1_Resume);
+        EventSystem.current.SetSelectedGameObject(P2_Resume);
     }
 
     public void Open_shop(int player)
