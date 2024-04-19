@@ -1,28 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Melee))]
-public class Melee_Editor : Editor
-{
-    SerializedObject ser_Obj;
-
-    void OnEnable()
-    {
-        ser_Obj = new SerializedObject(target);
-    }
-    public override void OnInspectorGUI()
-    {
-        ser_Obj.Update();
-        EditorGUI.BeginChangeCheck();
-        DrawDefaultInspector();
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorUtility.SetDirty(target);
-            AssetDatabase.SaveAssets();
-        }
-        ser_Obj.ApplyModifiedProperties();
-    }
-}
 [CreateAssetMenu(fileName = "New Melee", menuName = "Items/Melee")]
 public class Melee : Item
 {

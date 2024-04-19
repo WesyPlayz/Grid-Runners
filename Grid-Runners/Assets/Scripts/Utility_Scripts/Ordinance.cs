@@ -3,28 +3,6 @@ using UnityEditor;
 
 using static Utilities.Generic;
 
-[CustomEditor(typeof(Ordinance))]
-public class Ordinance_Editor : Editor
-{
-    SerializedObject ser_Obj;
-
-    void OnEnable()
-    {
-        ser_Obj = new SerializedObject(target);
-    }
-    public override void OnInspectorGUI()
-    {
-        ser_Obj.Update();
-        EditorGUI.BeginChangeCheck();
-        DrawDefaultInspector();
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorUtility.SetDirty(target);
-            AssetDatabase.SaveAssets();
-        }
-        ser_Obj.ApplyModifiedProperties();
-    }
-}
 [CreateAssetMenu(fileName = "New Ordinance", menuName = "Items/Ordinance")]
 public class Ordinance : Item
 {
