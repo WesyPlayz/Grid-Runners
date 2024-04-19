@@ -143,6 +143,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Start"",
+                    ""type"": ""Button"",
+                    ""id"": ""5309de54-ab65-47e0-9635-9816f7762c89"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -539,6 +548,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01216f07-0e70-4ff7-802d-77ed9f8ed315"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f8e84e76-fa8c-4168-94bf-c7b53e65ec1d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Start"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1016,6 +1047,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Swap_Weapon = m_Player.FindAction("Swap_Weapon", throwIfNotFound: true);
         m_Player_Peek_Right = m_Player.FindAction("Peek_Right", throwIfNotFound: true);
         m_Player_Peek_Left = m_Player.FindAction("Peek_Left", throwIfNotFound: true);
+        m_Player_Start = m_Player.FindAction("Start", throwIfNotFound: true);
         // Player1
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Jump = m_Player1.FindAction("Jump", throwIfNotFound: true);
@@ -1103,6 +1135,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Swap_Weapon;
     private readonly InputAction m_Player_Peek_Right;
     private readonly InputAction m_Player_Peek_Left;
+    private readonly InputAction m_Player_Start;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1120,6 +1153,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Swap_Weapon => m_Wrapper.m_Player_Swap_Weapon;
         public InputAction @Peek_Right => m_Wrapper.m_Player_Peek_Right;
         public InputAction @Peek_Left => m_Wrapper.m_Player_Peek_Left;
+        public InputAction @Start => m_Wrapper.m_Player_Start;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1168,6 +1202,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Peek_Left.started += instance.OnPeek_Left;
             @Peek_Left.performed += instance.OnPeek_Left;
             @Peek_Left.canceled += instance.OnPeek_Left;
+            @Start.started += instance.OnStart;
+            @Start.performed += instance.OnStart;
+            @Start.canceled += instance.OnStart;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1211,6 +1248,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Peek_Left.started -= instance.OnPeek_Left;
             @Peek_Left.performed -= instance.OnPeek_Left;
             @Peek_Left.canceled -= instance.OnPeek_Left;
+            @Start.started -= instance.OnStart;
+            @Start.performed -= instance.OnStart;
+            @Start.canceled -= instance.OnStart;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1387,6 +1427,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSwap_Weapon(InputAction.CallbackContext context);
         void OnPeek_Right(InputAction.CallbackContext context);
         void OnPeek_Left(InputAction.CallbackContext context);
+        void OnStart(InputAction.CallbackContext context);
     }
     public interface IPlayer1Actions
     {

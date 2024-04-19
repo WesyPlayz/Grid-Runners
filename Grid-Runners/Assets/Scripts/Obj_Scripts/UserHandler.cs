@@ -22,6 +22,7 @@ public class UserHandler : MonoBehaviour
     public PlayerInputActions playerInputActions;
 
     public int points;
+    public int points_Per_Kill;
 
     [Header("Data Variables")]
     public GameObject Spawn;
@@ -117,7 +118,6 @@ public class UserHandler : MonoBehaviour
         character_Controller = User.GetComponent<CharacterController>();
 
         obj_Data = GetComponent<Obj_State>();
-        hud_Handler = GetComponent<HUDHandler>();
         Health = max_Health;
 
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
@@ -144,6 +144,7 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
 
         playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, 3); // Reload Active
+        //playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
 
         if (gameObject.name == "Player_1")
         {
