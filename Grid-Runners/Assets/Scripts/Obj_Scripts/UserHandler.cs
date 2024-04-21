@@ -10,39 +10,57 @@ using UnityEngine.InputSystem;
 public class UserHandler : MonoBehaviour
 {
     [Header("User Variables")]
-    public GameObject User, user_Spectate;
-    private Rigidbody user_Physics, user_Spectate_Physics;
-    private CharacterController character_Controller;
-    public CharacterController spectator_Controller;
+    public GameObject User;
+    public GameObject user_Spectate;
+
+    [HideInInspector] public GameObject Neck;
+
+    // User Physics Variables:
+    private CharacterController 
+        user_Controller, 
+        spectator_Controller;
+
+    private Collider body_Hitbox;
+    private Bounds body_Hitbox_Bounds;
+
+    // User Script Variables:
+    [HideInInspector] public CameraHandler camera_Handler;
+
     private UIHandler ui_Handler;
+    private HUDHandler hud_Handler;
 
-    public GameObject Neck;
+    private Grid_Data grid_Data;
+    [HideInInspector] public new_Item_Data item_Data;
 
-    public Collider body_Hitbox;
-    public Bounds body_Hitbox_Bounds;
-
+    // User Input Variables:
     private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
 
-    public int points;
-    public int points_Per_Kill;
-
     [Header("Data Variables")]
+    public Mode current_Mode;
+    public enum Mode
+    {
+        Play,
+        Build,
+        Menu
+    }
+
+    // Play Mode Variables:
     public GameObject Spawn;
 
-    public Obj_State obj_Data;
-    private HUDHandler hud_Handler;
+    public float walk_Speed;
+    public float sprint_Speed;
+
+    public int points;
+    public int points_Per_Kill;
 
     private bool changing_Mode;
 
     public float max_Health;
     public float Health;
 
-    [Range(0, 1)]
-    public int Mode;
-
     [Header("Camera Variables")]
-    public CameraHandler camera_Handler;
+    public Camera user_Camera;
 
     // Movement Variables:
     private bool is_Sprinting;
@@ -52,9 +70,13 @@ public class UserHandler : MonoBehaviour
     public GameObject Weapon;
     public GameObject Projectiles;
 
-    public new_Item_Data item_Data;
-
     public int selected_Weapon;
+    public enum Slot
+    {
+        Primary,
+        Secondary
+    }
+    public Slot current_Slot;
 
     public Item current_Weapon;
 
@@ -85,6 +107,9 @@ public class UserHandler : MonoBehaviour
     public int max_Grenades;
 
     public Vector3 velocity;
+    public float verticalVelocity;
+    public float gravity;
+    public float jumpForce;
 
     [Header("Sound Resources")]
     public float volume;
@@ -97,46 +122,48 @@ public class UserHandler : MonoBehaviour
     private float WalkSoundTimer;
 
     // Grid Variables:
-    private Grid_Data grid_Data;
-
     public GameObject secondary_Obj;
-    private Transform obj_Transform;
     public Obj_State secondary_Data;
 
     // Jumping Variables:
 
     // Collision Variables:
-    public bool on_Floor;
-    public bool on_Wall;
-
     public bool is_Walking;
     public bool is_Attacking;
+
+    public bool ground = false;
+    public bool wasGrounded;
 
     // Variable Initialization System:
     private void Start()
     {
         // Initiate User Variables:
-        user_Physics = User.GetComponent<Rigidbody>();
-        user_Spectate_Physics = user_Spectate.GetComponent<Rigidbody>();
-        character_Controller = User.GetComponent<CharacterController>();
+        Neck = User.transform.Find("Neck").gameObject;
+
+        // Initiate User Physics Variables:
+        user_Controller = User.GetComponent<CharacterController>();
+        spectator_Controller = user_Spectate.GetComponent<CharacterController>();
+        body_Hitbox = User.GetComponent<CharacterController>();
+
+        // Initiate User Script Variables:
+        camera_Handler = user_Camera.GetComponent<CameraHandler>();
+
         ui_Handler = GameObject.Find("GameManager").GetComponent<UIHandler>();
-
-        obj_Data = GetComponent<Obj_State>();
-        Health = max_Health;
-
-        secondary_Data = secondary_Obj.GetComponent<Obj_State>();
-        obj_Transform = GetComponent<Transform>();
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<new_Item_Data>();
 
-        playerInput = GetComponent<PlayerInput>();
+        Health = max_Health;
+
+        secondary_Data = secondary_Obj.GetComponent<Obj_State>();
+
+        // Initiate User Input Variables:
+        playerInput = User.GetComponent<PlayerInput>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
 
         // Movement Systems:
         playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, 0); // Move Active
-        playerInputActions.Player.Move.canceled += phase => ControlledUpdate(phase, 0); // Move Inactive
 
         playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
         playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
@@ -150,92 +177,23 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, 3); // Reload Active
         playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
 
-        playerInputActions.Player.Grenade.performed += Use_Grenade;
-        playerInputActions.Player.Grenade.canceled += Use_Grenade;
+        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, 2); // Ordinance Active
+        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, 2); // Ordinance Inactive
 
-        playerInputActions.Player.Swap_Weapon.performed += phase => EquipWeapon(selected_Weapon, selected_Weapon == primary_Weapon ? secondary_Weapon : primary_Weapon, phase);
+        // Inventory Systems:
+        playerInputActions.Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
     }
 
-    private void Update()
+    public void Update()
     {
-        bool mode_State = Mode == 0; // Mode Check.
-
+        bool mode_State = current_Mode == Mode.Play; // Mode Check.
+        
         if (!changing_Mode)
         {
-            if (!Damage()) // Health Check:
-                Respawn();
-
             // Camera Systems:
             if (Input.GetKeyDown(KeyCode.Tab)) // Will be changed.
                 SwapMode(mode_State);
-
-            // Movement_Systems:
-            /*
-            Rigidbody current_Physics = mode_State ? user_Physics : user_Spectate_Physics; // Physics Check.
-
-            Vector3 inputVector = playerInputActions.Player.Movement.ReadValue<Vector3>();
-            Vector3 move_Direction = (mode_State ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, (mode_State ? 0 : inputVector.y), inputVector.z)); // Movement Direction Calculation.
-            current_Physics.AddForce(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 10);
-
-            Vector3 clamped_Velocity = Vector3.ClampMagnitude( // Velocty Clamp Calculation:
-                (mode_State ? new Vector3(user_Physics.velocity.x, 0, user_Physics.velocity.z) :
-                user_Spectate_Physics.velocity),
-                (move_Direction == Vector3.zero ? 0 :
-                is_Sprinting ? obj_Data.sprint_Speed :
-                obj_Data.walk_Speed));
-            current_Physics.velocity = new Vector3(clamped_Velocity.x, (mode_State ? user_Physics.velocity.y : clamped_Velocity.y), clamped_Velocity.z); // Clamps Velocity To Calculations.
-            */
-
-            // Action Systems:
-            if (mode_State)
-            {
-                if (selected_Weapon != 0 && Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    selected_Weapon = 0;
-                    secondary_Ammo = Ammo;
-                    //EquipWeapon(selected_Weapon, primary_Weapon);
-                }
-                else if (selected_Weapon != 1 && Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    selected_Weapon = 1;
-                    primary_Ammo = Ammo;
-                    //EquipWeapon(selected_Weapon, secondary_Weapon);
-                }
-            }
-            else
-            {
-                if (Input.GetKeyUp(KeyCode.Mouse0)) // Build System:
-                {
-                    
-                }
-            }
         }
-    }
-
-    public void Build(InputAction.CallbackContext phase)
-    {
-        RaycastHit target;
-        if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
-        {
-            GameObject selected_Target = target.transform.gameObject;
-            if (selected_Target.CompareTag("Grid_Tile"))
-                PlaceObject(selected_Target, target.normal);
-        }
-    }
-
-    // Health System:
-    public bool Damage(float dmg = 0) // Damage System:
-    {
-        if (Health <= 0) // Health Check:
-            return false;
-        else if (dmg > 0) // Damage Check:
-            Health = Mathf.Max(Health - dmg, 0);
-        return true;
-    }
-    public void Respawn() // Respawn System:
-    {
-        User.transform.position = Spawn.transform.position; // Relocate User
-        Health = max_Health;
     }
 
     // Mode Systems:
@@ -244,7 +202,7 @@ public class UserHandler : MonoBehaviour
         changing_Mode = true;
 
         // Mode State ID:
-        Transform cam_Pos = mode_State ? camera_Handler.Camera_Pos0.transform : camera_Handler.Camera_Pos1.transform;
+        Transform cam_Pos = mode_State ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
 
         // User Protection System:
         if (mode_State)
@@ -280,7 +238,7 @@ public class UserHandler : MonoBehaviour
         camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
         camera_Handler.user_Camera.transform.parent = cam_Pos;
 
-        Mode = 1 - Mode; // Mode Swapping.
+        current_Mode = current_Mode == Mode.Play ? Mode.Build : Mode.Play;
         changing_Mode = false;
     }
 
@@ -329,42 +287,6 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-    // Action Systems:
-    private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
-    {
-        Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
-        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= grid_Data.placement_Range)
-        {
-            GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
-            new_Grid_Obj.transform.position = placement_Bounds.center;
-        }
-    }
-    // Action Systems:
-    void Use_Grenade(InputAction.CallbackContext phase)
-    {
-        /*
-        if (phase.performed)
-        {
-            if (grenades > 0)
-            {
-                GameObject gre = Instantiate(Grenade, fire_Point.transform.position, camera_Handler.user_Camera.transform.rotation, camera_Handler.user_Camera.transform);
-                held_Grenade = gre;
-                can_Attack = false;
-                grenades--;
-            }
-        }
-        if (phase.canceled)
-        {
-            held_Grenade.transform.parent = null;
-            held_Grenade.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            LinearJump(camera_Handler.user_Camera.transform.forward, throw_force, held_Grenade);
-        }
-        */
-        if (current_Weapon is Ordinance ordinance)
-            ordinance.Attack(this);
-
-    }
-
     // Control Terminal:
     public void ControlledUpdate(InputAction.CallbackContext phase, int mode)
     {
@@ -373,8 +295,6 @@ public class UserHandler : MonoBehaviour
             case 0:
                 if (phase.performed && !is_Walking) // Move Active:
                     StartCoroutine(Move(is_Walking = true));
-                else if (phase.canceled && is_Walking) // Move Inactive:
-                    is_Walking = false;
                 break;
             case 2:
                 if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
@@ -389,6 +309,8 @@ public class UserHandler : MonoBehaviour
                     }
                     else if (current_Weapon is Melee melee_Item) // Melee Check:
                         melee_Item.Attack(this);
+                    else if (current_Weapon is Ordinance ordinance)
+                        ordinance.Attack(this);
                     else
                         can_Attack = true;
                 }
@@ -405,31 +327,60 @@ public class UserHandler : MonoBehaviour
                     }
                 }
                 break;
-                
+        }
+    }
+    public void FixedUpdate()
+    {
+        if (current_Mode == Mode.Play)
+        {
+            // Health System:
+            if (!Damage()) // Health Check:
+                Respawn();
+
+            // Gravity System:
+            if (wasGrounded && !ground && verticalVelocity < 0) // Unlock Gravity:
+                verticalVelocity = 0;
+            if (ground && verticalVelocity != jumpForce) // Lock Gravity:
+                verticalVelocity = -(gravity + 1);
+            else if (verticalVelocity >= -gravity) // Apply Gravity:
+                verticalVelocity = Mathf.Clamp(verticalVelocity - gravity * Time.deltaTime, -gravity, Mathf.Infinity);
+
+            // Velocity System:
+            Vector3 velocity = user_Controller.velocity;
+            velocity.y = verticalVelocity;
+            user_Controller.Move(velocity * Time.deltaTime);
+
+            // Floor Collision Check:
+            wasGrounded = ground;
+            ground = user_Controller.isGrounded;
         }
     }
 
-    // Movement Systems:
-    private void FixedUpdate() // Movement System:
+    // Health System:
+    public bool Damage(float dmg = 0) // Damage System:
     {
-        if (Mode == 0)
-        {
-            if (on_Floor) // Gravity Modifier
-                velocity.y = 0;
-            else
-            {
-                velocity.y -= 12 * Time.deltaTime;
-                character_Controller.Move(velocity * Time.deltaTime);
-            }
-        }
+        if (Health <= 0) // Health Check:
+            return false;
+        else if (dmg > 0) // Damage Check:
+            Health = Mathf.Max(Health - dmg, 0);
+        return true;
     }
-    public IEnumerator Move(bool state)
+    public void Respawn() // Respawn System:
+    {
+        User.transform.position = Spawn.transform.position; // Relocate User
+        Health = max_Health;
+    }
+
+    // Movement Systems:
+    public IEnumerator Move(bool state) // Movement System:
     {
         while (is_Walking) // Movement Active:
         {
             Vector3 inputVector = playerInputActions.Player.Move.ReadValue<Vector3>(); // Axis Values
-            Vector3 move_Direction = (Mode == 0 ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, Mode == 0 ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
-            (Mode == 0 ? character_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting ? obj_Data.sprint_Speed : obj_Data.walk_Speed) * 3); // Move System & Speed Check
+            if (inputVector == Vector3.zero) // Input Check
+                is_Walking = false;
+            Vector3 move_Direction = (current_Mode == Mode.Play ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, current_Mode == Mode.Play ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
+            (current_Mode == Mode.Play ? user_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting ? sprint_Speed : walk_Speed)); // Move System & Speed Check
             yield return new WaitForSeconds(0.001f);
         }    
     }
@@ -439,27 +390,39 @@ public class UserHandler : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext phase) // Jump System:
     {
-        if (phase.performed) // Jump Active:
-            character_Controller.SimpleMove(Vector3.up * 100);
-    }
-
-    // Inventory Systems:
-    public void Switch_Weapons(InputAction.CallbackContext phase, int slot)
-    {
-
+        if (verticalVelocity <= -(gravity + 1) && phase.performed) // Jump Active:
+            verticalVelocity = jumpForce;
     }
 
     // Action Systems:
-
-    public void Set_Primary(int weapon)
+    public void Build(InputAction.CallbackContext phase)
     {
-        primary_Weapon = weapon;
+        RaycastHit target;
+        if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+        {
+            GameObject selected_Target = target.transform.gameObject;
+            if (selected_Target.CompareTag("Grid_Tile"))
+                PlaceObject(selected_Target, target.normal);
+        }
+    }
+    private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
+    {
+        Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
+        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= grid_Data.placement_Range)
+        {
+            GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
+            new_Grid_Obj.transform.position = placement_Bounds.center;
+        }
     }
 
-    public void Set_Secondary(int weapon)
+    // Inventory Systems:
+    public void Switch_Weapons(InputAction.CallbackContext phase)
     {
-        secondary_Weapon = weapon;
+        if (current_Slot == Slot.Primary)
+            primary_Ammo = Ammo;
+        else
+            secondary_Ammo = Ammo;
+        current_Slot = (current_Slot == Slot.Primary ? Slot.Secondary : Slot.Primary);
+        item_Data.Equip_Weapon(this, (current_Slot == Slot.Primary ? 0 : 1), (current_Slot == Slot.Primary ? primary_Weapon : secondary_Weapon));
     }
-
-
 }

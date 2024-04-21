@@ -96,7 +96,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Swap_Weapon",
+                    "name": "Switch_Weapon",
                     "type": "Value",
                     "id": "0c3e6960-ae65-432a-90a0-85d92f2abb24",
                     "expectedControlType": "Axis",
@@ -272,7 +272,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "womp",
-                    "action": "Swap_Weapon",
+                    "action": "Switch_Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -283,7 +283,7 @@
                     "interactions": "",
                     "processors": "Invert",
                     "groups": "womp",
-                    "action": "Swap_Weapon",
+                    "action": "Switch_Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -294,7 +294,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Swap_Weapon",
+                    "action": "Switch_Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

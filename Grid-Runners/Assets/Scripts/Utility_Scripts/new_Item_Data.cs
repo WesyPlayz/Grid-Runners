@@ -23,7 +23,7 @@ public class new_Item_Data : MonoBehaviour
         entity_Mask = 9 << LayerMask.NameToLayer("Entity");
     }
 
-    public void Equip_Weapon(UserHandler user_Handler)
+    public void Equip_Weapon(UserHandler user_Handler, int slot, int weapon)
     {
 
     }

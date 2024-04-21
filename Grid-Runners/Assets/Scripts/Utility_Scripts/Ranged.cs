@@ -90,12 +90,15 @@ public class Ranged : Item
         user_Handler.item_Holder.transform.position += direction * user_Handler.item_Holder.transform.right * 0.4f;
         user_Handler.item_Holder.transform.position -= direction * user_Handler.item_Holder.transform.up * 0.06f;
 
-        user_Handler.obj_Data.walk_Speed *= is_ADSing ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
+        user_Handler.walk_Speed *= is_ADSing ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
+        user_Handler.sprint_Speed *= is_ADSing ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
         user_Handler.camera_Handler.ui_Camera.fieldOfView = Mathf.Lerp(user_Handler.camera_Handler.ui_Camera.fieldOfView, is_ADSing ? ADS_FOV : user_Handler.camera_Handler.origin_FOV, ADS_Speed * Time.deltaTime);
     }
 
-    public void Peek(UserHandler user_Handler, float angle, int side, bool enabled)
+    public void Peek(UserHandler user_Handler, float angle, bool enabled)
     {
+        user_Handler.walk_Speed *= enabled ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
+        user_Handler.sprint_Speed *= enabled ? item_Data.min_Speed_Mod : item_Data.max_Speed_Mod;
         user_Handler.Neck.transform.Rotate(Vector3.forward, (enabled ? -angle : angle), Space.Self);
         if (!enabled)
             user_Handler.Neck.transform.localRotation = Quaternion.Euler(user_Handler.Neck.transform.localEulerAngles.x, 0, 0);

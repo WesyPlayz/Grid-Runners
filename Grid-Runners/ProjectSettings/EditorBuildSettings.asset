@@ -21,5 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Sky_Scrapers.unity
     guid: 909fe446000ecc24e95fc79962abd12c
   m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 96949c1c867bf7842b910d6a6227b3e6, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: cfa12124073807242b33d316bfb59d67, type: 2}
   m_UseUCBPForAssetBundles: 0

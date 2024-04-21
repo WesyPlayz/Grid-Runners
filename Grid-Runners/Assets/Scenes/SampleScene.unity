@@ -7718,11 +7718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 158527132}
   - component: {fileID: 158527131}
-  - component: {fileID: 158527130}
   - component: {fileID: 158527129}
-  - component: {fileID: 158527128}
-  - component: {fileID: 158527127}
-  - component: {fileID: 158527126}
   m_Layer: 8
   m_Name: Player_2
   m_TagString: Player
@@ -7730,297 +7726,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &158527126
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158527125}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0090d12c6050807409781ac81b303d3f, type: 3}
-  m_Resource: {fileID: 8300000, guid: 0090d12c6050807409781ac81b303d3f, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &158527127
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158527125}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
-  m_Resource: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &158527128
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158527125}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f087ddf8edda4df43b4d2355f00dceae, type: 3}
-  m_Resource: {fileID: 8300000, guid: f087ddf8edda4df43b4d2355f00dceae, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &158527129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8041,38 +7746,6 @@ MonoBehaviour:
   primary_Weapon_Icon: {fileID: 21300000, guid: 207e13012898cbb45917cba7dc8a5631, type: 3}
   secondary_Weapon_Icon: {fileID: 21300000, guid: 2cad32b560f2c534b96a86bbc5fd30d1, type: 3}
   ammo_Counter: {fileID: 1745048137}
---- !u!114 &158527130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158527125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1798cef719a931947a453f18393f0a99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 0
-  Team_ID: 0
-  collided_Entity: {fileID: 0}
-  collided_Item: {fileID: 0}
-  Primary_ID: 0
-  Secondary_ID: 0
-  Ability_ID: 0
-  Reach: 0
-  walk_Speed: 0.075
-  sprint_Speed: 0.125
-  jump_Force: 300
-  gravity: 0
-  Attack_Cooldown: 0
-  collided_Floor: {fileID: 0}
-  collided_Wall: {fileID: 0}
-  collided_Ceiling: {fileID: 0}
-  last_Wall_Contact: {x: 0, y: 0, z: 0}
-  last_Floor_Contact: {x: 0, y: 0, z: 0}
-  last_Ceiling_Contact: {x: 0, y: 0, z: 0}
-  total_Collisions: 0
 --- !u!114 &158527131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8087,33 +7760,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   User: {fileID: 990919032}
   user_Spectate: {fileID: 749343511}
-  spectator_Controller: {fileID: 749343517}
   Neck: {fileID: 1604167305}
-  body_Hitbox: {fileID: 990919033}
-  body_Hitbox_Bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  camera_Handler: {fileID: 1996051637}
+  item_Data: {fileID: 430095512}
+  current_Mode: 0
+  Spawn: {fileID: 1822019094}
+  walk_Speed: 0
+  sprint_Speed: 0
   points: 0
   points_Per_Kill: 0
-  Spawn: {fileID: 1822019094}
-  obj_Data: {fileID: 0}
   max_Health: 100
   Health: 100
-  Mode: 0
-  camera_Handler: {fileID: 1996051637}
+  user_Camera: {fileID: 1159050920}
   item_Holder: {fileID: 1303609967}
   Weapon: {fileID: 279061209}
   Projectiles: {fileID: 37984426}
-  item_Data: {fileID: 430095512}
   selected_Weapon: 0
+  current_Slot: 0
   current_Weapon: {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   primary_Weapon: 0
   secondary_Weapon: 1
   fire_Point: {fileID: 984448204}
   Grenade: {fileID: 8723284107201366428, guid: 38076166db13ec442b30708cb497d7fe, type: 3}
   muzzle_Flash: {fileID: 502629812}
-  pewpew: {fileID: 158527128}
-  ReloadSound: {fileID: 158527127}
+  pewpew: {fileID: 0}
+  ReloadSound: {fileID: 0}
   can_Attack: 1
   can_Use_Action: 1
   is_Using_Action: 0
@@ -8125,19 +7796,22 @@ MonoBehaviour:
   grenades: 4
   max_Grenades: 4
   velocity: {x: 0, y: 0, z: 0}
+  verticalVelocity: 0
+  gravity: 16
+  jumpForce: 10
   volume: 0
-  mySpeaker: {fileID: 158527127}
+  mySpeaker: {fileID: 0}
   laser_Reload: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
-  laser_Fire: {fileID: 158527128}
+  laser_Fire: {fileID: 0}
   hit_SFX: {fileID: 8300000, guid: 938913b608013d84f9c6182b79968d06, type: 3}
   melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
-  walkSFX: {fileID: 158527126}
+  walkSFX: {fileID: 0}
   secondary_Obj: {fileID: 764515805}
   secondary_Data: {fileID: 0}
-  on_Floor: 0
-  on_Wall: 0
   is_Walking: 0
   is_Attacking: 0
+  ground: 0
+  wasGrounded: 0
 --- !u!4 &158527132
 Transform:
   m_ObjectHideFlags: 0
@@ -31466,9 +31140,9 @@ CharacterController:
   m_Height: 2.125
   m_Radius: 0.3
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_StepOffset: 0.0001
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!4 &990919034 stripped
 Transform:
@@ -44043,15 +43717,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   user_Camera: {fileID: 1159050920}
   ui_Camera: {fileID: 144827899}
-  Camera_Pos0: {fileID: 1854701914}
-  Camera_Pos1: {fileID: 1047518104}
+  user_Cam_Pos: {fileID: 1047518104}
+  spec_Cam_Pos: {fileID: 1854701914}
   origin_FOV: 0
-  Player: 2
+  assigned_Player: 1
   Sensitivity: 5
   look_Limit: 75
+  is_Peeking: 0
+  current_Side: 0
   peek_Angle: 30
   Peek_Limit: 50
-  is_Peeking: 0
 --- !u!81 &1159050919
 AudioListener:
   m_ObjectHideFlags: 0
@@ -59324,9 +58999,9 @@ CharacterController:
   m_Height: 2.125
   m_Radius: 0.3
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_StepOffset: 0
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!1 &1520248292 stripped
 GameObject:
@@ -66580,25 +66255,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   User: {fileID: 1513848533}
   user_Spectate: {fileID: 1038075389}
-  spectator_Controller: {fileID: 1038075394}
   Neck: {fileID: 1327651168}
-  body_Hitbox: {fileID: 1513848542}
-  body_Hitbox_Bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  camera_Handler: {fileID: 1996051637}
+  item_Data: {fileID: 430095512}
+  current_Mode: 0
+  Spawn: {fileID: 1822019094}
+  walk_Speed: 0.05
+  sprint_Speed: 0.1
   points: 0
   points_Per_Kill: 0
-  Spawn: {fileID: 1822019094}
-  obj_Data: {fileID: 0}
   max_Health: 100
   Health: 100
-  Mode: 0
-  camera_Handler: {fileID: 1996051637}
+  user_Camera: {fileID: 1996051634}
   item_Holder: {fileID: 40435960}
   Weapon: {fileID: 1210534459}
   Projectiles: {fileID: 37984426}
-  item_Data: {fileID: 430095512}
   selected_Weapon: 0
+  current_Slot: 0
   current_Weapon: {fileID: 11400000, guid: 9cd8a2e831707464bacfe417f94be8f1, type: 2}
   primary_Weapon: 0
   secondary_Weapon: 1
@@ -66618,6 +66291,9 @@ MonoBehaviour:
   grenades: 4
   max_Grenades: 4
   velocity: {x: 0, y: 0, z: 0}
+  verticalVelocity: 0
+  gravity: 40
+  jumpForce: 12
   volume: 0
   mySpeaker: {fileID: 1760973980}
   laser_Reload: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
@@ -66627,10 +66303,10 @@ MonoBehaviour:
   walkSFX: {fileID: 1760973981}
   secondary_Obj: {fileID: 764515805}
   secondary_Data: {fileID: 0}
-  on_Floor: 0
-  on_Wall: 0
   is_Walking: 0
   is_Attacking: 0
+  ground: 0
+  wasGrounded: 0
 --- !u!4 &1760973976
 Transform:
   m_ObjectHideFlags: 0
@@ -66666,7 +66342,7 @@ MonoBehaviour:
   Secondary_ID: 0
   Ability_ID: 0
   Reach: 0
-  walk_Speed: 0.075
+  walk_Speed: 0.05
   sprint_Speed: 0.125
   jump_Force: 300
   gravity: 0
@@ -79130,15 +78806,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   user_Camera: {fileID: 1996051634}
   ui_Camera: {fileID: 1865609096}
-  Camera_Pos0: {fileID: 1065520438}
-  Camera_Pos1: {fileID: 1467745944}
+  user_Cam_Pos: {fileID: 1467745944}
+  spec_Cam_Pos: {fileID: 1065520438}
   origin_FOV: 0
-  Player: 1
+  assigned_Player: 0
   Sensitivity: 5
   look_Limit: 75
+  is_Peeking: 0
+  current_Side: 0
   peek_Angle: 30
   Peek_Limit: 50
-  is_Peeking: 0
 --- !u!1 &1998730659 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
