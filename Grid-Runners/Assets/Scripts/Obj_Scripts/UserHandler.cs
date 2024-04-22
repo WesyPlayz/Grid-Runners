@@ -35,6 +35,12 @@ public class UserHandler : MonoBehaviour
     // User Input Variables:
     private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
+    public enum Input
+    {
+        Move,
+        Attack,
+        Reload
+    }
 
     [Header("Data Variables")]
     public Mode current_Mode;
@@ -111,16 +117,6 @@ public class UserHandler : MonoBehaviour
     public float gravity;
     public float jumpForce;
 
-    [Header("Sound Resources")]
-    public float volume;
-    public AudioSource mySpeaker;
-    public AudioClip laser_Reload;
-    public AudioSource laser_Fire;
-    public AudioClip hit_SFX;
-    public AudioClip melee;
-    public AudioSource walkSFX;
-    private float WalkSoundTimer;
-
     // Grid Variables:
     public GameObject secondary_Obj;
     public Obj_State secondary_Data;
@@ -163,7 +159,7 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Enable();
 
         // Movement Systems:
-        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, 0); // Move Active
+        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, Input.Move); // Move Active
 
         playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
         playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
@@ -171,14 +167,14 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
         // Action Systems:
-        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, 2); // Attack Active
-        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
+        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, Input.Attack); // Attack Active
+        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
 
-        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, 3); // Reload Active
+        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, Input.Reload); // Reload Active
         playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
 
-        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, 2); // Ordinance Active
-        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, 2); // Ordinance Inactive
+        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, Input.Attack); // Ordinance Active
+        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, Input.Attack); // Ordinance Inactive
 
         // Inventory Systems:
         playerInputActions.Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
@@ -219,15 +215,15 @@ public class UserHandler : MonoBehaviour
 
         if (mode_State)
         {
-            playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, 2); // Attack Active
-            playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, 2); // Attack Inactive
+            playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, Input.Attack); // Attack Active
+            playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
             playerInputActions.Player.Attack.performed += Build;
         }
         else
         {
             playerInputActions.Player.Attack.performed -= Build;
-            playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, 2); // Attack Active
-            playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, 2); // Attack Inactive
+            playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, Input.Attack); // Attack Active
+            playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
         }
 
         // Object Swapping System:
@@ -288,15 +284,15 @@ public class UserHandler : MonoBehaviour
     }
 
     // Control Terminal:
-    public void ControlledUpdate(InputAction.CallbackContext phase, int mode)
+    public void ControlledUpdate(InputAction.CallbackContext phase, Input input)
     {
-        switch (mode) // Filter
+        switch (input) // Filter
         {
-            case 0:
+            case Input.Move:
                 if (phase.performed && !is_Walking) // Move Active:
                     StartCoroutine(Move(is_Walking = true));
                 break;
-            case 2:
+            case Input.Attack:
                 if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
                 {
                     can_Attack = false;
@@ -317,7 +313,7 @@ public class UserHandler : MonoBehaviour
                 else if (phase.canceled && is_Attacking) // Attack Inactive:
                     is_Attacking = false;
                 break;
-            case 3:
+            case Input.Reload:
                 if (current_Weapon is Ranged ranged_Weapon) // Range Check:
                 {
                     if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo) // Reload Active:
@@ -395,6 +391,10 @@ public class UserHandler : MonoBehaviour
     }
 
     // Action Systems:
+    public void Use_Ability(InputAction.CallbackContext phase)
+    {
+
+    }
     public void Build(InputAction.CallbackContext phase)
     {
         RaycastHit target;
