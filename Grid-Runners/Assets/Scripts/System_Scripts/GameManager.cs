@@ -9,9 +9,15 @@ public class GameManager : MonoBehaviour
     private UIHandler UI;
     [Header("Round Info")]
     private int round;
-    public float RoundTimer;
+    public int round_Time;
+    public int intermission_Time;
     public float map_size;
     public int Players_Ready;
+    public enum game_State
+    {
+        Round,
+        Intermission
+    }
 
     [Header("Point info")]
     public int P1_Points;
@@ -27,12 +33,13 @@ public class GameManager : MonoBehaviour
     public int players;
     public int players_Alive;
 
+    public bool round_IP;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        RoundTimer = 45f * players * (map_size);
-        Application.targetFrameRate = 600;
+        Application.targetFrameRate = 60;
 
         UI = GetComponent<UIHandler>();
         if (!UI.on_Main_Menu)
@@ -40,21 +47,12 @@ public class GameManager : MonoBehaviour
             P1S = P1.GetComponent<UserHandler>();
             P2S = P2.GetComponent<UserHandler>();
         }
-        
+        StartCoroutine(Roundtime(round_Time = 60, game_State.Round));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
 
     public void EndGame()
     {
         winner = P1_Points > P2_Points ? 1 : 2;
-        
     }
 
     public void EndRound()
@@ -66,7 +64,6 @@ public class GameManager : MonoBehaviour
 
     public void StartRound()
     {
-        StartCoroutine(Roundtime());
         P1S.points = 0;
         P2S.points = 0;
     }
@@ -78,12 +75,30 @@ public class GameManager : MonoBehaviour
             StartRound();
     }
 
-    IEnumerator Roundtime()
+    IEnumerator Roundtime(int time, game_State state)
     {
-        yield return new WaitForSeconds(RoundTimer);
-
-        player_Point = P1S.points > P2S.points ? 1 : 2;
-        EndRound();
+        switch (state)
+        {
+            case game_State.Round:
+                while (round_Time > 0)
+                {
+                    yield return new WaitForSeconds(1);
+                    round_Time--;
+                    print(round_Time);
+                }
+                if (round_Time == 0) // Start Intermission
+                    StartCoroutine(Roundtime(intermission_Time = 30, game_State.Intermission));
+                break;
+            case game_State.Intermission:
+                while (intermission_Time > 0)
+                {
+                    yield return new WaitForSeconds(1);
+                    intermission_Time--;
+                    print(intermission_Time);
+                }
+                print("Pause Game");
+                break;
+        }
     }
 
     //main menu options
