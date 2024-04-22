@@ -35,7 +35,7 @@ public class UserHandler : MonoBehaviour
     // User Input Variables:
     private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
-    public enum Input
+    public enum User_Input
     {
         Move,
         Attack,
@@ -159,7 +159,7 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Enable();
 
         // Movement Systems:
-        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, Input.Move); // Move Active
+        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, User_Input.Move); // Move Active
 
         playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
         playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
@@ -167,75 +167,68 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
         // Action Systems:
-        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, Input.Attack); // Attack Active
-        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
+        playerInputActions.Player.Switch_Mode.performed += phase => SwapMode(phase, current_Mode == Mode.Play ? true : false); // Attack Active
 
-        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, Input.Reload); // Reload Active
+        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+
+        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, User_Input.Reload); // Reload Active
         playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
 
-        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, Input.Attack); // Ordinance Active
-        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, Input.Attack); // Ordinance Inactive
+        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
+        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
 
         // Inventory Systems:
         playerInputActions.Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
     }
 
-    public void Update()
+    // Mode Systems:
+    public void SwapMode(InputAction.CallbackContext phase, bool mode_State)
     {
-        bool mode_State = current_Mode == Mode.Play; // Mode Check.
-        
         if (!changing_Mode)
         {
-            // Camera Systems:
-            if (Input.GetKeyDown(KeyCode.Tab)) // Will be changed.
-                SwapMode(mode_State);
-        }
-    }
+            changing_Mode = true;
 
-    // Mode Systems:
-    public void SwapMode(bool mode_State)
-    {
-        changing_Mode = true;
+            // Mode State ID:
+            Transform cam_Pos = mode_State ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
 
-        // Mode State ID:
-        Transform cam_Pos = mode_State ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
-
-        // User Protection System:
-        if (mode_State)
-        {
-            body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
-            if (!can_Use_Action && is_Using_Action)
+            // User Protection System:
+            if (mode_State)
             {
-                Item current_Item = item_Data.Items[(selected_Weapon == 0 ? primary_Weapon : secondary_Weapon)];
-                if (current_Item is Ranged ranged_Item)
-                    ranged_Item.Aim(this, is_Using_Action = false);
-                can_Use_Action = true;
+                body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
+                if (!can_Use_Action && is_Using_Action)
+                {
+                    Item current_Item = item_Data.Items[(selected_Weapon == 0 ? primary_Weapon : secondary_Weapon)];
+                    if (current_Item is Ranged ranged_Item)
+                        ranged_Item.Aim(this, is_Using_Action = false);
+                    can_Use_Action = true;
+                }
             }
+
+            if (mode_State)
+            {
+                playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+                playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+                playerInputActions.Player.Attack.performed += Build;
+            }
+            else
+            {
+                playerInputActions.Player.Attack.performed -= Build;
+                playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+                playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+            }
+
+            // Object Swapping System:
+            User.SetActive(!mode_State);
+            user_Spectate.SetActive(mode_State);
+
+            // Camera Repositioning System:
+            camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
+            camera_Handler.user_Camera.transform.parent = cam_Pos;
+
+            current_Mode = current_Mode == Mode.Play ? Mode.Build : Mode.Play;
+            changing_Mode = false;
         }
-
-        if (mode_State)
-        {
-            playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, Input.Attack); // Attack Active
-            playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
-            playerInputActions.Player.Attack.performed += Build;
-        }
-        else
-        {
-            playerInputActions.Player.Attack.performed -= Build;
-            playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, Input.Attack); // Attack Active
-            playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, Input.Attack); // Attack Inactive
-        }
-
-        // Object Swapping System:
-        User.SetActive(!mode_State);
-        user_Spectate.SetActive(mode_State);
-
-        // Camera Repositioning System:
-        camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
-        camera_Handler.user_Camera.transform.parent = cam_Pos;
-
-        current_Mode = current_Mode == Mode.Play ? Mode.Build : Mode.Play;
-        changing_Mode = false;
     }
 
     // Inventory System:
@@ -284,15 +277,15 @@ public class UserHandler : MonoBehaviour
     }
 
     // Control Terminal:
-    public void ControlledUpdate(InputAction.CallbackContext phase, Input input)
+    public void ControlledUpdate(InputAction.CallbackContext phase, User_Input input)
     {
         switch (input) // Filter
         {
-            case Input.Move:
+            case User_Input.Move:
                 if (phase.performed && !is_Walking) // Move Active:
                     StartCoroutine(Move(is_Walking = true));
                 break;
-            case Input.Attack:
+            case User_Input.Attack:
                 if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
                 {
                     can_Attack = false;
@@ -313,7 +306,7 @@ public class UserHandler : MonoBehaviour
                 else if (phase.canceled && is_Attacking) // Attack Inactive:
                     is_Attacking = false;
                 break;
-            case Input.Reload:
+            case User_Input.Reload:
                 if (current_Weapon is Ranged ranged_Weapon) // Range Check:
                 {
                     if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo) // Reload Active:
@@ -376,7 +369,7 @@ public class UserHandler : MonoBehaviour
             if (inputVector == Vector3.zero) // Input Check
                 is_Walking = false;
             Vector3 move_Direction = (current_Mode == Mode.Play ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, current_Mode == Mode.Play ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
-            (current_Mode == Mode.Play ? user_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting ? sprint_Speed : walk_Speed)); // Move System & Speed Check
+            (current_Mode == Mode.Play ? user_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting && ground ? sprint_Speed : walk_Speed)); // Move System & Speed Check
             yield return new WaitForSeconds(0.001f);
         }    
     }

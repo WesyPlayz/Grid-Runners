@@ -7799,13 +7799,6 @@ MonoBehaviour:
   verticalVelocity: 0
   gravity: 16
   jumpForce: 10
-  volume: 0
-  mySpeaker: {fileID: 0}
-  laser_Reload: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
-  laser_Fire: {fileID: 0}
-  hit_SFX: {fileID: 8300000, guid: 938913b608013d84f9c6182b79968d06, type: 3}
-  melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
-  walkSFX: {fileID: 0}
   secondary_Obj: {fileID: 764515805}
   secondary_Data: {fileID: 0}
   is_Walking: 0
@@ -66293,14 +66286,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   verticalVelocity: 0
   gravity: 40
-  jumpForce: 12
-  volume: 0
-  mySpeaker: {fileID: 1760973980}
-  laser_Reload: {fileID: 8300000, guid: f45bd92cf86f86441854b7023dbbabf3, type: 3}
-  laser_Fire: {fileID: 1760973979}
-  hit_SFX: {fileID: 8300000, guid: 938913b608013d84f9c6182b79968d06, type: 3}
-  melee: {fileID: 8300000, guid: 3c12e5c09cdfc6a45bdf09fe5810c643, type: 3}
-  walkSFX: {fileID: 1760973981}
+  jumpForce: 13
   secondary_Obj: {fileID: 764515805}
   secondary_Data: {fileID: 0}
   is_Walking: 0

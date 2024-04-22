@@ -152,6 +152,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch_Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""fd13d093-20a8-496b-94ff-a622b141bdcb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -603,6 +612,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89ff9ce4-1ea2-444d-8e38-363700547bd4"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch_Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""380b5778-9ef2-473d-9ba1-1780fa0aeb10"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch_Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1081,6 +1112,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Peek_Right = m_Player.FindAction("Peek_Right", throwIfNotFound: true);
         m_Player_Peek_Left = m_Player.FindAction("Peek_Left", throwIfNotFound: true);
         m_Player_Start = m_Player.FindAction("Start", throwIfNotFound: true);
+        m_Player_Switch_Mode = m_Player.FindAction("Switch_Mode", throwIfNotFound: true);
         // Player1
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Jump = m_Player1.FindAction("Jump", throwIfNotFound: true);
@@ -1169,6 +1201,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Peek_Right;
     private readonly InputAction m_Player_Peek_Left;
     private readonly InputAction m_Player_Start;
+    private readonly InputAction m_Player_Switch_Mode;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1187,6 +1220,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Peek_Right => m_Wrapper.m_Player_Peek_Right;
         public InputAction @Peek_Left => m_Wrapper.m_Player_Peek_Left;
         public InputAction @Start => m_Wrapper.m_Player_Start;
+        public InputAction @Switch_Mode => m_Wrapper.m_Player_Switch_Mode;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1238,6 +1272,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Start.started += instance.OnStart;
             @Start.performed += instance.OnStart;
             @Start.canceled += instance.OnStart;
+            @Switch_Mode.started += instance.OnSwitch_Mode;
+            @Switch_Mode.performed += instance.OnSwitch_Mode;
+            @Switch_Mode.canceled += instance.OnSwitch_Mode;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1284,6 +1321,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Start.started -= instance.OnStart;
             @Start.performed -= instance.OnStart;
             @Start.canceled -= instance.OnStart;
+            @Switch_Mode.started -= instance.OnSwitch_Mode;
+            @Switch_Mode.performed -= instance.OnSwitch_Mode;
+            @Switch_Mode.canceled -= instance.OnSwitch_Mode;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1461,6 +1501,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPeek_Right(InputAction.CallbackContext context);
         void OnPeek_Left(InputAction.CallbackContext context);
         void OnStart(InputAction.CallbackContext context);
+        void OnSwitch_Mode(InputAction.CallbackContext context);
     }
     public interface IPlayer1Actions
     {
