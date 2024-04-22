@@ -36,6 +36,14 @@ public class UIHandler : MonoBehaviour
     public GameObject hyper_Blaster;
     public GameObject hyper_Blaster2;
 
+    [Header("Sounds")]
+    public AudioClip Click1;
+    public AudioClip Click2;
+    public AudioClip Flip1;
+    public AudioClip Flip2;
+    public AudioClip Hover1;
+    public AudioClip Hover2;
+
     // Start is called before the first frame update
     void Start()
     {

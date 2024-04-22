@@ -16545,6 +16545,12 @@ MonoBehaviour:
   P2_Shop_Menu: {fileID: 997018257}
   hyper_Blaster: {fileID: 16676957}
   hyper_Blaster2: {fileID: 16676957}
+  Click1: {fileID: 0}
+  Click2: {fileID: 0}
+  Flip1: {fileID: 0}
+  Flip2: {fileID: 0}
+  Hover1: {fileID: 0}
+  Hover2: {fileID: 0}
 --- !u!4 &585705884
 Transform:
   m_ObjectHideFlags: 0
