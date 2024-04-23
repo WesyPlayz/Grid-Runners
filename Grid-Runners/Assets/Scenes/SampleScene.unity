@@ -16500,9 +16500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0302fa9e820f62489781d28cf3f27b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  round_Time: 0
-  intermission_Time: 0
-  map_size: 0
+  round_Time: 10
+  intermission_Time: 30
   Players_Ready: 0
   P1_Points: 0
   P2_Points: 0
@@ -16510,10 +16509,8 @@ MonoBehaviour:
   player_Point: 0
   P1: {fileID: 1760973974}
   P2: {fileID: 158527125}
-  P1S: {fileID: 1760973975}
-  P2S: {fileID: 158527131}
-  players: 0
-  players_Alive: 0
+  user_Handler_1: {fileID: 1760973975}
+  user_Handler_2: {fileID: 158527131}
   round_IP: 0
 --- !u!114 &585705883
 MonoBehaviour:
