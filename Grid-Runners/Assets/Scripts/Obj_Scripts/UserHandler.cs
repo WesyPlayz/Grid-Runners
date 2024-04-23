@@ -75,6 +75,7 @@ public class UserHandler : MonoBehaviour
     public GameObject item_Holder;
     public GameObject Weapon;
     public GameObject Projectiles;
+    public bool is_Blocking;
 
     public int selected_Weapon;
     public enum Slot

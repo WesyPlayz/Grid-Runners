@@ -44,7 +44,7 @@ public class Ordinance : Item
 
     public override void Aim(UserHandler user_Handler, bool is_ADSing)
     {
-
+       grenade_Handler.startedCharging = true;
     }
 
     public override void Action(UserHandler user_Handler)
