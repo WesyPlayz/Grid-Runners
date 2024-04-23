@@ -57,12 +57,6 @@ public class UIHandler : MonoBehaviour
             //EventSystem.current.SetSelectedGameObject(start);
         }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void level_Select(bool going)
     {
         main_Menu.SetActive(!going);
