@@ -48,7 +48,8 @@ public class UserHandler : MonoBehaviour
     {
         Play,
         Build,
-        Menu
+        Menu,
+        Idle
     }
 
     // Play Mode Variables:
@@ -167,7 +168,7 @@ public class UserHandler : MonoBehaviour
         playerInputActions.Player.Jump.performed += Jump; // Jump Active
 
         // Action Systems:
-        playerInputActions.Player.Switch_Mode.performed += phase => SwapMode(phase, current_Mode == Mode.Play ? true : false); // Attack Active
+        //playerInputActions.Player.Switch_Mode.performed += phase => SwapMode(phase, current_Mode == Mode.Play ? true : false); // Attack Active
 
         playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
         playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
@@ -183,17 +184,17 @@ public class UserHandler : MonoBehaviour
     }
 
     // Mode Systems:
-    public void SwapMode(InputAction.CallbackContext phase, bool mode_State)
+    public Mode SwapMode(Mode mode_State)
     {
         if (!changing_Mode)
         {
             changing_Mode = true;
 
             // Mode State ID:
-            Transform cam_Pos = mode_State ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
+            Transform cam_Pos = mode_State != Mode.Play ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
 
             // User Protection System:
-            if (mode_State)
+            if (mode_State != Mode.Play)
             {
                 body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
                 if (!can_Use_Action && is_Using_Action)
@@ -205,7 +206,7 @@ public class UserHandler : MonoBehaviour
                 }
             }
 
-            if (mode_State)
+            if (mode_State != Mode.Play)
             {
                 playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
                 playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
@@ -219,16 +220,17 @@ public class UserHandler : MonoBehaviour
             }
 
             // Object Swapping System:
-            User.SetActive(!mode_State);
-            user_Spectate.SetActive(mode_State);
+            User.SetActive(mode_State == Mode.Play);
+            user_Spectate.SetActive(mode_State == Mode.Build);
 
             // Camera Repositioning System:
             camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
             camera_Handler.user_Camera.transform.parent = cam_Pos;
 
-            current_Mode = current_Mode == Mode.Play ? Mode.Build : Mode.Play;
             changing_Mode = false;
+            return mode_State;
         }
+        return Mode.Idle;
     }
 
     // Inventory System:

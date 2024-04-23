@@ -16500,7 +16500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0302fa9e820f62489781d28cf3f27b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoundTimer: 0
+  round_Time: 0
+  intermission_Time: 0
   map_size: 0
   Players_Ready: 0
   P1_Points: 0
@@ -16513,6 +16514,7 @@ MonoBehaviour:
   P2S: {fileID: 158527131}
   players: 0
   players_Alive: 0
+  round_IP: 0
 --- !u!114 &585705883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78693,7 +78695,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1996051635}
   - component: {fileID: 1996051634}
-  - component: {fileID: 1996051633}
   - component: {fileID: 1996051637}
   m_Layer: 0
   m_Name: Main Camera
@@ -78702,14 +78703,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1996051633
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996051632}
-  m_Enabled: 1
 --- !u!20 &1996051634
 Camera:
   m_ObjectHideFlags: 0

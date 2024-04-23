@@ -6,12 +6,10 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private UIHandler UI;
     [Header("Round Info")]
     private int round;
     public int round_Time;
     public int intermission_Time;
-    public float map_size;
     public int Players_Ready;
     public enum game_State
     {
@@ -28,10 +26,8 @@ public class GameManager : MonoBehaviour
     [Header("player info")]
     public GameObject P1;
     public GameObject P2;
-    public UserHandler P1S;
-    public UserHandler P2S;
-    public int players;
-    public int players_Alive;
+    public UserHandler user_Handler_1;
+    public UserHandler user_Handler_2;
 
     public bool round_IP;
 
@@ -40,39 +36,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-
-        UI = GetComponent<UIHandler>();
-        if (!UI.on_Main_Menu)
-        {
-            P1S = P1.GetComponent<UserHandler>();
-            P2S = P2.GetComponent<UserHandler>();
-        }
-        StartCoroutine(Roundtime(round_Time = 60, game_State.Round));
-    }
-
-    public void EndGame()
-    {
-        winner = P1_Points > P2_Points ? 1 : 2;
-    }
-
-    public void EndRound()
-    {
-        if (round == 5)
-            EndGame();
-        round++;
-    }
-
-    public void StartRound()
-    {
-        P1S.points = 0;
-        P2S.points = 0;
-    }
-
-    public void Ready()
-    {
-        Players_Ready++;
-        if (Players_Ready == 2)
-            StartRound();
+        StartCoroutine(Roundtime(round_Time, game_State.Round));
     }
 
     IEnumerator Roundtime(int time, game_State state)
@@ -80,30 +44,34 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case game_State.Round:
+                user_Handler_1.Respawn();
+                user_Handler_2.Respawn();
+                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
+                user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Play);
                 while (round_Time > 0)
                 {
                     yield return new WaitForSeconds(1);
                     round_Time--;
-                    print(round_Time);
+                    print(round_Time > 60 ? "1:" + ((round_Time - 60 < 10) ? "0" : "") + (round_Time - 60) : round_Time == 60 ? "1:00" : "0:" + (round_Time == 0 ? "00" : (round_Time < 10 ? "0" : "") + round_Time));
                 }
                 if (round_Time == 0) // Start Intermission
-                    StartCoroutine(Roundtime(intermission_Time = 30, game_State.Intermission));
+                    StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
                 break;
             case game_State.Intermission:
+                user_Handler_1.Respawn();
+                user_Handler_2.Respawn();
+                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Build);
+                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Menu);
                 while (intermission_Time > 0)
                 {
                     yield return new WaitForSeconds(1);
                     intermission_Time--;
-                    print(intermission_Time);
+                    print("0:" + (intermission_Time == 0 ? "00" : (intermission_Time < 10 ? "0" : "") + intermission_Time));
                 }
                 print("Pause Game");
                 break;
         }
     }
-
-    //main menu options
-
-
 
     public void quit()
     {
