@@ -35,6 +35,7 @@ public class UserHandler : MonoBehaviour
     // User Input Variables:
     private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
+    public PlayerInputActions_1 playerInputActions_1;
     public enum User_Input
     {
         Move,
@@ -156,31 +157,35 @@ public class UserHandler : MonoBehaviour
 
         // Initiate User Input Variables:
         playerInput = User.GetComponent<PlayerInput>();
-        playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
+        if (gameObject.name == "Player_1")
+            playerInputActions = new PlayerInputActions();
+        else
+            playerInputActions_1 = new PlayerInputActions_1();
+
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Enable();
 
         // Movement Systems:
-        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, User_Input.Move); // Move Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Move.performed += phase => ControlledUpdate(phase, User_Input.Move); // Move Active
 
-        playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
-        playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Sprint.performed += Sprint; // Sprint Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Sprint.canceled += Sprint; // Sprint Inactive
 
-        playerInputActions.Player.Jump.performed += Jump; // Jump Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Jump.performed += Jump; // Jump Active
 
         // Action Systems:
         //playerInputActions.Player.Switch_Mode.performed += phase => SwapMode(phase, current_Mode == Mode.Play ? true : false); // Attack Active
 
-        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
 
-        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, User_Input.Reload); // Reload Active
-        playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Reload.performed += phase => ControlledUpdate(phase, User_Input.Reload); // Reload Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Start.performed += phase => ui_Handler.Pause(true);
 
-        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
-        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
 
         // Inventory Systems:
-        playerInputActions.Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
+        (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
     }
 
     // Mode Systems:
@@ -208,15 +213,15 @@ public class UserHandler : MonoBehaviour
 
             if (mode_State != Mode.Play)
             {
-                playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-                playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
-                playerInputActions.Player.Attack.performed += Build;
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.performed -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.canceled -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.performed += Build;
             }
             else
             {
-                playerInputActions.Player.Attack.performed -= Build;
-                playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-                playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.performed -= Build;
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
+                (gameObject.name == "Player_1" ? playerInputActions : playerInputActions_1).Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
             }
 
             // Object Swapping System:

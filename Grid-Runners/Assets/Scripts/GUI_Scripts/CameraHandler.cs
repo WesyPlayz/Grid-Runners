@@ -61,13 +61,13 @@ public class CameraHandler : MonoBehaviour
         origin_FOV = ui_Camera.fieldOfView; // Assigns base FOV
 
         // Input Initalization:
-        user_Handler.playerInputActions.Player.Scope.performed += ADS; // ADS Active
-        user_Handler.playerInputActions.Player.Scope.canceled += ADS; // ADS Inactive
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Scope.performed += ADS; // ADS Active
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Scope.canceled += ADS; // ADS Inactive
 
-        user_Handler.playerInputActions.Player.Peek_Right.performed += phase => Peek(phase, Side.Right); // Peek Right Active
-        user_Handler.playerInputActions.Player.Peek_Left.performed += phase => Peek(phase, Side.Left); // Peek Left Active
-        user_Handler.playerInputActions.Player.Peek_Right.canceled += phase => Peek(phase, Side.Right); // Peek Right Inactive
-        user_Handler.playerInputActions.Player.Peek_Left.canceled += phase => Peek(phase, Side.Left); // Peek Left Inactive
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Peek_Right.performed += phase => Peek(phase, Side.Right); // Peek Right Active
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Peek_Left.performed += phase => Peek(phase, Side.Left); // Peek Left Active
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Peek_Right.canceled += phase => Peek(phase, Side.Right); // Peek Right Inactive
+        (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.Peek_Left.canceled += phase => Peek(phase, Side.Left); // Peek Left Inactive
     }
 
     // View Mechanics:
@@ -75,8 +75,8 @@ public class CameraHandler : MonoBehaviour
     {
         if (user_Handler.current_Mode != UserHandler.Mode.Menu)
         {
-            float lookHorizontal = Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
-            float lookVertical = -Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
+            float lookHorizontal = Sensitivity * (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
+            float lookVertical = -Sensitivity * (player_Obj.name == "Player_1" ? user_Handler.playerInputActions : user_Handler.playerInputActions_1).Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
 
             if (lookHorizontal != 0 || lookVertical != 0) // Movement Check:
             {

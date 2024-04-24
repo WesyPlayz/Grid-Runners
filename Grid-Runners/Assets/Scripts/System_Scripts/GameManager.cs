@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
                 user_Handler_1.Respawn();
                 user_Handler_2.Respawn();
                 user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Build);
-                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Menu);
+                user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Menu);
                 while (intermission_Time > 0)
                 {
                     yield return new WaitForSeconds(1);
