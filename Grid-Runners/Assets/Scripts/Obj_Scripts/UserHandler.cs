@@ -16,8 +16,8 @@ public class UserHandler : MonoBehaviour
     [HideInInspector] public GameObject Neck;
 
     // User Physics Variables:
-    private CharacterController 
-        user_Controller, 
+    private CharacterController
+        user_Controller,
         spectator_Controller;
 
     private Collider body_Hitbox;
@@ -96,6 +96,7 @@ public class UserHandler : MonoBehaviour
     public ParticleSystem muzzle_Flash;
     public AudioSource pewpew;
     public AudioSource ReloadSound;
+    public AudioSource WalkSFX;
 
     public bool can_Attack = true;
     public bool can_Use_Action = true;
@@ -345,7 +346,7 @@ public class UserHandler : MonoBehaviour
         }
     }
 
-    // Health System:
+    // Damage System:
     public bool Damage(float dmg = 0) // Damage System:
     {
         if (Health <= 0) // Health Check:
@@ -354,6 +355,7 @@ public class UserHandler : MonoBehaviour
             Health = Mathf.Max(Health - dmg, 0);
         return true;
     }
+
     public void Respawn() // Respawn System:
     {
         User.transform.position = Spawn.transform.position; // Relocate User
@@ -371,8 +373,9 @@ public class UserHandler : MonoBehaviour
             Vector3 move_Direction = (current_Mode == Mode.Play ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, current_Mode == Mode.Play ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
             (current_Mode == Mode.Play ? user_Controller : spectator_Controller).Move(move_Direction * (is_Sprinting && ground ? sprint_Speed : walk_Speed)); // Move System & Speed Check
             yield return new WaitForSeconds(0.001f);
-        }    
+        }
     }
+
     public void Sprint(InputAction.CallbackContext phase) // Sprint System:
     {
         is_Sprinting = phase.performed ? true : false; // Sprint Check
@@ -381,6 +384,7 @@ public class UserHandler : MonoBehaviour
     {
         if (verticalVelocity <= -(gravity + 1) && phase.performed) // Jump Active:
             verticalVelocity = jumpForce;
+
     }
 
     // Action Systems:
@@ -419,3 +423,4 @@ public class UserHandler : MonoBehaviour
         item_Data.Equip_Weapon(this, (current_Slot == Slot.Primary ? 0 : 1), (current_Slot == Slot.Primary ? primary_Weapon : secondary_Weapon));
     }
 }
+//acording to all known laws of aviation, a bee shound not be able to fly. their wings are too small to lift their fat little bodies off the ground, but the bees, they dont care. and fly anyway.
