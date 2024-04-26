@@ -87,18 +87,7 @@ public class UIHandler : MonoBehaviour
 
     public void Pause(bool pausing)
     {
-        if (pausing)
-        {
-            gameManager.P1S.playerInputActions.Player.Disable();
-            gameManager.P2S.playerInputActions.Player.Disable();
-        }
-        else if (!pausing)
-        {
-            gameManager.P1S.playerInputActions.Player.Enable();
-            gameManager.P2S.playerInputActions.Player.Enable();
-        }
-        P1_Pause_Menu.SetActive(pausing);
-        P2_Pause_Menu.SetActive(pausing);
+        
         cursor_Handler1.in_Menu = pausing;
         cursor_Handler2.in_Menu = pausing;
 

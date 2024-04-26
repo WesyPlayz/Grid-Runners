@@ -6,6 +6,7 @@ using UnityEngine;
 using static Utilities.Collisions;
 using static Utilities.Generic;
 using UnityEngine.InputSystem;
+using static UserHandler;
 
 public class UserHandler : MonoBehaviour
 {
@@ -48,7 +49,8 @@ public class UserHandler : MonoBehaviour
     {
         Play,
         Build,
-        Menu
+        Menu,
+        Idle
     }
 
     // Play Mode Variables:
@@ -146,8 +148,6 @@ public class UserHandler : MonoBehaviour
         // Initiate User Script Variables:
         camera_Handler = user_Camera.GetComponent<CameraHandler>();
 
-        ui_Handler = GameObject.Find("GameManager").GetComponent<UIHandler>();
-
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<new_Item_Data>();
 
@@ -160,44 +160,135 @@ public class UserHandler : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
 
-        // Movement Systems:
-        playerInputActions.Player.Move.performed += phase => ControlledUpdate(phase, User_Input.Move); // Move Active
-
-        playerInputActions.Player.Sprint.performed += Sprint; // Sprint Active
-        playerInputActions.Player.Sprint.canceled += Sprint; // Sprint Inactive
-
-        playerInputActions.Player.Jump.performed += Jump; // Jump Active
-
-        // Action Systems:
-        playerInputActions.Player.Switch_Mode.performed += phase => SwapMode(phase, current_Mode == Mode.Play ? true : false); // Attack Active
-
-        playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-        playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
-
-        playerInputActions.Player.Reload.performed += phase => ControlledUpdate(phase, User_Input.Reload); // Reload Active
-        playerInputActions.Player.Start.performed += phase => ui_Handler.Pause(true);
-
         playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
         playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
+    }
 
-        // Inventory Systems:
-        playerInputActions.Player.Switch_Weapon.performed += phase => Switch_Weapons(phase); // Switch Weapons
+    // Current Binding Collection:
+    private Dictionary<string, Action<InputAction.CallbackContext>> bound_Actions = new Dictionary<string, Action<InputAction.CallbackContext>>();
+
+    // Control Binding System:
+    void BindActions(Mode mode)
+    {
+        // Movement Unbindings:
+        if (bound_Actions.ContainsKey("Move"))
+        {
+            playerInputActions.Player.Move.performed -= bound_Actions["Move"];
+            bound_Actions.Remove("Move");
+        }
+        if (bound_Actions.ContainsKey("Sprint"))
+        {
+            playerInputActions.Player.Sprint.performed -= bound_Actions["Sprint"];
+            playerInputActions.Player.Sprint.canceled -= bound_Actions["Sprint"];
+            bound_Actions.Remove("Sprint");
+        }
+        if (bound_Actions.ContainsKey("Jump"))
+        {
+            playerInputActions.Player.Jump.performed -= bound_Actions["Jump"];
+            bound_Actions.Remove("Jump");
+        }
+
+        // Action Unbindings
+        if (bound_Actions.ContainsKey("Attack"))
+        {
+            playerInputActions.Player.Attack.performed -= bound_Actions["Attack"];
+            playerInputActions.Player.Attack.canceled -= bound_Actions["Attack"];
+            bound_Actions.Remove("Attack");
+        }
+        else if (bound_Actions.ContainsKey("Build"))
+        {
+            playerInputActions.Player.Attack.performed -= bound_Actions["Build"];
+            bound_Actions.Remove("Build");
+        }
+        if (bound_Actions.ContainsKey("Reload"))
+        {
+            playerInputActions.Player.Reload.performed += bound_Actions["Reload"];
+            bound_Actions.Remove("Reload");
+        }
+
+        // Inventory Unbindings:
+        if (bound_Actions.ContainsKey("Switch Weapons"))
+        {
+            playerInputActions.Player.Switch_Weapon.performed += bound_Actions["Switch Weapons"];
+            bound_Actions.Remove("Switch Weapons");
+        }
+
+        // Bind Common Actions
+        if (mode != Mode.Menu)
+        {
+            // Movement Bindings:
+            if (!bound_Actions.ContainsKey("Move"))
+            {
+                Action<InputAction.CallbackContext> move_Action = phase => ControlledUpdate(phase, User_Input.Move);
+                playerInputActions.Player.Move.performed += move_Action;
+                bound_Actions.Add("Move", move_Action);
+            }
+            if (!bound_Actions.ContainsKey("Sprint"))
+            {
+                Action<InputAction.CallbackContext> sprint_Action = Sprint;
+                playerInputActions.Player.Sprint.performed += sprint_Action;
+                playerInputActions.Player.Sprint.canceled += sprint_Action;
+                bound_Actions.Add("Sprint", sprint_Action);
+            }
+        }
+
+        // Bind Specific Actions
+        if (mode == Mode.Play)
+        {
+            // Movement Bindings:
+            if (!bound_Actions.ContainsKey("Jump"))
+            {
+                Action<InputAction.CallbackContext> jump_Action = Jump;
+                playerInputActions.Player.Jump.performed += jump_Action;
+                bound_Actions.Add("Jump", jump_Action);
+            }
+
+            // Action Bindings:
+            if (!bound_Actions.ContainsKey("Attack"))
+            {
+                Action<InputAction.CallbackContext> attack_Action = phase => ControlledUpdate(phase, User_Input.Attack);
+                playerInputActions.Player.Attack.performed += attack_Action;
+                playerInputActions.Player.Attack.canceled += attack_Action;
+                bound_Actions.Add("Attack", attack_Action);
+            }
+            if (!bound_Actions.ContainsKey("Reload"))
+            {
+                Action<InputAction.CallbackContext> reload_Action = phase => ControlledUpdate(phase, User_Input.Reload);
+                playerInputActions.Player.Reload.performed += reload_Action;
+                bound_Actions.Add("Reload", reload_Action);
+            }
+
+            // Inventory Bindings:
+            if (!bound_Actions.ContainsKey("Switch Weapons"))
+            {
+                Action<InputAction.CallbackContext> switch_Weapons_Action = phase => Switch_Weapons(phase);
+                playerInputActions.Player.Switch_Weapon.performed += switch_Weapons_Action;
+                bound_Actions.Add("Switch Weapons", switch_Weapons_Action);
+            }
+        }
+        else if (mode == Mode.Build)
+        {
+            // Action Bindings:
+            if (!bound_Actions.ContainsKey("Build"))
+            {
+                Action<InputAction.CallbackContext> build_Action = Build;
+                playerInputActions.Player.Attack.performed += build_Action;
+                bound_Actions.Add("Build", build_Action);
+            }
+        }
     }
 
     // Mode Systems:
-    public void SwapMode(InputAction.CallbackContext phase, bool mode_State)
+    public Mode SwapMode(Mode mode_State)
     {
         if (!changing_Mode)
         {
             changing_Mode = true;
 
-            // Mode State ID:
-            Transform cam_Pos = mode_State ? camera_Handler.spec_Cam_Pos.transform : camera_Handler.user_Cam_Pos.transform;
-
             // User Protection System:
-            if (mode_State)
+            if (mode_State != Mode.Play)
             {
-                body_Hitbox_Bounds = body_Hitbox.bounds; // (Tutorial Only)
+                body_Hitbox_Bounds = body_Hitbox.bounds;
                 if (!can_Use_Action && is_Using_Action)
                 {
                     Item current_Item = item_Data.Items[(selected_Weapon == 0 ? primary_Weapon : secondary_Weapon)];
@@ -207,30 +298,22 @@ public class UserHandler : MonoBehaviour
                 }
             }
 
-            if (mode_State)
-            {
-                playerInputActions.Player.Attack.performed -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-                playerInputActions.Player.Attack.canceled -= phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
-                playerInputActions.Player.Attack.performed += Build;
-            }
-            else
-            {
-                playerInputActions.Player.Attack.performed -= Build;
-                playerInputActions.Player.Attack.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Active
-                playerInputActions.Player.Attack.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Attack Inactive
-            }
+            // Control Rebinding System:
+            BindActions(mode_State);
 
             // Object Swapping System:
-            User.SetActive(!mode_State);
-            user_Spectate.SetActive(mode_State);
+            User.SetActive(mode_State == Mode.Play);
+            user_Spectate.SetActive(mode_State == Mode.Build);
 
             // Camera Repositioning System:
+            Transform cam_Pos = mode_State == Mode.Build ? camera_Handler.spec_Cam_Pos.transform : mode_State == Mode.Play ? camera_Handler.user_Cam_Pos.transform : camera_Handler.menu_Cam_Pos.transform;
             camera_Handler.user_Camera.transform.SetPositionAndRotation(cam_Pos.position, cam_Pos.rotation);
             camera_Handler.user_Camera.transform.parent = cam_Pos;
 
-            current_Mode = current_Mode == Mode.Play ? Mode.Build : Mode.Play;
             changing_Mode = false;
+            return mode_State;
         }
+        return Mode.Idle;
     }
 
     // Inventory System:
@@ -424,4 +507,3 @@ public class UserHandler : MonoBehaviour
         item_Data.Equip_Weapon(this, (current_Slot == Slot.Primary ? 0 : 1), (current_Slot == Slot.Primary ? primary_Weapon : secondary_Weapon));
     }
 }
-//acording to all known laws of aviation, a bee shound not be able to fly. their wings are too small to lift their fat little bodies off the ground, but the bees, they dont care. and fly anyway.

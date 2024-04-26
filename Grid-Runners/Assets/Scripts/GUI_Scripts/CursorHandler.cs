@@ -28,7 +28,8 @@ public class CursorHandler : MonoBehaviour
     public bool in_Menu;
 
     private Vector3 right_Joystick_Input;
-    private Vector3 current_Cursor_Pos;
+    public Vector3 current_Cursor_Pos;
+    public RectTransform cursorRectTransform;
 
     [Header("user Variables")]
     [Range(1, 2)]
@@ -41,27 +42,31 @@ public class CursorHandler : MonoBehaviour
         user_Handler = player_Obj.GetComponent<UserHandler>();
 
         Cursor.lockState = CursorLockMode.Locked;
+        cursorRectTransform = GetComponent<RectTransform>();
 
+        /*
         Buttons[0].onClick.AddListener(() => Play_Game()); // Play Button - Main Menu
         Buttons[1].onClick.AddListener(() => Load_Menu_State("Open")); // Load Button - Main Menu
         Buttons[2].onClick.AddListener(() => Load_Menu_State("Close")); // Exit Button - Load Menu
 
         Buttons[3].onClick.AddListener(() => Quit_Game()); // Quit Button - Main Menu
+        */
     }
     void Update()
     {
-        if(in_Menu)
+        if (user_Handler.current_Mode == UserHandler.Mode.Menu)
         {
             float lookHorizontal = cursor_Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
             float lookVertical = -cursor_Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
             if (right_Joystick_Input.magnitude > cursor_Sensitivity)
-                current_Cursor_Pos = transform.position + new Vector3(lookHorizontal, lookVertical, 0) * cursor_Speed * Time.deltaTime;
+                cursorRectTransform.anchoredPosition = cursorRectTransform.anchoredPosition + new Vector2(lookHorizontal, lookVertical) * cursor_Speed * Time.deltaTime;
 
-            Vector3 clamped_Position = Camera.main.WorldToScreenPoint(current_Cursor_Pos);
+            Vector2 clamped_Position = cursorRectTransform.anchoredPosition;
             clamped_Position.x = Mathf.Clamp(clamped_Position.x, screen_Border, Screen.width - screen_Border);
             clamped_Position.y = Mathf.Clamp(clamped_Position.y, screen_Border, Screen.height - screen_Border);
-            transform.position = Camera.main.ScreenToWorldPoint(clamped_Position);
+            cursorRectTransform.anchoredPosition = clamped_Position;
 
+            /*
             if (Input.GetButtonDown("Start"))
             {
                 PauseGame();
@@ -118,6 +123,7 @@ public class CursorHandler : MonoBehaviour
                 else
                     End_Action();
             }
+            */
         }
     }
 
