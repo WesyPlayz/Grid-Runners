@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             case game_State.Round:
                 user_Handler_1.Respawn();
                 user_Handler_2.Respawn();
-                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
+                //user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
                 user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Play);
                 while (round_Time > 0)
                 {
@@ -60,15 +60,16 @@ public class GameManager : MonoBehaviour
             case game_State.Intermission:
                 user_Handler_1.Respawn();
                 user_Handler_2.Respawn();
-                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Build);
-                user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Menu);
+                //user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Build);
+                user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Menu);
                 while (intermission_Time > 0)
                 {
                     yield return new WaitForSeconds(1);
                     intermission_Time--;
                     print("0:" + (intermission_Time == 0 ? "00" : (intermission_Time < 10 ? "0" : "") + intermission_Time));
                 }
-                print("Pause Game");
+                if (intermission_Time == 0)
+                    StartCoroutine(Roundtime(round_Time, game_State.Round));
                 break;
         }
     }

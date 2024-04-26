@@ -21,7 +21,8 @@ public class CameraHandler : MonoBehaviour
 
     public GameObject
         user_Cam_Pos,
-        spec_Cam_Pos;
+        spec_Cam_Pos,
+        menu_Cam_Pos;
 
     [HideInInspector] public float origin_FOV;
 
