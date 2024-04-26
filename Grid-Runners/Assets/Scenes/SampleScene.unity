@@ -16503,8 +16503,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0302fa9e820f62489781d28cf3f27b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  round_Time: 20
-  intermission_Time: 20
+  round_Time: 300
+  intermission_Time: 100
   Players_Ready: 0
   P1_Points: 0
   P2_Points: 0

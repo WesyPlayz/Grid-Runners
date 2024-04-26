@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-
 public class GameManager : MonoBehaviour
 {
     [Header("Round Info")]
@@ -31,12 +30,17 @@ public class GameManager : MonoBehaviour
 
     public bool round_IP;
 
-
     // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
         StartCoroutine(Roundtime(round_Time, game_State.Round));
+    }
+
+    //converts Integers (time) into a string format (M,:,S0,S1)
+    string TimeToClock(int balls = 0)
+    {
+        return Mathf.Floor(balls/60)+":"+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)+(balls-((Mathf.Floor(balls/60)*60)+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)*10));
     }
 
     IEnumerator Roundtime(int time, game_State state)
@@ -52,7 +56,7 @@ public class GameManager : MonoBehaviour
                 {
                     yield return new WaitForSeconds(1);
                     round_Time--;
-                    print(round_Time > 60 ? "1:" + ((round_Time - 60 < 10) ? "0" : "") + (round_Time - 60) : round_Time == 60 ? "1:00" : "0:" + (round_Time == 0 ? "00" : (round_Time < 10 ? "0" : "") + round_Time));
+                    print(TimeToClock(round_Time));
                 }
                 if (round_Time == 0) // Start Intermission
                     StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
@@ -66,7 +70,7 @@ public class GameManager : MonoBehaviour
                 {
                     yield return new WaitForSeconds(1);
                     intermission_Time--;
-                    print("0:" + (intermission_Time == 0 ? "00" : (intermission_Time < 10 ? "0" : "") + intermission_Time));
+                    print(TimeToClock(intermission_Time));
                 }
                 if (intermission_Time == 0)
                     StartCoroutine(Roundtime(round_Time, game_State.Round));
