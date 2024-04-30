@@ -7,8 +7,8 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NonGrit_Mat
-  dynamicFriction: 0
-  staticFriction: 0
+  dynamicFriction: 3606969
+  staticFriction: 69420
   bounciness: 0
-  frictionCombine: 1
+  frictionCombine: 0
   bounceCombine: 0
