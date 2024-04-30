@@ -32,25 +32,16 @@ public class Melee : Item
         }
 
         item_Data.StartCoroutine(item_Data.Attack_Rate(user_Handler, fire_Rate));
+        charging_Time = 0f;
     }
 
-    public override void Aim(UserHandler user_Handler, bool is_Charging)
+    public override void Aim(UserHandler user_Handler, bool is_Blocking)
     {
-        if (is_Charging)
-        {
-            charging_Time = Time.time;
-        }
-        else
-            charging_Time = 0;
+        user_Handler.is_Blocking = is_Blocking;
     }
 
     public override void Action(UserHandler user_Handler)
     {
-
-    }
-
-    public void Blocking(UserHandler user_Handler, bool is_Blocking)
-    {
-        user_Handler.is_Blocking = is_Blocking;
+        charging_Time = Time.deltaTime;
     }
 }

@@ -332,6 +332,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""4c095330-0a06-4719-89ff-49bd3aa56434"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch_Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6c2a2184-dc7f-46c6-b499-b0b33325666e"",
                     ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",

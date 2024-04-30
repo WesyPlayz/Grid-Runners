@@ -58,13 +58,14 @@ public class GrenadeHandler : MonoBehaviour
 
             for (int i = 0; i < hits; i++)
             {
-                if (Hits[i].TryGetComponent<UserHandler>(out UserHandler UH))
+                if (Hits[i].TryGetComponent<Hitboxhandler>(out Hitboxhandler HB))
                 {
                     float distance = Vector3.Distance(hit.point, Hits[i].transform.position);
 
                     if (!Physics.Raycast(hit.point, (Hits[i].transform.position - hit.point).normalized, distance, Block_Layer.value))
                     {
-                        UH.Damage(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
+
+                        HB.GetComponent<UserHandler>().Damage(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
                     }
                 }
             }

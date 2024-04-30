@@ -382,7 +382,14 @@ public class UserHandler : MonoBehaviour
                             ranged_Item.Attack(this);
                     }
                     else if (current_Weapon is Melee melee_Item) // Melee Check:
-                        melee_Item.Attack(this);
+                    {
+                        if (phase.performed)
+                            melee_Item.Action(this);
+                        else if (phase.canceled)
+                            melee_Item.Attack(this);
+                        if (playerInputActions.Player.Scope.inProgress)
+                            melee_Item.Aim(this, true);
+                    }
                     else if (current_Weapon is Ordinance ordinance)
                         ordinance.Attack(this);
                     else

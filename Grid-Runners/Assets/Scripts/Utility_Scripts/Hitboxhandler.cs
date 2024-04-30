@@ -8,7 +8,7 @@ public class Hitboxhandler : MonoBehaviour
 {
     public GameObject Player;
 
-    private UserHandler user_Handler;
+    public UserHandler user_Handler;
     private Obj_State obj_Data;
 
     [Range(0, 2)]
