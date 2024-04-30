@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
+  m_Name: Water sprayer
+  m_EditorClassIdentifier: 
+  weapon_Prefab: {fileID: 0}
+  Damage: 0
+  speed_Mod: 1
+  Icon: {fileID: 0}
+  Ammo: {fileID: 0}
+  is_Hit_Scan: 0
+  is_Spread: 0
+  is_Auto: 0
+  projectile_Prefab: {fileID: 0}
+  max_Ammo: 0
+  bullet_Speed: 55.1
+  reload_Speed: 0.3
+  fire_Rate: 0
+  ADS_FOV: 0
+  ADS_Speed: 0
