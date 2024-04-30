@@ -406,10 +406,6 @@ public class UserHandler : MonoBehaviour
     {
         if (current_Mode == Mode.Play)
         {
-            // Health System:
-            if (!Damage()) // Health Check:
-                Respawn();
-
             // Gravity System:
             if (wasGrounded && !ground && verticalVelocity < 0) // Unlock Gravity:
                 verticalVelocity = 0;
@@ -435,7 +431,11 @@ public class UserHandler : MonoBehaviour
         if (Health <= 0) // Health Check:
             return false;
         else if (dmg > 0) // Damage Check:
+        {
             Health = Mathf.Max(Health - dmg, 0);
+            if (Health <= 0)
+                Respawn();
+        }
         return true;
     }
 

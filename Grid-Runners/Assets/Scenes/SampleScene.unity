@@ -7765,8 +7765,8 @@ MonoBehaviour:
   item_Data: {fileID: 430095512}
   current_Mode: 3
   Spawn: {fileID: 1822019094}
-  walk_Speed: 0
-  sprint_Speed: 0
+  walk_Speed: 0.05
+  sprint_Speed: 0.1
   points: 0
   points_Per_Kill: 0
   max_Health: 100
@@ -7798,8 +7798,8 @@ MonoBehaviour:
   max_Grenades: 4
   velocity: {x: 0, y: 0, z: 0}
   verticalVelocity: 0
-  gravity: 16
-  jumpForce: 10
+  gravity: 40
+  jumpForce: 13
   secondary_Obj: {fileID: 764515805}
   secondary_Data: {fileID: 0}
   is_Walking: 0
@@ -16484,6 +16484,7 @@ GameObject:
   - component: {fileID: 585705884}
   - component: {fileID: 585705883}
   - component: {fileID: 585705882}
+  - component: {fileID: 585705885}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -16568,6 +16569,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &585705885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585705881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: 2
+  m_AllowJoining: 1
+  m_JoinBehavior: 1
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Join
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: d41e5a8d-ec97-475b-8f01-6fd6a4cd33df
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 0}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &612706444 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}

@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        StartCoroutine(Roundtime(round_Time, game_State.Round));
+        //StartCoroutine(Roundtime(round_Time, game_State.Round));
     }
 
     IEnumerator Roundtime(int time, game_State state)
