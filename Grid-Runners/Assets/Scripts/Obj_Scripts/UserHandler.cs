@@ -481,7 +481,7 @@ public class UserHandler : MonoBehaviour
     // Action Systems:
     public void Use_Ability(InputAction.CallbackContext phase)
     {
-
+        
     }
     public void Build(InputAction.CallbackContext phase)
     {
@@ -490,16 +490,7 @@ public class UserHandler : MonoBehaviour
         {
             GameObject selected_Target = target.transform.gameObject;
             if (selected_Target.CompareTag("Grid_Tile"))
-                PlaceObject(selected_Target, target.normal);
-        }
-    }
-    private void PlaceObject(GameObject placement_Zone, Vector3 target_Normal) // Grid Placement System:
-    {
-        Bounds placement_Bounds = new Bounds(placement_Zone.transform.position + Vector3.Scale(target_Normal, placement_Zone.transform.localScale), placement_Zone.transform.localScale);
-        if (!placement_Bounds.Intersects(user_Spectate.GetComponent<Collider>().bounds) && !placement_Bounds.Intersects(body_Hitbox_Bounds) && Vector3.Distance(placement_Zone.transform.position, user_Spectate.transform.position) <= grid_Data.placement_Range)
-        {
-            GameObject new_Grid_Obj = Instantiate(grid_Data.grid_Col[grid_Data.current_Gird_Obj]);
-            new_Grid_Obj.transform.position = placement_Bounds.center;
+                PlaceObject(this, selected_Target, target.normal);
         }
     }
 
