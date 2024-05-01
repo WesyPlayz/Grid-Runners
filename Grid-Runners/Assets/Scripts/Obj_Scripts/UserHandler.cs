@@ -489,8 +489,8 @@ public class UserHandler : MonoBehaviour
         if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
         {
             GameObject selected_Target = target.transform.gameObject;
-            if (selected_Target.CompareTag("Grid_Tile"))
-                PlaceObject(this, selected_Target, target.normal);
+            if (selected_Target.CompareTag("Grid_Tile")) { }
+                //PlaceObject(this, selected_Target, target.normal);
         }
     }
 
