@@ -431,6 +431,7 @@ public class UserHandler : MonoBehaviour
             wasGrounded = ground;
             ground = user_Controller.isGrounded;
         }
+        print(user_Spectate + "     " + playerInput + "    " + playerInputActions);
     }
 
     // Damage System:

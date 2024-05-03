@@ -12,9 +12,12 @@ public class Speed_Boost : Mobility
     public float ability_Cooldown;
     public override void Use(UserHandler user_Handler)
     {
-        can_Use = false;
-        user_Handler.walk_Speed *= speed_modifier;
-        ability_Timer(user_Handler, speed_Boost_length);
+        if (can_Use)
+        {
+            can_Use = false;
+            user_Handler.walk_Speed *= speed_modifier;
+            ability_Timer(user_Handler, speed_Boost_length);
+        }
     }
 
     public IEnumerator ability_Timer(UserHandler user_Handler, float time)

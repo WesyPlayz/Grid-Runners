@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Water sprayer
   m_EditorClassIdentifier: 
   weapon_Prefab: {fileID: 0}
-  Damage: 0
+  Damage: 5
   speed_Mod: 1
   Icon: {fileID: 0}
   Ammo: {fileID: 0}

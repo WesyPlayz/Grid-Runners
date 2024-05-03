@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
+    private PlayerInputManager playerInputManager;
     [Header("Round Info")]
     private int round;
     public int round_Time;
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         //StartCoroutine(Roundtime(round_Time, game_State.Round));
+        playerInputManager = GetComponent<PlayerInputManager>();
     }
 
     //converts Integers (time) into a string format (M,:,S0,S1)
