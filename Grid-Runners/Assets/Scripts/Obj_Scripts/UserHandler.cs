@@ -76,6 +76,7 @@ public class UserHandler : MonoBehaviour
     [Header("Weapon Variables")]
     public GameObject item_Holder;
     public GameObject Weapon;
+    public GameObject current_ability;
     public GameObject Projectiles;
     public bool is_Blocking;
 
@@ -551,5 +552,10 @@ public class UserHandler : MonoBehaviour
             secondary_Ammo = Ammo;
         current_Slot = (current_Slot == Slot.Primary ? Slot.Secondary : Slot.Primary);
         item_Data.Equip_Weapon(this, (current_Slot == Slot.Primary ? 0 : 1), (current_Slot == Slot.Primary ? primary_Weapon : secondary_Weapon));
+    }
+
+    public void Buy_Ability(GameObject ability)
+    {
+        current_ability = ability;
     }
 }
