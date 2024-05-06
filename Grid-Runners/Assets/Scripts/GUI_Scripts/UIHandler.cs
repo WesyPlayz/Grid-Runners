@@ -34,6 +34,10 @@ public class UIHandler : MonoBehaviour
     public GameObject P2_Shop_Menu;
     public GameObject hyper_Blaster;
     public GameObject hyper_Blaster2;
+    public GameObject P1_Weapons;
+    public GameObject P2_Weapons;
+    public GameObject P1_Abilities;
+    public GameObject P2_Abilities;
 
     [Header("Sounds")]
     public AudioClip Click1;
@@ -118,5 +122,30 @@ public class UIHandler : MonoBehaviour
         cursor_Handler2.in_Menu = false;
         P1_Shop_Menu.SetActive(false);
         P2_Shop_Menu.SetActive(false);
+    }
+
+    public void Toggle_Abilities(int player_Going)
+    {
+        if (player_Going == 1)
+        {
+            P1_Weapons.SetActive(false);
+            P1_Abilities.SetActive(true);
+        }
+        else if (player_Going == 2)
+        {
+            P1_Weapons.SetActive(true);
+            P1_Abilities.SetActive(false);
+        }
+
+        else if (player_Going == 3)
+        {
+            P2_Weapons.SetActive(false);
+            P2_Abilities.SetActive(true);
+        }
+        else if (player_Going == 4)
+        {
+            P2_Weapons.SetActive(true);
+            P2_Abilities.SetActive(false);
+        }
     }
 }

@@ -9,17 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd6d7cdf2f92c54a91a4c82560224ca, type: 3}
-  m_Name: Pool Noodle
+  m_Script: {fileID: 11500000, guid: f2f78c0d91a19ad47b0631940ccf4455, type: 3}
+  m_Name: Water balloon
   m_EditorClassIdentifier: 
   weapon_Prefab: {fileID: 0}
-  Damage: 30
-  speed_Mod: 1
+  Damage: 50
+  speed_Mod: 0
   Icon: {fileID: 0}
-  melee_prefab: {fileID: 0}
-  is_Charging: 0
-  charging_Time: 0
-  min_dmg: 40
-  max_dmg: 80
-  range: 10
-  fire_Rate: 0.25
+  is_Auto: 0
+  is_Impact: 1
+  projectile_Prefab: {fileID: 0}
+  held_Grenade: {fileID: 0}
+  max_Ammo: 4
+  ammo: 4
+  fuse_Time: 0
+  bullet_Speed: 43.7
+  reload_Speed: 0
+  fire_Rate: 0
