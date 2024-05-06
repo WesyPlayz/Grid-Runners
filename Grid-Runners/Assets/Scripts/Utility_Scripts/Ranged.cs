@@ -55,6 +55,7 @@ public class Ranged : Item
 
         new_Projectile.transform.SetPositionAndRotation(user_Handler.fire_Point.transform.position, user_Handler.fire_Point.transform.rotation);
         new_Projectile.GetComponent<Rigidbody>().AddForce(user_Handler.fire_Point.transform.forward * bullet_Speed, ForceMode.Impulse);
+        new_Projectile.GetComponent<ProjectileHandler>().dmg = Damage;
 
         user_Handler.muzzle_Flash.Play();
 

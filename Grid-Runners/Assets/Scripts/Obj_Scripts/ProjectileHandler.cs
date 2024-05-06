@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProjectileHandler : MonoBehaviour
 {
+    public int dmg;
     void OnCollisionEnter(Collision obj) // Hit Object:
     {
         if (obj.gameObject.layer == LayerMask.NameToLayer("Terrain") && !obj.collider.isTrigger)

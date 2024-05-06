@@ -29,7 +29,7 @@ public class Hitboxhandler : MonoBehaviour
 
         if (current_Obj.layer == LayerMask.NameToLayer("Projectile")) // Projectile Collision:
         {
-            // put damage here
+            user_Handler.Damage(current_Obj.GetComponent<ProjectileHandler>().dmg);
         }
     }
 }
