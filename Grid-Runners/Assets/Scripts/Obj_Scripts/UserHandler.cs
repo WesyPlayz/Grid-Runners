@@ -362,6 +362,54 @@ public class UserHandler : MonoBehaviour
     }
 
     // Control Terminal:
+    public void Move_Init(InputAction.CallbackContext phase)
+    {
+        if (phase.performed && !is_Walking) // Move Active:
+            StartCoroutine(Move(is_Walking = true));
+    }
+
+    public void Attack_Init(InputAction.CallbackContext phase)
+    {
+        if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
+        {
+            can_Attack = false;
+            if (current_Weapon is Ranged ranged_Item && Ammo > 0) // Range Check:
+            {
+                if (ranged_Item.is_Auto) // Auto Check:
+                    item_Data.StartCoroutine(item_Data.Fire_Rate(this, ranged_Item, is_Attacking = true));
+                else
+                    ranged_Item.Attack(this);
+            }
+            else if (current_Weapon is Melee melee_Item) // Melee Check:
+            {
+                if (phase.performed)
+                    melee_Item.Action(this);
+                else if (phase.canceled)
+                    melee_Item.Attack(this);
+                if (playerInputActions.Player.Scope.inProgress)
+                    melee_Item.Aim(this, true);
+            }
+            else if (current_Weapon is Ordinance ordinance)
+                ordinance.Attack(this);
+            else
+                can_Attack = true;
+        }
+        else if (phase.canceled && is_Attacking) // Attack Inactive:
+            is_Attacking = false;
+    }
+
+    public void Reload_Init(InputAction.CallbackContext phase)
+    {
+        if (current_Weapon is Ranged ranged_Weapon) // Range Check:
+        {
+            if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo) // Reload Active:
+            {
+                can_Attack = false;
+                ranged_Weapon.Reload(this);
+            }
+        }
+    }
+
     public void ControlledUpdate(InputAction.CallbackContext phase, User_Input input)
     {
         switch (input) // Filter
@@ -472,7 +520,7 @@ public class UserHandler : MonoBehaviour
     {
         is_Sprinting = phase.performed ? true : false; // Sprint Check
     }
-    private void Jump(InputAction.CallbackContext phase) // Jump System:
+    public void Jump(InputAction.CallbackContext phase) // Jump System:
     {
         if (verticalVelocity <= -(gravity + 1) && phase.performed) // Jump Active:
             verticalVelocity = jumpForce;

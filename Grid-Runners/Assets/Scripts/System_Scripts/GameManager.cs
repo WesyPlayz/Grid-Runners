@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public UserHandler user_Handler_1;
     public UserHandler user_Handler_2;
 
+    [SerializeField] public List<GameObject> Players = new List<GameObject> { };
+
     public bool round_IP;
 
     // Start is called before the first frame update
@@ -40,10 +42,18 @@ public class GameManager : MonoBehaviour
         playerInputManager = GetComponent<PlayerInputManager>();
     }
 
-    //converts Integers (time) into a string format (M,:,S0,S1)
     string TimeToClock(int balls = 0)
     {
         return Mathf.Floor(balls/60)+":"+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)+(balls-((Mathf.Floor(balls/60)*60)+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)*10));
+    }
+
+    public void Player_Init()
+    {
+        print("Hello World");
+    }
+    public void Player_End()
+    {
+        print("Goodbye World");
     }
 
     IEnumerator Roundtime(int time, game_State state)
