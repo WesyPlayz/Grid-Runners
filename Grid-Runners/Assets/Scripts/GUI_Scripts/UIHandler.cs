@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-
 public class UIHandler : MonoBehaviour
 {
     private GameManager gameManager;
@@ -44,7 +43,6 @@ public class UIHandler : MonoBehaviour
     public AudioClip Hover1;
     public AudioClip Hover2;
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GetComponent<GameManager>();
@@ -69,7 +67,7 @@ public class UIHandler : MonoBehaviour
             //EventSystem.current.SetSelectedGameObject(null);
             //EventSystem.current.SetSelectedGameObject(Back);
         }
-        if (!going)
+        else
         {
             cursor_Handler1.in_Menu = false;
             cursor_Handler2.in_Menu = false;
@@ -112,8 +110,6 @@ public class UIHandler : MonoBehaviour
             //EventSystem.current.SetSelectedGameObject(null);
             //EventSystem.current.SetSelectedGameObject(hyper_Blaster2);
         }
-
-        
     }
 
     public void Close_shop()
