@@ -41,7 +41,7 @@ public class Ranged : Item
                     target_Handler.Damage(Damage);
 
                     if (target_Handler.Health <= 0)
-                        user_Handler.points += user_Handler.points_Per_Kill;
+                        user_Handler.Points += user_Handler.points_Per_Kill;
                 }
                 else if (selected_Target.CompareTag("Dummy"))
                 {
