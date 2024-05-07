@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
 {
     private PlayerInputManager playerInputManager;
     [Header("Round Info")]
-    private int round;
+    public int max_Rounds;
     public int round_Time;
+    public int current_Round_Time;
     public int intermission_Time;
+    public int current_Intermission_Time;
     public int Players_Ready;
     public enum game_State
     {
@@ -34,11 +36,13 @@ public class GameManager : MonoBehaviour
 
     public bool round_IP;
 
+    public int current_Round;
+
     // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
-        //StartCoroutine(Roundtime(round_Time, game_State.Round));
+        StartCoroutine(Roundtime(round_Time, game_State.Round));
         playerInputManager = GetComponent<PlayerInputManager>();
     }
 
@@ -58,37 +62,48 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Roundtime(int time, game_State state)
     {
-        switch (state)
+        if (current_Round != max_Rounds)
         {
-            case game_State.Round:
-                user_Handler_1.Respawn();
-                user_Handler_2.Respawn();
-                //user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
-                user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Play);
-                while (round_Time > 0)
-                {
-                    yield return new WaitForSeconds(1);
-                    round_Time--;
-                    print(TimeToClock(round_Time));
-                }
-                if (round_Time == 0) // Start Intermission
-                    StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
-                break;
-            case game_State.Intermission:
-                user_Handler_1.Respawn();
-                user_Handler_2.Respawn();
-                //user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Build);
-                user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Menu);
-                while (intermission_Time > 0)
-                {
-                    yield return new WaitForSeconds(1);
-                    intermission_Time--;
-                    print(TimeToClock(intermission_Time));
-                }
-                if (intermission_Time == 0)
-                    StartCoroutine(Roundtime(round_Time, game_State.Round));
-                break;
+            switch (state)
+            {
+                case game_State.Round: // Round
+                    current_Round++;
+                    user_Handler_1.Respawn();
+                    user_Handler_2.Respawn();
+                    user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
+                    user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Play);
+
+                    current_Round_Time = round_Time;
+                    while (current_Round_Time > 0)
+                    {
+                        yield return new WaitForSeconds(1);
+                        current_Round_Time--;
+                        print(TimeToClock(current_Round_Time));
+                    }
+                    if (current_Round_Time == 0) // Start Intermission
+                        StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
+                    break;
+                case game_State.Intermission: // Intermission
+                    user_Handler_1.Respawn();
+                    user_Handler_2.Respawn();
+                    if (user_Handler_1.Points != user_Handler_2.Points)
+                        winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
+                    user_Handler_1.current_Mode = user_Handler_1.SwapMode(winner == 1 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
+                    user_Handler_2.current_Mode = user_Handler_2.SwapMode(winner == 2 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
+
+                    current_Intermission_Time = intermission_Time;
+                    while (current_Intermission_Time > 0)
+                    {
+                        yield return new WaitForSeconds(1);
+                        current_Intermission_Time--;
+                        print(TimeToClock(current_Intermission_Time));
+                    }
+                    if (current_Intermission_Time == 0) // Start Round
+                        StartCoroutine(Roundtime(round_Time, game_State.Round));
+                    break;
+            }  
         }
+        print("Game Over");
     }
 
     public void quit()

@@ -6,9 +6,8 @@ using UnityEngine;
 using static Utilities.Collisions;
 using static Utilities.Generic;
 using UnityEngine.InputSystem;
-using static UserHandler;
 
-public class UserHandler : MonoBehaviour
+public abstract class UserHandler : MonoBehaviour
 {
     [Header("User Variables")]
     public GameObject User;
@@ -59,7 +58,7 @@ public class UserHandler : MonoBehaviour
     public float walk_Speed;
     public float sprint_Speed;
 
-    public int points;
+    public int Points;
     public int points_Per_Kill;
 
     private bool changing_Mode;
@@ -157,13 +156,17 @@ public class UserHandler : MonoBehaviour
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
 
         // Initiate User Input Variables:
-        playerInput = User.GetComponent<PlayerInput>();
-        playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
+        //playerInput = User.GetComponent<PlayerInput>();
+        //playerInputActions = new PlayerInputActions();
+        //playerInputActions.Player.Enable();
 
-        playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
-        playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
+        //Action<InputAction.CallbackContext> build_Action = Build;
+        //playerInputActions.Player.Attack.performed += build_Action;
+
+        //playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
+        //playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
     }
+    public abstract void Init();
 
     // Current Binding Collection:
     private Dictionary<string, Action<InputAction.CallbackContext>> bound_Actions = new Dictionary<string, Action<InputAction.CallbackContext>>();
@@ -540,7 +543,7 @@ public class UserHandler : MonoBehaviour
         {
             GameObject selected_Target = target.transform.gameObject;
             if (selected_Target.CompareTag("Grid_Tile")) { }
-                //PlaceObject(this, selected_Target, target.normal);
+                grid_Data.PlaceObject(this, selected_Target, target.normal);
         }
     }
 
