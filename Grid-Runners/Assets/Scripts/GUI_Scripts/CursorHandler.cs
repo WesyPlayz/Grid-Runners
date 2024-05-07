@@ -1,15 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
 using TMPro;
-
 using System.Security.Cryptography.X509Certificates;
-
 public class CursorHandler : MonoBehaviour
 {
     [SerializeField] private List<Button> Buttons = new List<Button>();
