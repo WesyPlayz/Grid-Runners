@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
-  m_Name: WEEEEE
+  m_Name: Hyper Blaster
   m_EditorClassIdentifier: 
   weapon_Prefab: {fileID: 8392791533106628191, guid: 02aa2f4dc2d054848931e239a39b5480, type: 3}
   Damage: 12

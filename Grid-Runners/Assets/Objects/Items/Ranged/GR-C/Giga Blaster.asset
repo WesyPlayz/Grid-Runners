@@ -17,12 +17,12 @@ MonoBehaviour:
   speed_Mod: 0
   Icon: {fileID: 21300000, guid: 8f66244be5f0c9c4e9cbe45f36d44765, type: 3}
   Ammo: {fileID: 21300000, guid: 37e47645e0e03734b969a049f1e9ecbc, type: 3}
-  is_Hit_Scan: 0
+  is_Hit_Scan: 1
   is_Spread: 0
   is_Auto: 0
-  projectile_Prefab: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
+  projectile_Prefab: {fileID: 9020964981694467796, guid: 29993417de3794840b85d671bed4e9c1, type: 3}
   max_Ammo: 5
-  bullet_Speed: 75
+  bullet_Speed: 100
   reload_Speed: 0.5
   fire_Rate: 0.2
   ADS_FOV: 55.4

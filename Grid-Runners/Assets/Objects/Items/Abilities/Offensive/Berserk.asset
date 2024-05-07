@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b82153cc8ff02fe40be4c49c023b6c83, type: 3}
+  m_Name: Berserk
+  m_EditorClassIdentifier: 
+  Cooldown: 0
+  can_Use: 0
+  damage_Modifier: 1.25
+  fire_Rate_Modifier: 0
+  speed_Modifer: 0
+  ability_Time: 0
+  ability_Cooldown: 0
