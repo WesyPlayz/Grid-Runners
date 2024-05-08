@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,12 +12,23 @@ public class User_1 : UserHandler
     {
         base.Awake();
         Actions = new PlayerInputActions();
+
         Gamepad[] gamepads = Gamepad.all.ToArray();
+        print(gamepads[0]);
+        print(gamepads[1]);
+
         if (gamepads.Length > 1)
+        {
             player_Input.SwitchCurrentControlScheme("Controller", gamepads[1]);
-        else
-            player_Input.SwitchCurrentControlScheme("Computer", Keyboard.current, Mouse.current);
-        Actions.user_Input_1.Enable();
+            Actions.user_Input_1.Enable();
+            player_Input.user.UnpairDevice(gamepads[0]);
+            player_Input.user.UnpairDevice(gamepads[1]);
+        }
+    }
+
+    private void Update()
+    {
+        
     }
 
     // Control Binding System:

@@ -1,3 +1,5 @@
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +20,11 @@ public class User_2 : UserHandler
             player_Input.SwitchCurrentControlScheme("Controller", gamepads[0]);
             Actions.user_Input_2.Enable();
         }
+    }
+
+    private void Update()
+    {
+        player_Input.user.UnpairDevices();
     }
 
     // Control Binding System:

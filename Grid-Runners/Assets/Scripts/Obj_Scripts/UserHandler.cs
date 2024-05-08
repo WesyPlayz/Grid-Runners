@@ -321,6 +321,8 @@ public abstract class UserHandler : MonoBehaviour
     }
     public void FixedUpdate()
     {
+
+
         if (current_Mode == Mode.Play)
         {
             // Gravity System:
