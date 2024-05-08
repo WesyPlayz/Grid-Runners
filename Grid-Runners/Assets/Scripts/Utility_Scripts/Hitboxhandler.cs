@@ -8,7 +8,7 @@ public class Hitboxhandler : MonoBehaviour
 {
     public GameObject Player;
 
-    private UserHandler user_Handler;
+    public UserHandler user_Handler;
     private Obj_State obj_Data;
 
     [Range(0, 2)]
@@ -27,23 +27,9 @@ public class Hitboxhandler : MonoBehaviour
         if (current_Obj.CompareTag("Kill"))
             user_Handler.Damage(user_Handler.max_Health);
 
-        if (current_Obj.layer == LayerMask.NameToLayer("Terrain")) // Terrain Collision:
+        if (current_Obj.layer == LayerMask.NameToLayer("Projectile")) // Projectile Collision:
         {
-            bool found_Floor = FindSurfaceType("Floor", sender, Player);
-            bool found_Wall = FindSurfaceType("Wall", sender, Player);
-            if (found_Floor)
-                user_Handler.on_Floor = true;
-            else if (found_Wall)
-                user_Handler.on_Wall = true;
+            user_Handler.Damage(current_Obj.GetComponent<ProjectileHandler>().dmg);
         }
-        else if (current_Obj.layer == LayerMask.NameToLayer("Projectile")) // Projectile Collision:
-        {
-            // put damage here
-        }
-    }
-    void OnCollisionExit(Collision sender)
-    {
-        user_Handler.on_Floor = false;
-        user_Handler.on_Wall = false;
     }
 }

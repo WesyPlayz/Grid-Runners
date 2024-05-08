@@ -5,12 +5,12 @@ using UnityEngine;
 public class GrenadeHandler : MonoBehaviour
 {
     public bool imediate_Explosion = false;
-    private bool startedCharging = false;
+    public bool startedCharging = false;
 
     public LayerMask hit_Layer;
     public LayerMask Block_Layer;
 
-    public GameObject explosion_Effect;
+    public GameObject boomparticle;
     public AudioSource boomy;
 
     public float blast_Radius;
@@ -24,28 +24,21 @@ public class GrenadeHandler : MonoBehaviour
     public AudioSource mySpeaker;
     public float volume;
     public AudioClip charge;
-    public AudioClip boom;
+    public AudioSource pin;
+    public AudioClip Fuse;
+    public AudioClip Boom;
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        mySpeaker.PlayOneShot(Fuse, volume);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        blast_Delay -= Time.deltaTime;
-
         if (!startedCharging)
         {
             mySpeaker.PlayOneShot(charge);
             startedCharging = true;
         }
-
-
-        if (blast_Delay <= 0)
-            explode();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -56,25 +49,33 @@ public class GrenadeHandler : MonoBehaviour
 
     void explode()
     {
-        //Instantiate(explosion_Effect, transform.position, transform.rotation); need effect
-        mySpeaker.PlayOneShot(boom, volume);
+        GameObject b = Instantiate(boomparticle, transform.position, transform.rotation);
+        Destroy(b, 1);
+        mySpeaker.PlayOneShot(Boom, volume);
         if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit))
         {
             int hits = Physics.OverlapSphereNonAlloc(hit.point, blast_Radius, Hits, hit_Layer);
 
             for (int i = 0; i < hits; i++)
             {
-                if (Hits[i].TryGetComponent<UserHandler>(out UserHandler UH))
+                if (Hits[i].TryGetComponent<Hitboxhandler>(out Hitboxhandler HB))
                 {
                     float distance = Vector3.Distance(hit.point, Hits[i].transform.position);
 
                     if (!Physics.Raycast(hit.point, (Hits[i].transform.position - hit.point).normalized, distance, Block_Layer.value))
                     {
-                        UH.Damage(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
+
+                        HB.GetComponent<UserHandler>().Damage(Mathf.FloorToInt(Mathf.Lerp(max_dmg, min_dmg, distance / blast_Radius)));
                     }
                 }
             }
         }
         Destroy(gameObject);
+    }
+
+    public IEnumerator fuse_delay()
+    {
+        yield return new WaitForSeconds(blast_Delay);
+        explode();
     }
 }

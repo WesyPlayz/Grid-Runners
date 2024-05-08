@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
+  m_Name: Giga Blaster
+  m_EditorClassIdentifier: 
+  weapon_Prefab: {fileID: 919132149155446097, guid: 18c3beee4139f4c4c881e9c7d5186388, type: 3}
+  Damage: 0
+  speed_Mod: 0
+  Icon: {fileID: 21300000, guid: 8f66244be5f0c9c4e9cbe45f36d44765, type: 3}
+  Ammo: {fileID: 21300000, guid: 37e47645e0e03734b969a049f1e9ecbc, type: 3}
+  is_Hit_Scan: 1
+  is_Spread: 0
+  is_Auto: 0
+  projectile_Prefab: {fileID: 9020964981694467796, guid: 29993417de3794840b85d671bed4e9c1, type: 3}
+  max_Ammo: 5
+  bullet_Speed: 100
+  reload_Speed: 0.5
+  fire_Rate: 0.2
+  ADS_FOV: 55.4
+  ADS_Speed: 49.7
