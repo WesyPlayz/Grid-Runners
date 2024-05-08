@@ -28,4 +28,34 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(temp);
     }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void Shoot(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void ADS(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void Sprint(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void Knife(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void Grenade(InputAction.CallbackContext context)
+    {
+
+    }
 }
