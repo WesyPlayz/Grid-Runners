@@ -33,13 +33,18 @@ public abstract class UserHandler : MonoBehaviour
     [HideInInspector] public new_Item_Data item_Data;
 
     // User Input Variables:
-    private PlayerInput playerInput;
-    public PlayerInputActions playerInputActions;
+    public PlayerInputActions Actions;
+    public PlayerInput player_Input;
     public enum User_Input
     {
         Move,
         Attack,
         Reload
+    }
+    public enum User_Axis
+    {
+        Horizontal,
+        Vertical
     }
 
     [Header("Data Variables")]
@@ -134,6 +139,12 @@ public abstract class UserHandler : MonoBehaviour
     public bool ground = false;
     public bool wasGrounded;
 
+    // Input Initiation System:
+    protected virtual void Awake()
+    {
+
+    }
+
     // Variable Initialization System:
     private void Start()
     {
@@ -166,120 +177,14 @@ public abstract class UserHandler : MonoBehaviour
         //playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
         //playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
     }
-    public abstract void Init();
 
     // Current Binding Collection:
-    private Dictionary<string, Action<InputAction.CallbackContext>> bound_Actions = new Dictionary<string, Action<InputAction.CallbackContext>>();
+    public Dictionary<string, Action<InputAction.CallbackContext>> bound_Actions = new Dictionary<string, Action<InputAction.CallbackContext>>();
 
-    // Control Binding System:
-    void BindActions(Mode mode)
+
+    protected virtual void BindActions(Mode mode)
     {
-        // Movement Unbindings:
-        if (bound_Actions.ContainsKey("Move"))
-        {
-            playerInputActions.Player.Move.performed -= bound_Actions["Move"];
-            bound_Actions.Remove("Move");
-        }
-        if (bound_Actions.ContainsKey("Sprint"))
-        {
-            playerInputActions.Player.Sprint.performed -= bound_Actions["Sprint"];
-            playerInputActions.Player.Sprint.canceled -= bound_Actions["Sprint"];
-            bound_Actions.Remove("Sprint");
-        }
-        if (bound_Actions.ContainsKey("Jump"))
-        {
-            playerInputActions.Player.Jump.performed -= bound_Actions["Jump"];
-            bound_Actions.Remove("Jump");
-        }
 
-        // Action Unbindings
-        if (bound_Actions.ContainsKey("Attack"))
-        {
-            playerInputActions.Player.Attack.performed -= bound_Actions["Attack"];
-            playerInputActions.Player.Attack.canceled -= bound_Actions["Attack"];
-            bound_Actions.Remove("Attack");
-        }
-        else if (bound_Actions.ContainsKey("Build"))
-        {
-            playerInputActions.Player.Attack.performed -= bound_Actions["Build"];
-            bound_Actions.Remove("Build");
-        }
-        if (bound_Actions.ContainsKey("Reload"))
-        {
-            playerInputActions.Player.Reload.performed += bound_Actions["Reload"];
-            bound_Actions.Remove("Reload");
-        }
-
-        // Inventory Unbindings:
-        if (bound_Actions.ContainsKey("Switch Weapons"))
-        {
-            playerInputActions.Player.Switch_Weapon.performed += bound_Actions["Switch Weapons"];
-            bound_Actions.Remove("Switch Weapons");
-        }
-
-        // Bind Common Actions
-        if (mode != Mode.Menu)
-        {
-            // Movement Bindings:
-            if (!bound_Actions.ContainsKey("Move"))
-            {
-                Action<InputAction.CallbackContext> move_Action = phase => ControlledUpdate(phase, User_Input.Move);
-                playerInputActions.Player.Move.performed += move_Action;
-                bound_Actions.Add("Move", move_Action);
-            }
-            if (!bound_Actions.ContainsKey("Sprint"))
-            {
-                Action<InputAction.CallbackContext> sprint_Action = Sprint;
-                playerInputActions.Player.Sprint.performed += sprint_Action;
-                playerInputActions.Player.Sprint.canceled += sprint_Action;
-                bound_Actions.Add("Sprint", sprint_Action);
-            }
-        }
-
-        // Bind Specific Actions
-        if (mode == Mode.Play)
-        {
-            // Movement Bindings:
-            if (!bound_Actions.ContainsKey("Jump"))
-            {
-                Action<InputAction.CallbackContext> jump_Action = Jump;
-                playerInputActions.Player.Jump.performed += jump_Action;
-                bound_Actions.Add("Jump", jump_Action);
-            }
-
-            // Action Bindings:
-            if (!bound_Actions.ContainsKey("Attack"))
-            {
-                Action<InputAction.CallbackContext> attack_Action = phase => ControlledUpdate(phase, User_Input.Attack);
-                playerInputActions.Player.Attack.performed += attack_Action;
-                playerInputActions.Player.Attack.canceled += attack_Action;
-                bound_Actions.Add("Attack", attack_Action);
-            }
-            if (!bound_Actions.ContainsKey("Reload"))
-            {
-                Action<InputAction.CallbackContext> reload_Action = phase => ControlledUpdate(phase, User_Input.Reload);
-                playerInputActions.Player.Reload.performed += reload_Action;
-                bound_Actions.Add("Reload", reload_Action);
-            }
-
-            // Inventory Bindings:
-            if (!bound_Actions.ContainsKey("Switch Weapons"))
-            {
-                Action<InputAction.CallbackContext> switch_Weapons_Action = phase => Switch_Weapons(phase);
-                playerInputActions.Player.Switch_Weapon.performed += switch_Weapons_Action;
-                bound_Actions.Add("Switch Weapons", switch_Weapons_Action);
-            }
-        }
-        else if (mode == Mode.Build)
-        {
-            // Action Bindings:
-            if (!bound_Actions.ContainsKey("Build"))
-            {
-                Action<InputAction.CallbackContext> build_Action = Build;
-                playerInputActions.Player.Attack.performed += build_Action;
-                bound_Actions.Add("Build", build_Action);
-            }
-        }
     }
 
     // Mode Systems:
@@ -366,54 +271,6 @@ public abstract class UserHandler : MonoBehaviour
     }
 
     // Control Terminal:
-    public void Move_Init(InputAction.CallbackContext phase)
-    {
-        if (phase.performed && !is_Walking) // Move Active:
-            StartCoroutine(Move(is_Walking = true));
-    }
-
-    public void Attack_Init(InputAction.CallbackContext phase)
-    {
-        if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
-        {
-            can_Attack = false;
-            if (current_Weapon is Ranged ranged_Item && Ammo > 0) // Range Check:
-            {
-                if (ranged_Item.is_Auto) // Auto Check:
-                    item_Data.StartCoroutine(item_Data.Fire_Rate(this, ranged_Item, is_Attacking = true));
-                else
-                    ranged_Item.Attack(this);
-            }
-            else if (current_Weapon is Melee melee_Item) // Melee Check:
-            {
-                if (phase.performed)
-                    melee_Item.Action(this);
-                else if (phase.canceled)
-                    melee_Item.Attack(this);
-                if (playerInputActions.Player.Scope.inProgress)
-                    melee_Item.Aim(this, true);
-            }
-            else if (current_Weapon is Ordinance ordinance)
-                ordinance.Attack(this);
-            else
-                can_Attack = true;
-        }
-        else if (phase.canceled && is_Attacking) // Attack Inactive:
-            is_Attacking = false;
-    }
-
-    public void Reload_Init(InputAction.CallbackContext phase)
-    {
-        if (current_Weapon is Ranged ranged_Weapon) // Range Check:
-        {
-            if (phase.performed && can_Attack && Ammo < ranged_Weapon.max_Ammo) // Reload Active:
-            {
-                can_Attack = false;
-                ranged_Weapon.Reload(this);
-            }
-        }
-    }
-
     public void ControlledUpdate(InputAction.CallbackContext phase, User_Input input)
     {
         switch (input) // Filter
@@ -439,7 +296,7 @@ public abstract class UserHandler : MonoBehaviour
                             melee_Item.Action(this);
                         else if (phase.canceled)
                             melee_Item.Attack(this);
-                        if (playerInputActions.Player.Scope.inProgress)
+                        if (Actions.user_Input.Scope.inProgress)
                             melee_Item.Aim(this, true);
                     }
                     else if (current_Weapon is Ordinance ordinance)
@@ -483,7 +340,6 @@ public abstract class UserHandler : MonoBehaviour
             wasGrounded = ground;
             ground = user_Controller.isGrounded;
         }
-        print(user_Spectate + "     " + playerInput + "    " + playerInputActions);
     }
 
     // Damage System:
@@ -511,7 +367,7 @@ public abstract class UserHandler : MonoBehaviour
     {
         while (is_Walking) // Movement Active:
         {
-            Vector3 inputVector = playerInputActions.Player.Move.ReadValue<Vector3>(); // Axis Values
+            Vector3 inputVector = GetInputVector(); // Axis Values
             if (inputVector == Vector3.zero) // Input Check
                 is_Walking = false;
             Vector3 move_Direction = (current_Mode == Mode.Play ? User : user_Spectate).transform.TransformDirection(new Vector3(inputVector.x, current_Mode == Mode.Play ? 0 : inputVector.y, inputVector.z)); // Movement Calculation
@@ -547,6 +403,16 @@ public abstract class UserHandler : MonoBehaviour
         }
     }
 
+    // Camera SYstems:
+    public virtual Vector3 GetInputVector()
+    {
+        return Vector3.zero;
+    }
+    public virtual float GetInputAxis(User_Axis axis)
+    {
+        return 0;
+    }
+
     // Inventory Systems:
     public void Switch_Weapons(InputAction.CallbackContext phase)
     {
@@ -558,7 +424,7 @@ public abstract class UserHandler : MonoBehaviour
         item_Data.Equip_Weapon(this, (current_Slot == Slot.Primary ? 0 : 1), (current_Slot == Slot.Primary ? primary_Weapon : secondary_Weapon));
     }
 
-    public void Buy_Ability(GameObject ability)
+    public void Switch_Ability(GameObject ability)
     {
         current_ability = ability;
     }

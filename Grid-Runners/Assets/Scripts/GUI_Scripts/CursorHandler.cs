@@ -52,8 +52,8 @@ public class CursorHandler : MonoBehaviour
     {
         if (user_Handler.current_Mode == UserHandler.Mode.Menu)
         {
-            float lookHorizontal = cursor_Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
-            float lookVertical = -cursor_Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
+            float lookHorizontal = cursor_Sensitivity * user_Handler.Actions.user_Input.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
+            float lookVertical = -cursor_Sensitivity * user_Handler.Actions.user_Input.MouseY.ReadValue<float>(); // X-Axis Rotational Value
             if (right_Joystick_Input.magnitude > cursor_Sensitivity)
                 cursorRectTransform.anchoredPosition = cursorRectTransform.anchoredPosition + new Vector2(lookHorizontal, lookVertical) * cursor_Speed * Time.deltaTime;
 

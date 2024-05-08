@@ -13,7 +13,7 @@ public class CameraHandler : MonoBehaviour
         Player_2
     }
 
-    private UserHandler user_Handler;
+    public UserHandler user_Handler;
 
     [Header("Camera Variables")]
     public Camera user_Camera;
@@ -60,15 +60,6 @@ public class CameraHandler : MonoBehaviour
 
         // Camera Variable Setup:
         origin_FOV = ui_Camera.fieldOfView; // Assigns base FOV
-
-        // Input Initalization:
-        user_Handler.playerInputActions.Player.Scope.performed += ADS; // ADS Active
-        user_Handler.playerInputActions.Player.Scope.canceled += ADS; // ADS Inactive
-
-        user_Handler.playerInputActions.Player.Peek_Right.performed += phase => Peek(phase, Side.Right); // Peek Right Active
-        user_Handler.playerInputActions.Player.Peek_Left.performed += phase => Peek(phase, Side.Left); // Peek Left Active
-        user_Handler.playerInputActions.Player.Peek_Right.canceled += phase => Peek(phase, Side.Right); // Peek Right Inactive
-        user_Handler.playerInputActions.Player.Peek_Left.canceled += phase => Peek(phase, Side.Left); // Peek Left Inactive
     }
 
     // View Mechanics:
@@ -76,8 +67,8 @@ public class CameraHandler : MonoBehaviour
     {
         if (user_Handler.current_Mode != UserHandler.Mode.Menu)
         {
-            float lookHorizontal = Sensitivity * user_Handler.playerInputActions.Player.MouseX.ReadValue<float>(); // Y-Axis Rotational Value
-            float lookVertical = -Sensitivity * user_Handler.playerInputActions.Player.MouseY.ReadValue<float>(); // X-Axis Rotational Value
+            float lookHorizontal = Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // Y-Axis Rotational Value
+            float lookVertical = -Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Vertical); // X-Axis Rotational Value
 
             if (lookHorizontal != 0 || lookVertical != 0) // Movement Check:
             {
