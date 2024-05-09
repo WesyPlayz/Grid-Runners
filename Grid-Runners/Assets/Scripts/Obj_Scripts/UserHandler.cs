@@ -24,7 +24,7 @@ public abstract class UserHandler : MonoBehaviour
     private Bounds body_Hitbox_Bounds;
 
     // User Script Variables:
-    [HideInInspector] public CameraHandler camera_Handler;
+    public CameraHandler camera_Handler;
 
     private UIHandler ui_Handler;
     private HUDHandler hud_Handler;
