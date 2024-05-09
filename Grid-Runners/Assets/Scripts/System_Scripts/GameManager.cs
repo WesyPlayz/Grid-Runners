@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     [Header("Point info")]
     public int P1_Points;
     public int P2_Points;
+    public int P1_Wins;
+    public int P2_Wins;
     public int winner;
     public int player_Point;
 
@@ -96,6 +98,8 @@ public class GameManager : MonoBehaviour
                         winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
                     user_Handler_1.current_Mode = user_Handler_1.SwapMode(winner == 1 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
                     user_Handler_2.current_Mode = user_Handler_2.SwapMode(winner == 2 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
+                    P1_Wins += winner == 1 ? 1 : 0;
+                    P1_Wins += winner == 2 ? 1 : 0;
 
                     current_Intermission_Time = intermission_Time;
                     while (current_Intermission_Time > 0)
@@ -108,6 +112,10 @@ public class GameManager : MonoBehaviour
                         StartCoroutine(Roundtime(round_Time, game_State.Round));
                     break;
             }  
+        }
+        else
+        {
+            SceneManager.LoadScene(P1_Wins > P2_Wins ? 2 : 1);
         }
         print("Game Over");
     }
