@@ -44,6 +44,12 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         StartCoroutine(Roundtime(round_Time, game_State.Round));
         playerInputManager = GetComponent<PlayerInputManager>();
+
+        
+        for (int i = 0; i < Display.displays.Length; i++)
+        {
+            Display.displays[i].Activate();
+        }
     }
 
     string TimeToClock(int balls = 0)
