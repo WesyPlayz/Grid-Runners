@@ -7821,7 +7821,7 @@ MonoBehaviour:
   User: {fileID: 990919032}
   user_Spectate: {fileID: 749343511}
   Neck: {fileID: 0}
-  camera_Handler: {fileID: 0}
+  camera_Handler: {fileID: 1159050917}
   item_Data: {fileID: 0}
   player_Input: {fileID: 990919037}
   current_Mode: 0
@@ -31431,7 +31431,7 @@ CharacterController:
   m_Height: 2.125
   m_Radius: 0.3
   m_SlopeLimit: 45
-  m_StepOffset: 0.0001
+  m_StepOffset: 0
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.05, z: 0}
@@ -31542,125 +31542,125 @@ MonoBehaviour:
     m_ActionName: 'user_Input/Switch_Mode[/Keyboard/tab,/XInputControllerWindows/select]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 23299748-bdc0-483f-9e60-11e76c97b6b3
-    m_ActionName: 'user_Input_1/Move[/Keyboard/e,/Keyboard/q,/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s]'
+    m_ActionId: ae42338d-7ade-42d7-bd35-73facd9ae4da
+    m_ActionName: 'user_Input_1/Move[/Keyboard/e,/Keyboard/q,/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s,/XInputControllerWindows/leftStick]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 42c085ca-6718-49f2-a19e-74a64209928c
-    m_ActionName: 'user_Input_1/Sprint[/Keyboard/leftShift]'
+    m_ActionId: 4ccdedd6-8140-4d68-a0e8-115d508a1b8d
+    m_ActionName: 'user_Input_1/Sprint[/Keyboard/leftShift,/XInputControllerWindows/leftStickPress]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 7750bf26-7c58-47f5-b87a-5ba91e1f6cd5
-    m_ActionName: 'user_Input_1/Jump[/Keyboard/space]'
+    m_ActionId: 82da62bd-028e-4003-861b-ec9391dc2d18
+    m_ActionName: 'user_Input_1/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0db14d3e-2610-409c-a36a-25f80d89a673
-    m_ActionName: 'user_Input_1/MouseX[/Mouse/delta/x]'
+    m_ActionId: 93366775-dc77-4eb5-a659-036b62a1ed0c
+    m_ActionName: 'user_Input_1/MouseX[/Mouse/delta/x,/XInputControllerWindows/rightStick/x]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0e5d3276-79b8-49d4-ada7-35d7b3b22044
-    m_ActionName: 'user_Input_1/MouseY[/Mouse/delta/y]'
+    m_ActionId: 7d671a57-b9e8-4e09-beba-24d13863aa76
+    m_ActionName: 'user_Input_1/MouseY[/Mouse/delta/y,/XInputControllerWindows/rightStick/y]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5d5b3ad9-a116-4042-b376-2b62411fd80a
-    m_ActionName: 'user_Input_1/Attack[/Mouse/leftButton]'
+    m_ActionId: cb9cbfc3-e9e0-489a-a7ff-42966a94f618
+    m_ActionName: 'user_Input_1/Attack[/Mouse/leftButton,/XInputControllerWindows/rightTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4d33dd15-0e1b-4474-bcc1-b72e628f2fed
-    m_ActionName: 'user_Input_1/Scope[/Mouse/rightButton]'
+    m_ActionId: e2b309c1-51c0-4693-8aaf-5e4da862651f
+    m_ActionName: 'user_Input_1/Scope[/Mouse/rightButton,/XInputControllerWindows/leftTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 94a41e6a-10d6-46a8-bc79-8b5ea87a6037
-    m_ActionName: 'user_Input_1/Grenade[/Keyboard/g]'
+    m_ActionId: f25011b4-fa66-462b-a584-1b14858506e9
+    m_ActionName: 'user_Input_1/Grenade[/Keyboard/g,/XInputControllerWindows/dpad/up]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: c6c4018a-f3aa-47ca-aed4-21937cf3a02d
-    m_ActionName: 'user_Input_1/Reload[/Keyboard/r]'
+    m_ActionId: 73c72116-bbcf-4bd1-9b6a-ad0d151f94fe
+    m_ActionName: 'user_Input_1/Reload[/Keyboard/r,/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5b08fbe7-d3c1-4606-80e8-13a4e3b8bad5
-    m_ActionName: 'user_Input_1/Knife[/Keyboard/f]'
+    m_ActionId: 3dddc556-1a69-4930-8a4a-08440f739021
+    m_ActionName: 'user_Input_1/Knife[/Keyboard/f,/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0c3e6960-ae65-432a-90a0-85d92f2abb24
-    m_ActionName: 'user_Input_1/Switch_Weapon[/Mouse/scroll/up,/Mouse/scroll/down,/Mouse/middleButton]'
+    m_ActionId: bbb3edd6-29f7-427d-abaf-4e5203981192
+    m_ActionName: 'user_Input_1/Switch_Weapon[/Mouse/scroll/up,/Mouse/scroll/down,/XInputControllerWindows/buttonNorth,/Mouse/middleButton]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: db2ff66c-8d08-41dd-9527-aefed1c310dd
-    m_ActionName: 'user_Input_1/Peek_Right[/Keyboard/v]'
+    m_ActionId: f6642f92-3c60-4297-927c-14286c2d25b4
+    m_ActionName: 'user_Input_1/Peek_Right[/Keyboard/v,/XInputControllerWindows/rightShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5f0f9a6a-64c1-44e9-9a8b-e25f89563151
-    m_ActionName: 'user_Input_1/Peek_Left[/Keyboard/c]'
+    m_ActionId: 9aed4486-121e-41f5-a0dc-ad8ed69c9b99
+    m_ActionName: 'user_Input_1/Peek_Left[/Keyboard/c,/XInputControllerWindows/leftShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5309de54-ab65-47e0-9635-9816f7762c89
-    m_ActionName: 'user_Input_1/Start[/Keyboard/escape]'
+    m_ActionId: 82e9870f-c079-443c-aaa1-19dca01dd0b7
+    m_ActionName: 'user_Input_1/Start[/Keyboard/escape,/XInputControllerWindows/start]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: fd13d093-20a8-496b-94ff-a622b141bdcb
-    m_ActionName: 'user_Input_1/Switch_Mode[/Keyboard/tab]'
+    m_ActionId: 0a3b6526-5109-4588-9a17-785343128a4a
+    m_ActionName: 'user_Input_1/Switch_Mode[/Keyboard/tab,/XInputControllerWindows/select]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d55e7c7-a9c4-40f3-b273-9ef87ac2694a
-    m_ActionName: 'user_Input_2/Move[/XInputControllerWindows/rightShoulder,/XInputControllerWindows/leftShoulder,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down]'
+    m_ActionId: 1ad12f02-005e-4d9d-b7d8-acf44c026abc
+    m_ActionName: 'user_Input_2/Move[/XInputControllerWindows/leftStick]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 10de5190-ad89-4daa-bc1b-dbd016c70ed3
+    m_ActionId: d7126556-32fd-4daa-aba3-fb11351e993d
     m_ActionName: 'user_Input_2/Sprint[/XInputControllerWindows/leftStickPress]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: eec6821d-7ee1-460d-9d35-6c6bcf470330
+    m_ActionId: 3da3dfba-f481-4027-8201-e3a18305c5bd
     m_ActionName: 'user_Input_2/Jump[/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ad90eabe-e4ec-46a4-9db2-4e70ba942a5b
+    m_ActionId: 5194837b-ad93-4aac-9ddd-d9ee2f4dc250
     m_ActionName: 'user_Input_2/MouseX[/XInputControllerWindows/rightStick/x]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: b22c664c-45d9-4819-a631-59a99738afad
+    m_ActionId: f11a5154-351c-4dac-b2e9-12c544f6a141
     m_ActionName: 'user_Input_2/MouseY[/XInputControllerWindows/rightStick/y]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 62f80160-d361-4c9d-a839-231c71c33ce4
+    m_ActionId: ec09662d-76ec-47d2-a289-d67d41f50c05
     m_ActionName: 'user_Input_2/Attack[/XInputControllerWindows/rightTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2e8ff087-3e5c-4529-ae0c-ab6f5f65cf0b
+    m_ActionId: 97fa6b00-2086-4133-a50b-2ac71cdfbf44
     m_ActionName: 'user_Input_2/Scope[/XInputControllerWindows/leftTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 30028d60-5e33-4faa-94a5-1279daa489da
+    m_ActionId: fa88fc01-2ec0-49be-9eae-5a8dde02214a
     m_ActionName: 'user_Input_2/Grenade[/XInputControllerWindows/dpad/up]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 03a338e7-0015-4b23-be81-27ab5f96e3dc
+    m_ActionId: d6ece9e7-0383-4487-b1dd-4773fdf37b23
     m_ActionName: 'user_Input_2/Reload[/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 12a46982-35ae-4f20-a1e7-40830378df40
-    m_ActionName: 'user_Input_2/Knife[/XInputControllerWindows/rightStickPress]'
+    m_ActionId: f5abb8cc-232d-400f-91dc-26c77503092d
+    m_ActionName: 'user_Input_2/Knife[/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5672d39a-bd9c-48c5-b665-52e58921e8a3
+    m_ActionId: 3bd76de8-ed11-44a4-8189-7b727f7dc58d
     m_ActionName: 'user_Input_2/Switch_Weapon[/XInputControllerWindows/buttonNorth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 944f109c-68a0-4f67-8d9a-a413faf11bb9
+    m_ActionId: c31db19d-4806-45be-8b3b-d636c1d40623
     m_ActionName: 'user_Input_2/Peek_Right[/XInputControllerWindows/rightShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: d498206b-7006-4d2f-9467-0705e25ec984
+    m_ActionId: 1fe8587a-7c15-4507-91c8-906a457da884
     m_ActionName: 'user_Input_2/Peek_Left[/XInputControllerWindows/leftShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4075057e-63bb-4ac4-8bb3-ae8c63d69657
+    m_ActionId: 1020ad18-7343-44b0-90da-b70597a649c4
     m_ActionName: 'user_Input_2/Start[/XInputControllerWindows/start]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 16b0bda5-d52c-48f3-8004-c9b8a39283eb
+    m_ActionId: 6244ffeb-c64f-4b95-9a9b-c6880992cb00
     m_ActionName: 'user_Input_2/Switch_Mode[/XInputControllerWindows/select]'
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: user_Input_2
   m_SplitScreenIndex: -1
@@ -59681,125 +59681,125 @@ MonoBehaviour:
     m_ActionName: 'user_Input/Switch_Mode[/Keyboard/tab,/XInputControllerWindows/select]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 23299748-bdc0-483f-9e60-11e76c97b6b3
-    m_ActionName: 'user_Input_1/Move[/Keyboard/e,/Keyboard/q,/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s]'
+    m_ActionId: ae42338d-7ade-42d7-bd35-73facd9ae4da
+    m_ActionName: 'user_Input_1/Move[/Keyboard/e,/Keyboard/q,/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s,/XInputControllerWindows/leftStick]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 42c085ca-6718-49f2-a19e-74a64209928c
-    m_ActionName: 'user_Input_1/Sprint[/Keyboard/leftShift]'
+    m_ActionId: 4ccdedd6-8140-4d68-a0e8-115d508a1b8d
+    m_ActionName: 'user_Input_1/Sprint[/Keyboard/leftShift,/XInputControllerWindows/leftStickPress]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 7750bf26-7c58-47f5-b87a-5ba91e1f6cd5
-    m_ActionName: 'user_Input_1/Jump[/Keyboard/space]'
+    m_ActionId: 82da62bd-028e-4003-861b-ec9391dc2d18
+    m_ActionName: 'user_Input_1/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0db14d3e-2610-409c-a36a-25f80d89a673
-    m_ActionName: 'user_Input_1/MouseX[/Mouse/delta/x]'
+    m_ActionId: 93366775-dc77-4eb5-a659-036b62a1ed0c
+    m_ActionName: 'user_Input_1/MouseX[/Mouse/delta/x,/XInputControllerWindows/rightStick/x]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0e5d3276-79b8-49d4-ada7-35d7b3b22044
-    m_ActionName: 'user_Input_1/MouseY[/Mouse/delta/y]'
+    m_ActionId: 7d671a57-b9e8-4e09-beba-24d13863aa76
+    m_ActionName: 'user_Input_1/MouseY[/Mouse/delta/y,/XInputControllerWindows/rightStick/y]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5d5b3ad9-a116-4042-b376-2b62411fd80a
-    m_ActionName: 'user_Input_1/Attack[/Mouse/leftButton]'
+    m_ActionId: cb9cbfc3-e9e0-489a-a7ff-42966a94f618
+    m_ActionName: 'user_Input_1/Attack[/Mouse/leftButton,/XInputControllerWindows/rightTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4d33dd15-0e1b-4474-bcc1-b72e628f2fed
-    m_ActionName: 'user_Input_1/Scope[/Mouse/rightButton]'
+    m_ActionId: e2b309c1-51c0-4693-8aaf-5e4da862651f
+    m_ActionName: 'user_Input_1/Scope[/Mouse/rightButton,/XInputControllerWindows/leftTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 94a41e6a-10d6-46a8-bc79-8b5ea87a6037
-    m_ActionName: 'user_Input_1/Grenade[/Keyboard/g]'
+    m_ActionId: f25011b4-fa66-462b-a584-1b14858506e9
+    m_ActionName: 'user_Input_1/Grenade[/Keyboard/g,/XInputControllerWindows/dpad/up]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: c6c4018a-f3aa-47ca-aed4-21937cf3a02d
-    m_ActionName: 'user_Input_1/Reload[/Keyboard/r]'
+    m_ActionId: 73c72116-bbcf-4bd1-9b6a-ad0d151f94fe
+    m_ActionName: 'user_Input_1/Reload[/Keyboard/r,/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5b08fbe7-d3c1-4606-80e8-13a4e3b8bad5
-    m_ActionName: 'user_Input_1/Knife[/Keyboard/f]'
+    m_ActionId: 3dddc556-1a69-4930-8a4a-08440f739021
+    m_ActionName: 'user_Input_1/Knife[/Keyboard/f,/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0c3e6960-ae65-432a-90a0-85d92f2abb24
-    m_ActionName: 'user_Input_1/Switch_Weapon[/Mouse/scroll/up,/Mouse/scroll/down,/Mouse/middleButton]'
+    m_ActionId: bbb3edd6-29f7-427d-abaf-4e5203981192
+    m_ActionName: 'user_Input_1/Switch_Weapon[/Mouse/scroll/up,/Mouse/scroll/down,/XInputControllerWindows/buttonNorth,/Mouse/middleButton]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: db2ff66c-8d08-41dd-9527-aefed1c310dd
-    m_ActionName: 'user_Input_1/Peek_Right[/Keyboard/v]'
+    m_ActionId: f6642f92-3c60-4297-927c-14286c2d25b4
+    m_ActionName: 'user_Input_1/Peek_Right[/Keyboard/v,/XInputControllerWindows/rightShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5f0f9a6a-64c1-44e9-9a8b-e25f89563151
-    m_ActionName: 'user_Input_1/Peek_Left[/Keyboard/c]'
+    m_ActionId: 9aed4486-121e-41f5-a0dc-ad8ed69c9b99
+    m_ActionName: 'user_Input_1/Peek_Left[/Keyboard/c,/XInputControllerWindows/leftShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5309de54-ab65-47e0-9635-9816f7762c89
-    m_ActionName: 'user_Input_1/Start[/Keyboard/escape]'
+    m_ActionId: 82e9870f-c079-443c-aaa1-19dca01dd0b7
+    m_ActionName: 'user_Input_1/Start[/Keyboard/escape,/XInputControllerWindows/start]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: fd13d093-20a8-496b-94ff-a622b141bdcb
-    m_ActionName: 'user_Input_1/Switch_Mode[/Keyboard/tab]'
+    m_ActionId: 0a3b6526-5109-4588-9a17-785343128a4a
+    m_ActionName: 'user_Input_1/Switch_Mode[/Keyboard/tab,/XInputControllerWindows/select]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d55e7c7-a9c4-40f3-b273-9ef87ac2694a
+    m_ActionId: 1ad12f02-005e-4d9d-b7d8-acf44c026abc
     m_ActionName: 'user_Input_2/Move[/XInputControllerWindows/rightShoulder,/XInputControllerWindows/leftShoulder,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 10de5190-ad89-4daa-bc1b-dbd016c70ed3
+    m_ActionId: d7126556-32fd-4daa-aba3-fb11351e993d
     m_ActionName: 'user_Input_2/Sprint[/XInputControllerWindows/leftStickPress]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: eec6821d-7ee1-460d-9d35-6c6bcf470330
+    m_ActionId: 3da3dfba-f481-4027-8201-e3a18305c5bd
     m_ActionName: 'user_Input_2/Jump[/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ad90eabe-e4ec-46a4-9db2-4e70ba942a5b
+    m_ActionId: 5194837b-ad93-4aac-9ddd-d9ee2f4dc250
     m_ActionName: 'user_Input_2/MouseX[/XInputControllerWindows/rightStick/x]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: b22c664c-45d9-4819-a631-59a99738afad
+    m_ActionId: f11a5154-351c-4dac-b2e9-12c544f6a141
     m_ActionName: 'user_Input_2/MouseY[/XInputControllerWindows/rightStick/y]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 62f80160-d361-4c9d-a839-231c71c33ce4
+    m_ActionId: ec09662d-76ec-47d2-a289-d67d41f50c05
     m_ActionName: 'user_Input_2/Attack[/XInputControllerWindows/rightTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2e8ff087-3e5c-4529-ae0c-ab6f5f65cf0b
+    m_ActionId: 97fa6b00-2086-4133-a50b-2ac71cdfbf44
     m_ActionName: 'user_Input_2/Scope[/XInputControllerWindows/leftTrigger]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 30028d60-5e33-4faa-94a5-1279daa489da
+    m_ActionId: fa88fc01-2ec0-49be-9eae-5a8dde02214a
     m_ActionName: 'user_Input_2/Grenade[/XInputControllerWindows/dpad/up]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 03a338e7-0015-4b23-be81-27ab5f96e3dc
+    m_ActionId: d6ece9e7-0383-4487-b1dd-4773fdf37b23
     m_ActionName: 'user_Input_2/Reload[/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 12a46982-35ae-4f20-a1e7-40830378df40
-    m_ActionName: 'user_Input_2/Knife[/XInputControllerWindows/rightStickPress]'
+    m_ActionId: f5abb8cc-232d-400f-91dc-26c77503092d
+    m_ActionName: 'user_Input_2/Knife[/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5672d39a-bd9c-48c5-b665-52e58921e8a3
+    m_ActionId: 3bd76de8-ed11-44a4-8189-7b727f7dc58d
     m_ActionName: 'user_Input_2/Switch_Weapon[/XInputControllerWindows/buttonNorth]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 944f109c-68a0-4f67-8d9a-a413faf11bb9
+    m_ActionId: c31db19d-4806-45be-8b3b-d636c1d40623
     m_ActionName: 'user_Input_2/Peek_Right[/XInputControllerWindows/rightShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: d498206b-7006-4d2f-9467-0705e25ec984
+    m_ActionId: 1fe8587a-7c15-4507-91c8-906a457da884
     m_ActionName: 'user_Input_2/Peek_Left[/XInputControllerWindows/leftShoulder]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4075057e-63bb-4ac4-8bb3-ae8c63d69657
+    m_ActionId: 1020ad18-7343-44b0-90da-b70597a649c4
     m_ActionName: 'user_Input_2/Start[/XInputControllerWindows/start]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 16b0bda5-d52c-48f3-8004-c9b8a39283eb
+    m_ActionId: 6244ffeb-c64f-4b95-9a9b-c6880992cb00
     m_ActionName: 'user_Input_2/Switch_Mode[/XInputControllerWindows/select]'
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Computer
   m_DefaultActionMap: user_Input_1
   m_SplitScreenIndex: -1
@@ -67573,7 +67573,7 @@ MonoBehaviour:
   User: {fileID: 1513848533}
   user_Spectate: {fileID: 1038075389}
   Neck: {fileID: 0}
-  camera_Handler: {fileID: 0}
+  camera_Handler: {fileID: 1996051637}
   item_Data: {fileID: 0}
   player_Input: {fileID: 1513848543}
   current_Mode: 0

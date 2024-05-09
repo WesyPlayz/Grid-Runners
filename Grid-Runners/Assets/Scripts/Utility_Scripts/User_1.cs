@@ -11,17 +11,13 @@ public class User_1 : UserHandler
     {
         base.Awake();
         Actions = new PlayerInputActions();
-        Gamepad[] gamepads = Gamepad.all.ToArray();
-        if (gamepads.Length > 1)
-            player_Input.SwitchCurrentControlScheme("Controller", gamepads[1]);
-        else
-            player_Input.SwitchCurrentControlScheme("Computer", Keyboard.current, Mouse.current);
         Actions.user_Input_1.Enable();
     }
 
     // Control Binding System:
     protected override void BindActions(Mode mode)
     {
+        print("bam");
         // Movement Unbindings:
         if (bound_Actions.ContainsKey("Move"))
         {
@@ -131,13 +127,13 @@ public class User_1 : UserHandler
             }
 
             // Camera Bindings:
-            if (!bound_Actions.ContainsKey("ADS"))
+            /*if (!bound_Actions.ContainsKey("ADS"))
             {
                 Action<InputAction.CallbackContext> ads_Action = camera_Handler.ADS;
                 Actions.user_Input_1.Scope.performed += ads_Action;
                 Actions.user_Input_1.Scope.canceled += ads_Action;
                 bound_Actions.Add("ADS", ads_Action);
-            }
+            }*/
             if (!bound_Actions.ContainsKey("Peek Right"))
             {
                 Action<InputAction.CallbackContext> peek_Action = phase => camera_Handler.Peek(phase, CameraHandler.Side.Right);
@@ -156,7 +152,7 @@ public class User_1 : UserHandler
             // Inventory Bindings:
             if (!bound_Actions.ContainsKey("Switch Weapons"))
             {
-                Action<InputAction.CallbackContext> switch_Weapons_Action = phase => Switch_Weapons(phase);
+                Action<InputAction.CallbackContext> switch_Weapons_Action = Switch_Weapons;
                 Actions.user_Input_1.Switch_Weapon.performed += switch_Weapons_Action;
                 bound_Actions.Add("Switch Weapons", switch_Weapons_Action);
             }
@@ -171,6 +167,7 @@ public class User_1 : UserHandler
                 bound_Actions.Add("Build", build_Action);
             }
         }
+        print("bam");
     }
 
     public override Vector3 GetInputVector()
