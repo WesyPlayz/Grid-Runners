@@ -29,6 +29,8 @@ public abstract class UserHandler : MonoBehaviour
 
     private UIHandler ui_Handler;
     public HUDHandler hud_Handler;
+    private GameManager game_manager;
+    public int player;
 
     private Grid_Data grid_Data;
     [HideInInspector] public new_Item_Data item_Data;
@@ -158,6 +160,7 @@ public abstract class UserHandler : MonoBehaviour
         user_Controller = User.GetComponent<CharacterController>();
         spectator_Controller = user_Spectate.GetComponent<CharacterController>();
         body_Hitbox = User.GetComponent<CharacterController>();
+        game_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // Initiate User Script Variables:
         camera_Handler = user_Camera.GetComponent<CameraHandler>();
@@ -326,6 +329,8 @@ public abstract class UserHandler : MonoBehaviour
     {
         User.transform.position = Spawn.transform.position; // Relocate User
         Health = max_Health;
+        game_manager.P1_Points += player == 1 ? 2 : 0;
+        game_manager.P2_Points += player == 1 ? 0 : 2;
     }
 
     // Movement Systems:
