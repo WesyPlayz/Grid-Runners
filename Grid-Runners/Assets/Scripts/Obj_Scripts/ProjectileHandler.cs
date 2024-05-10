@@ -11,5 +11,6 @@ public class ProjectileHandler : MonoBehaviour
             Destroy(gameObject);
         if (obj.gameObject.CompareTag("Grenade"))
             Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
