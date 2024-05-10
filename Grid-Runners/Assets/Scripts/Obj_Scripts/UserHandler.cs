@@ -106,6 +106,11 @@ public abstract class UserHandler : MonoBehaviour
     public AudioSource pewpew;
     public AudioSource ReloadSound;
     public AudioSource WalkSFX;
+    public AudioSource climb1;
+    public AudioSource climb2;
+    public AudioSource climb3;
+    public AudioSource Slashy;
+    public AudioSource jumpy;
 
     public bool can_Attack = true;
     public bool can_Use_Action = true;
@@ -230,7 +235,10 @@ public abstract class UserHandler : MonoBehaviour
         {
             case User_Input.Move:
                 if (phase.performed && !is_Walking) // Move Active:
+                {
                     StartCoroutine(Move(is_Walking = true));
+                    if (!WalkSFX.isPlaying) WalkSFX.Play();
+                }
                 break;
             case User_Input.Attack:
                 if (phase.performed && can_Attack && !is_Attacking) // Attack Active:
@@ -241,14 +249,18 @@ public abstract class UserHandler : MonoBehaviour
                         if (ranged_Item.is_Auto) // Auto Check:
                             item_Data.StartCoroutine(item_Data.Fire_Rate(this, ranged_Item, is_Attacking = true));
                         else
-                            ranged_Item.Attack(this);
+                        { ranged_Item.Attack(this);
+                            pewpew.Play();}
                     }
                     else if (current_Weapon is Melee melee_Item) // Melee Check:
                     {
                         if (phase.performed)
                             melee_Item.Action(this);
                         else if (phase.canceled)
+                        {
                             melee_Item.Attack(this);
+                            Slashy.Play();
+                        }
                         if (Actions.user_Input.Scope.inProgress)
                             melee_Item.Aim(this, true);
                     }
@@ -267,6 +279,7 @@ public abstract class UserHandler : MonoBehaviour
                     {
                         can_Attack = false;
                         ranged_Weapon.Reload(this);
+                        ReloadSound.Play();
                     }
                 }
                 break;
@@ -336,12 +349,17 @@ public abstract class UserHandler : MonoBehaviour
     public void Jump(InputAction.CallbackContext phase) // Jump System:
     {
         if (verticalVelocity <= -(gravity + 1) && phase.performed) // Jump Active:
-            verticalVelocity = jumpForce;
+        { verticalVelocity = jumpForce;
+            jumpy.Play();
+        }
 
     }
 
     // Action Systems:
-    public void Use_Ability(InputAction.CallbackContext phase){}
+    public void Use_Ability(InputAction.CallbackContext phase)
+    {
+        print("lol");
+    }
 
     public void Build(InputAction.CallbackContext phase)
     {
