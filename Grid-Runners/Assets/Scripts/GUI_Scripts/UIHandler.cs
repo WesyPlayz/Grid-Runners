@@ -58,9 +58,10 @@ public class UIHandler : MonoBehaviour
         gameManager = GetComponent<GameManager>();
 
         // Weapon Interfaces:
-        for (int i = 0; i < item_Data.Items.Count; i++)
+        for (int i = 0; i < item_Data.Items.Count - 1; i++)
         {
-            Item weapon = item_Data.Items[i];
+            int current_Weapon = i;
+            Item weapon = item_Data.Items[current_Weapon];
             shop_Interface weapon_Interface = item_Data.Interfaces[i];
 
             weapon_Interface.Name.text = weapon.weapon_Prefab.name;
@@ -75,8 +76,8 @@ public class UIHandler : MonoBehaviour
             }
             weapon_Interface.Cost.text = weapon.Cost.ToString() + " (Points)";
 
-            weapon_Interface.purchase_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), i));
-            weapon_Interface.equip_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), i));
+            weapon_Interface.purchase_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
+            weapon_Interface.equip_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
         }
     }
 

@@ -9,6 +9,7 @@ public class new_Item_Data : MonoBehaviour
 {
     [Header("Item Collection")]
     [SerializeField] public List<Item> Items = new List<Item> { };
+    public List<Economy> Purchased = new List<Economy>();
 
     [Header("Weapon Interfaces")]
     [SerializeField] public List<shop_Interface> Interfaces = new List<shop_Interface> { };
@@ -26,26 +27,34 @@ public class new_Item_Data : MonoBehaviour
     {
         Item.item_Data = this;
 
+        for (int i = 0; i < Items.Count; i++)
+        {
+            Economy new_Economy = new Economy { };
+            Purchased.Add(new_Economy);
+        }
+
         entity_Mask = 9 << LayerMask.NameToLayer("Entity");
     }
 
     // Weapon State System:
     public void Add_Weapon(UserHandler user_Handler, int selected_Weapon)
     {
-        print("Hi");
         Item weapon = Items[selected_Weapon];
-        if (user_Handler.Purchased[selected_Weapon].Validity == false)
+        if (Purchased[selected_Weapon].Validity == false)
         {
             if (user_Handler.Points < weapon.Cost)
                 return;
             else
             {
-                user_Handler.Purchased[selected_Weapon].Validity = true;
+                user_Handler.Points = Mathf.Max(user_Handler.Points - weapon.Cost, 0);
+                Purchased[selected_Weapon].Validity = true;
+                Interfaces[selected_Weapon].purchase_Button.interactable = false;
+                Interfaces[selected_Weapon].Cost.text = "Item Purchased";
+
                 Interfaces[selected_Weapon].equip_Text.gameObject.SetActive(true);
                 Interfaces[selected_Weapon].equip_Button.interactable = true;
             }
         }
-        user_Handler.Points = Mathf.Max(user_Handler.Points - weapon.Cost, 0);
         if (weapon.weapon_Class == Item.Class.Primary)
             user_Handler.primary_Weapon = selected_Weapon;
         else
@@ -53,7 +62,51 @@ public class new_Item_Data : MonoBehaviour
     }
     public void Equip_Weapon(UserHandler user_Handler, int slot, int weapon)
     {
-        
+        if (weapon >= 0)
+        {
+            if (user_Handler.Weapon != null)
+                Destroy(user_Handler.Weapon);
+
+            // Initialize Weapon:
+            Item selected_Weapon = Items[weapon];
+            user_Handler.current_Weapon = selected_Weapon;
+            GameObject new_Weapon = Instantiate(selected_Weapon.weapon_Prefab);
+            new_Weapon.transform.parent = user_Handler.item_Holder.transform;
+            new_Weapon.transform.SetPositionAndRotation(user_Handler.item_Holder.transform.position, user_Handler.item_Holder.transform.rotation);
+
+            user_Handler.Weapon = new_Weapon;
+
+            // Initialize Weapon HUD:
+            user_Handler.hud_Handler.current_Weapon_Name.text = selected_Weapon.weapon_Prefab.name;
+            if (slot == 0 && selected_Weapon.Icon != user_Handler.hud_Handler.primary_Weapon_Icon)
+                user_Handler.hud_Handler.primary_Weapon_Icon = selected_Weapon.Icon;
+            else if (slot == 1 && selected_Weapon.Icon != user_Handler.hud_Handler.secondary_Weapon_Icon)
+                user_Handler.hud_Handler.secondary_Weapon_Icon = selected_Weapon.Icon;
+            else
+            {
+                user_Handler.hud_Handler.holstered_Weapon_Icon.sprite = user_Handler.hud_Handler.current_Weapon_Icon.sprite;
+                user_Handler.hud_Handler.current_Weapon_Icon.sprite = selected_Weapon.Icon;
+            }
+            if (selected_Weapon is Ranged ranged_Item)
+            {
+                foreach (Transform child in new_Weapon.transform)
+                {
+                    switch (child.name)
+                    {
+                        case "Fire_Point":
+                            user_Handler.fire_Point = child.gameObject;
+                            break;
+                        case "Muzzle_Flash":
+                            user_Handler.muzzle_Flash = child.GetComponent<ParticleSystem>();
+                            break;
+                    }
+                }
+                user_Handler.Ammo =
+                weapon == user_Handler.primary_Weapon && slot == 0 ? user_Handler.primary_Ammo :
+                weapon == user_Handler.secondary_Weapon && slot == 1 ? user_Handler.secondary_Ammo :
+                ranged_Item.max_Ammo;
+            }
+        }
     }
 
     // Item Coroutines:
@@ -87,6 +140,11 @@ public class new_Item_Data : MonoBehaviour
     }
 }
 
+// Item Shop Systems:
+public class Economy
+{
+    public bool Validity = false;
+}
 [System.Serializable]
 public class shop_Interface
 {
@@ -112,6 +170,7 @@ public class shop_Interface
     public TMP_Text Handling;
 }
 
+// Item Classes:
 public abstract class Item : ScriptableObject
 {
     [Header("Object Data")]

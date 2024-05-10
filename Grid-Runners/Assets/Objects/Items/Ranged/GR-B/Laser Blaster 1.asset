@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
   m_Name: Laser Blaster 1
   m_EditorClassIdentifier: 
-  weapon_Prefab: {fileID: 919132149155446097, guid: 18c9b100ffb89e244b4b9d8e785b7137, type: 3}
-  weapon_Class: 0
+  weapon_Prefab: {fileID: 915519758712994338, guid: 2f99ee064bcd37f43b961afab8ea9575, type: 3}
+  weapon_Class: 1
   Cost: 0
   Damage: 5
   speed_Mod: 1

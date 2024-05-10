@@ -159,11 +159,6 @@ public abstract class UserHandler : MonoBehaviour
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<new_Item_Data>();
-        for (int i = 0; i < item_Data.Items.Count; i++)
-        {
-            Economy new_Economy = new Economy { };
-            Purchased.Add(new_Economy);
-        }
 
         Health = max_Health;
 
@@ -226,51 +221,6 @@ public abstract class UserHandler : MonoBehaviour
             return mode_State;
         }
         return Mode.Idle;
-    }
-
-    // Inventory System:
-    public void EquipWeapon(int weapon_Slot, int weapon, InputAction.CallbackContext phase)
-    {
-        if (Weapon != null)
-            Destroy(Weapon);
-
-        Item selected_Weapon = item_Data.Items[weapon];
-        current_Weapon = selected_Weapon;
-        GameObject new_Weapon = Instantiate(selected_Weapon.weapon_Prefab);
-        new_Weapon.transform.parent = item_Holder.transform;
-        new_Weapon.transform.SetPositionAndRotation(item_Holder.transform.position, item_Holder.transform.rotation);
-
-        Weapon = new_Weapon;
-        hud_Handler.current_Weapon_Name.text = selected_Weapon.weapon_Prefab.name;
-
-        if (weapon_Slot == 0 && selected_Weapon.Icon != hud_Handler.primary_Weapon_Icon)
-            hud_Handler.primary_Weapon_Icon = selected_Weapon.Icon;
-        else if (weapon_Slot == 1 && selected_Weapon.Icon != hud_Handler.secondary_Weapon_Icon)
-            hud_Handler.secondary_Weapon_Icon = selected_Weapon.Icon;
-        else
-        {
-            hud_Handler.holstered_Weapon_Icon.sprite = hud_Handler.current_Weapon_Icon.sprite;
-            hud_Handler.current_Weapon_Icon.sprite = selected_Weapon.Icon;
-        }
-        if (selected_Weapon is Ranged ranged_Item)
-        {
-            foreach (Transform child in new_Weapon.transform)
-            {
-                switch (child.name)
-                {
-                    case "Fire_Point":
-                        fire_Point = child.gameObject;
-                        break;
-                    case "Muzzle_Flash":
-                        muzzle_Flash = child.GetComponent<ParticleSystem>();
-                        break;
-                }
-            }
-            Ammo =
-            weapon == primary_Weapon && weapon_Slot == 0 ? primary_Ammo :
-            weapon == secondary_Weapon && weapon_Slot == 1 ? secondary_Ammo :
-            ranged_Item.max_Ammo;
-        }
     }
 
     // Control Terminal:
@@ -415,12 +365,6 @@ public abstract class UserHandler : MonoBehaviour
     }
 
     // Inventory Systems:
-    public List<Economy> Purchased = new List<Economy>();
-    public class Economy
-    {
-        public bool Validity = false;
-    }
-
     public void Switch_Weapons(InputAction.CallbackContext phase)
     {
         if (current_Slot == Slot.Primary)
