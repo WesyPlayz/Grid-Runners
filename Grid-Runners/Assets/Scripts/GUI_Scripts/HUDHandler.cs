@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,8 @@ public class HUDHandler : MonoBehaviour
     public Sprite secondary_Weapon_Icon;
 
     public Image ammo_Counter;
+
+    [SerializeField] public List<GameObject> HUD_Menus = new List<GameObject>();
 
     void Start()
     {

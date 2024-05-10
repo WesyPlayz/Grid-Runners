@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public int P2_Points;
     public int P1_Wins;
     public int P2_Wins;
-    public int winner;
+    public int Winner;
     public int player_Point;
 
     [Header("player info")]
@@ -95,11 +95,11 @@ public class GameManager : MonoBehaviour
                     user_Handler_1.Respawn();
                     user_Handler_2.Respawn();
                     if (user_Handler_1.Points != user_Handler_2.Points)
-                        winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
-                    user_Handler_1.current_Mode = user_Handler_1.SwapMode(winner == 1 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
-                    user_Handler_2.current_Mode = user_Handler_2.SwapMode(winner == 2 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
-                    P1_Wins += winner == 1 ? 1 : 0;
-                    P1_Wins += winner == 2 ? 1 : 0;
+                        Winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
+                    user_Handler_1.current_Mode = user_Handler_1.SwapMode(Winner == 1 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
+                    user_Handler_2.current_Mode = user_Handler_2.SwapMode(Winner == 2 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
+                    P1_Wins += Winner == 1 ? 1 : 0;
+                    P1_Wins += Winner == 2 ? 1 : 0;
 
                     current_Intermission_Time = intermission_Time;
                     while (current_Intermission_Time > 0)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 public class UIHandler : MonoBehaviour
 {
     private GameManager gameManager;
@@ -11,6 +13,8 @@ public class UIHandler : MonoBehaviour
     public bool on_Main_Menu = false;
     public GameObject main_Menu;
     public GameObject levels;
+
+    public new_Item_Data item_Data;
 
     [Header("Main menu")]
     public GameObject start;
@@ -47,81 +51,41 @@ public class UIHandler : MonoBehaviour
     public AudioClip Hover1;
     public AudioClip Hover2;
 
+    [SerializeField] private List<Button> Buttons = new List<Button>();
+
     void Start()
     {
         gameManager = GetComponent<GameManager>();
-        if (on_Main_Menu)
+
+        //EventSystem.current.SetSelectedGameObject(start);
+
+        for (int i = 0; i < Buttons.Count; i++)
         {
-            cursor_Handler1.in_Menu = true;
-            cursor_Handler2.in_Menu = true;
-        }
+            Button button = Buttons[i];
+            switch (button.name)
+            {
+                case "Purchase_Hyper_Blaster_1":
+                    button.onClick.AddListener(() => item_Data.Add_Weapon(gameManager.user_Handler_1, 0));
+                    break;
 
-            //EventSystem.current.SetSelectedGameObject(start);
+                case "Purchase_Hyper_Blaster_2":
+                    button.onClick.AddListener(() => item_Data.Add_Weapon(gameManager.user_Handler_2, 0));
+                    break;
+            }
         }
+        /*
+        Buttons[0].onClick.AddListener(() => Play_Game()); // Play Button - Main Menu
+        Buttons[1].onClick.AddListener(() => Load_Menu_State("Open")); // Load Button - Main Menu
+        Buttons[2].onClick.AddListener(() => Load_Menu_State("Close")); // Exit Button - Load Menu
 
-    public void level_Select(bool going)
-    {
-        main_Menu.SetActive(!going);
-        levels.SetActive(going);
-
-        if (going)
-        {
-            cursor_Handler1.in_Menu = true;
-            cursor_Handler2.in_Menu = true;
-            //EventSystem.current.SetSelectedGameObject(null);
-            //EventSystem.current.SetSelectedGameObject(Back);
-        }
-        else
-        {
-            cursor_Handler1.in_Menu = false;
-            cursor_Handler2.in_Menu = false;
-            //EventSystem.current.SetSelectedGameObject(null);
-            //EventSystem.current.SetSelectedGameObject(start);
-        }
-
-        
+        Buttons[3].onClick.AddListener(() => Quit_Game()); // Quit Button - Main Menu
+        */
     }
+
 
     public void startGame(int map)
     {
         SceneManager.LoadScene(map);
-    }
-
-    public void Pause(bool pausing)
-    {
-        
-        cursor_Handler1.in_Menu = pausing;
-        cursor_Handler2.in_Menu = pausing;
-
-        //EventSystem.current.SetSelectedGameObject(null);
-        //EventSystem.current.SetSelectedGameObject(P1_Resume);
-        //EventSystem.current.SetSelectedGameObject(P2_Resume);
-    }
-
-    public void Open_shop(int player)
-    {
-        if (player == 1)
-        {
-            cursor_Handler1.in_Menu = true;
-            P1_Shop_Menu.SetActive(true);
-            //EventSystem.current.SetSelectedGameObject(null);
-            //EventSystem.current.SetSelectedGameObject(hyper_Blaster);
-        }
-        else
-        {
-            cursor_Handler2.in_Menu = true;
-            P2_Shop_Menu.SetActive(true);
-            //EventSystem.current.SetSelectedGameObject(null);
-            //EventSystem.current.SetSelectedGameObject(hyper_Blaster2);
-        }
-    }
-
-    public void Close_shop()
-    {
-        cursor_Handler1.in_Menu = false;
-        cursor_Handler2.in_Menu = false;
-        P1_Shop_Menu.SetActive(false);
-        P2_Shop_Menu.SetActive(false);
     }
 
     public void Toggle_Abilities(int player_Going)
@@ -147,5 +111,18 @@ public class UIHandler : MonoBehaviour
             P2_Weapons.SetActive(true);
             P2_Abilities.SetActive(false);
         }
+    }
+
+    void Load_Menu_State(string state)
+    {
+        
+    }
+    void Quit_Game()
+    {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

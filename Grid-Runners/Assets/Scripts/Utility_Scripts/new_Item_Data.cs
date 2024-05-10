@@ -23,10 +23,25 @@ public class new_Item_Data : MonoBehaviour
         entity_Mask = 9 << LayerMask.NameToLayer("Entity");
     }
 
+    // Weapon State System:
+    public void Add_Weapon(UserHandler user_Handler, int selected_weapon)
+    {
+        print("Hi");
+        Item weapon = Items[selected_weapon];
+        if (user_Handler.Purchased[selected_weapon].Validity == false)
+        {
+            if (user_Handler.Points < weapon.Cost)
+                return;
+        }
+        user_Handler.Points = Mathf.Max(user_Handler.Points - weapon.Cost, 0);
+        if (weapon.weapon_Class == Item.Class.Primary)
+            user_Handler.primary_Weapon = selected_weapon;
+        else
+            user_Handler.secondary_Weapon = selected_weapon;
+    }
     public void Equip_Weapon(UserHandler user_Handler, int slot, int weapon)
     {
-
-
+        
     }
 
     // Item Coroutines:
@@ -64,6 +79,14 @@ public abstract class Item : ScriptableObject
 {
     [Header("Object Data")]
     public GameObject weapon_Prefab;
+    public Class weapon_Class;
+    public enum Class
+    {
+        Primary,
+        Secondary,
+        Equipment
+    }
+    public int Cost;
 
     public static new_Item_Data item_Data;
 

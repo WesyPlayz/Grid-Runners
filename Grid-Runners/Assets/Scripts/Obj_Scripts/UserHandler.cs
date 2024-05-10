@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 using static Utilities.Collisions;
 using static Utilities.Generic;
-using UnityEngine.InputSystem;
 
 public abstract class UserHandler : MonoBehaviour
 {
@@ -25,9 +25,10 @@ public abstract class UserHandler : MonoBehaviour
 
     // User Script Variables:
     public CameraHandler camera_Handler;
+    public CursorHandler cursor_Handler;
 
     private UIHandler ui_Handler;
-    private HUDHandler hud_Handler;
+    public HUDHandler hud_Handler;
 
     private Grid_Data grid_Data;
     [HideInInspector] public new_Item_Data item_Data;
@@ -140,10 +141,7 @@ public abstract class UserHandler : MonoBehaviour
     public bool wasGrounded;
 
     // Input Initiation System:
-    protected virtual void Awake()
-    {
-
-    }
+    protected virtual void Awake(){}
 
     // Variable Initialization System:
     private void Start()
@@ -161,42 +159,31 @@ public abstract class UserHandler : MonoBehaviour
 
         grid_Data = GameObject.Find("Grid").GetComponent<Grid_Data>();
         item_Data = GameObject.Find("Items").GetComponent<new_Item_Data>();
+        for (int i = 0; i < item_Data.Items.Count; i++)
+        {
+            Economy new_Economy = new Economy { };
+            Purchased.Add(new_Economy);
+        }
 
         Health = max_Health;
 
         secondary_Data = secondary_Obj.GetComponent<Obj_State>();
-
-        // Initiate User Input Variables:
-        //playerInput = User.GetComponent<PlayerInput>();
-        //playerInputActions = new PlayerInputActions();
-        //playerInputActions.Player.Enable();
-
-        //Action<InputAction.CallbackContext> build_Action = Build;
-        //playerInputActions.Player.Attack.performed += build_Action;
-
-        //playerInputActions.Player.Grenade.performed += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Active
-        //playerInputActions.Player.Grenade.canceled += phase => ControlledUpdate(phase, User_Input.Attack); // Ordinance Inactive
     }
 
     // Current Binding Collection:
     public Dictionary<string, Action<InputAction.CallbackContext>> bound_Actions = new Dictionary<string, Action<InputAction.CallbackContext>>();
-
-
-    protected virtual void BindActions(Mode mode)
-    {
-
-    }
+    protected virtual void BindActions(Mode mode){}
 
     // Mode Systems:
     public Mode SwapMode(Mode mode_State)
     {
-        if (!changing_Mode)
+        if (!(changing_Mode && mode_State == Mode.Idle))
         {
             changing_Mode = true;
 
-            // User Protection System:
             if (mode_State != Mode.Play)
             {
+                // User Protection System:
                 body_Hitbox_Bounds = body_Hitbox.bounds;
                 if (!can_Use_Action && is_Using_Action)
                 {
@@ -204,6 +191,21 @@ public abstract class UserHandler : MonoBehaviour
                     if (current_Item is Ranged ranged_Item)
                         ranged_Item.Aim(this, is_Using_Action = false);
                     can_Use_Action = true;
+                }
+
+                // Menu Activation System:
+                if (mode_State == Mode.Build)
+                    hud_Handler.HUD_Menus[0].SetActive(true);
+                else
+                    hud_Handler.HUD_Menus[1].SetActive(true);
+            }
+            else
+            {
+                // Menu Deactivation System:
+                foreach (GameObject menus in hud_Handler.HUD_Menus)
+                {
+                    menus.SetActive(false);
+                    cursor_Handler.user_Cursor.SetActive(false);
                 }
             }
 
@@ -213,6 +215,7 @@ public abstract class UserHandler : MonoBehaviour
             // Object Swapping System:
             User.SetActive(mode_State == Mode.Play);
             user_Spectate.SetActive(mode_State == Mode.Build);
+            cursor_Handler.user_Cursor.SetActive(mode_State != Mode.Play);
 
             // Camera Repositioning System:
             Transform cam_Pos = mode_State == Mode.Build ? camera_Handler.spec_Cam_Pos.transform : mode_State == Mode.Play ? camera_Handler.user_Cam_Pos.transform : camera_Handler.menu_Cam_Pos.transform;
@@ -388,10 +391,8 @@ public abstract class UserHandler : MonoBehaviour
     }
 
     // Action Systems:
-    public void Use_Ability(InputAction.CallbackContext phase)
-    {
-        
-    }
+    public void Use_Ability(InputAction.CallbackContext phase){}
+
     public void Build(InputAction.CallbackContext phase)
     {
         RaycastHit target;
@@ -414,6 +415,12 @@ public abstract class UserHandler : MonoBehaviour
     }
 
     // Inventory Systems:
+    public List<Economy> Purchased = new List<Economy>();
+    public class Economy
+    {
+        public bool Validity = false;
+    }
+
     public void Switch_Weapons(InputAction.CallbackContext phase)
     {
         if (current_Slot == Slot.Primary)
