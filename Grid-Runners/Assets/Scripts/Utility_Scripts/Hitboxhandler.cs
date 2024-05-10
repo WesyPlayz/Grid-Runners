@@ -31,5 +31,20 @@ public class Hitboxhandler : MonoBehaviour
         {
             user_Handler.Damage(current_Obj.GetComponent<ProjectileHandler>().dmg);
         }
+        print("hurt1");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject current_Obj = collision.gameObject;
+        if (current_Obj.CompareTag("Kill"))
+            user_Handler.Damage(user_Handler.max_Health);
+
+        if (current_Obj.tag == ("Projectile")) // Projectile Collision:
+        {
+            user_Handler.Damage(current_Obj.GetComponent<ProjectileHandler>().dmg);
+            print(user_Handler.Health);
+        }
+        print("hurt2");
     }
 }
