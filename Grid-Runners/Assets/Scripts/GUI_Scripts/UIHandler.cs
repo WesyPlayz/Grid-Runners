@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+using TMPro;
+
 public class UIHandler : MonoBehaviour
 {
     private GameManager gameManager;
@@ -51,35 +53,31 @@ public class UIHandler : MonoBehaviour
     public AudioClip Hover1;
     public AudioClip Hover2;
 
-    [SerializeField] private List<Button> Buttons = new List<Button>();
-
     void Start()
     {
         gameManager = GetComponent<GameManager>();
 
-        //EventSystem.current.SetSelectedGameObject(start);
-
-        for (int i = 0; i < Buttons.Count; i++)
+        // Weapon Interfaces:
+        for (int i = 0; i < item_Data.Items.Count; i++)
         {
-            Button button = Buttons[i];
-            switch (button.name)
+            Item weapon = item_Data.Items[i];
+            shop_Interface weapon_Interface = item_Data.Interfaces[i];
+
+            weapon_Interface.Name.text = weapon.weapon_Prefab.name;
+            weapon_Interface.Icon.sprite = weapon.Icon;
+
+            weapon_Interface.DMG.text = "DMG | " + weapon.Damage.ToString();
+
+            if (weapon is Ranged ranged_Weapon)
             {
-                case "Purchase_Hyper_Blaster_1":
-                    button.onClick.AddListener(() => item_Data.Add_Weapon(gameManager.user_Handler_1, 0));
-                    break;
-
-                case "Purchase_Hyper_Blaster_2":
-                    button.onClick.AddListener(() => item_Data.Add_Weapon(gameManager.user_Handler_2, 0));
-                    break;
+                weapon_Interface.FR.text = "FR | " + (Mathf.Round((1 / ranged_Weapon.fire_Rate) * 10) / 10).ToString();
+                weapon_Interface.Handling.text = "Handling | " + (Mathf.Round((ranged_Weapon.reload_Speed + (ranged_Weapon.ADS_Speed / 10) + ranged_Weapon.speed_Mod / 3) * 10) / 10).ToString();
             }
-        }
-        /*
-        Buttons[0].onClick.AddListener(() => Play_Game()); // Play Button - Main Menu
-        Buttons[1].onClick.AddListener(() => Load_Menu_State("Open")); // Load Button - Main Menu
-        Buttons[2].onClick.AddListener(() => Load_Menu_State("Close")); // Exit Button - Load Menu
+            weapon_Interface.Cost.text = weapon.Cost.ToString() + " (Points)";
 
-        Buttons[3].onClick.AddListener(() => Quit_Game()); // Quit Button - Main Menu
-        */
+            weapon_Interface.purchase_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), i));
+            weapon_Interface.equip_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), i));
+        }
     }
 
 

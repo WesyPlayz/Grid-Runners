@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45aabe9cd23e8e745afecf8aa4af2b93, type: 3}
-  m_Name: Laser Blaster
+  m_Name: Giga Blaster 1
   m_EditorClassIdentifier: 
-  weapon_Prefab: {fileID: 919132149155446097, guid: 18c9b100ffb89e244b4b9d8e785b7137, type: 3}
-  Damage: 12
-  speed_Mod: 1
-  Icon: {fileID: 21300000, guid: a6f3ed7fa7cdde24bb8d7a09eb39b7a0, type: 3}
+  weapon_Prefab: {fileID: 919132149155446097, guid: 18c3beee4139f4c4c881e9c7d5186388, type: 3}
+  weapon_Class: 0
+  Cost: 10
+  Damage: 30
+  speed_Mod: 0.75
+  Icon: {fileID: 21300000, guid: 7e95c90cbea7073439850f24d1bbf6db, type: 3}
   Ammo: {fileID: 21300000, guid: 37e47645e0e03734b969a049f1e9ecbc, type: 3}
-  is_Hit_Scan: 0
+  is_Hit_Scan: 1
   is_Spread: 0
   is_Auto: 0
-  projectile_Prefab: {fileID: 919132149155446097, guid: 80e35e397f662644ca6ae73cce4219c4, type: 3}
-  max_Ammo: 0
-  bullet_Speed: 55
-  reload_Speed: 0.15
-  fire_Rate: 0.1
-  ADS_FOV: 55.4
-  ADS_Speed: 49.7
+  projectile_Prefab: {fileID: 9020964981694467796, guid: 29993417de3794840b85d671bed4e9c1, type: 3}
+  max_Ammo: 4
+  bullet_Speed: 100
+  reload_Speed: 0.2
+  fire_Rate: 0.3
+  ADS_FOV: 75
+  ADS_Speed: 30

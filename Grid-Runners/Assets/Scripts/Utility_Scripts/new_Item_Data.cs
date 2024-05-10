@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+using TMPro;
 
 public class new_Item_Data : MonoBehaviour
 {
     [Header("Item Collection")]
     [SerializeField] public List<Item> Items = new List<Item> { };
+
+    [Header("Weapon Interfaces")]
+    [SerializeField] public List<shop_Interface> Interfaces = new List<shop_Interface> { };
 
     [Header("Ability Collection")]
     [SerializeField] public List<Ability> Abilities = new List<Ability> { };
@@ -24,20 +30,26 @@ public class new_Item_Data : MonoBehaviour
     }
 
     // Weapon State System:
-    public void Add_Weapon(UserHandler user_Handler, int selected_weapon)
+    public void Add_Weapon(UserHandler user_Handler, int selected_Weapon)
     {
         print("Hi");
-        Item weapon = Items[selected_weapon];
-        if (user_Handler.Purchased[selected_weapon].Validity == false)
+        Item weapon = Items[selected_Weapon];
+        if (user_Handler.Purchased[selected_Weapon].Validity == false)
         {
             if (user_Handler.Points < weapon.Cost)
                 return;
+            else
+            {
+                user_Handler.Purchased[selected_Weapon].Validity = true;
+                Interfaces[selected_Weapon].equip_Text.gameObject.SetActive(true);
+                Interfaces[selected_Weapon].equip_Button.interactable = true;
+            }
         }
         user_Handler.Points = Mathf.Max(user_Handler.Points - weapon.Cost, 0);
         if (weapon.weapon_Class == Item.Class.Primary)
-            user_Handler.primary_Weapon = selected_weapon;
+            user_Handler.primary_Weapon = selected_Weapon;
         else
-            user_Handler.secondary_Weapon = selected_weapon;
+            user_Handler.secondary_Weapon = selected_Weapon;
     }
     public void Equip_Weapon(UserHandler user_Handler, int slot, int weapon)
     {
@@ -73,6 +85,31 @@ public class new_Item_Data : MonoBehaviour
     {
         yield return new WaitForSeconds(length);
     }
+}
+
+[System.Serializable]
+public class shop_Interface
+{
+    public Player bound_Player;
+    public enum Player
+    {
+        Player_1,
+        Player_2
+    }
+    public TMP_Text Name;
+
+    public Image Upgrade;
+    public Image Icon;
+
+    public Button purchase_Button;
+    public Button equip_Button;
+
+    public TMP_Text Cost;
+    public TMP_Text equip_Text;
+
+    public TMP_Text DMG;
+    public TMP_Text FR;
+    public TMP_Text Handling;
 }
 
 public abstract class Item : ScriptableObject
