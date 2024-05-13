@@ -7420,6 +7420,8 @@ MonoBehaviour:
   camera_Handler: {fileID: 1159050917}
   cursor_Handler: {fileID: 956634049}
   hud_Handler: {fileID: 158527129}
+  game_manager: {fileID: 585705882}
+  player: 0
   item_Data: {fileID: 0}
   player_Input: {fileID: 990919037}
   current_Mode: 0
@@ -7441,9 +7443,9 @@ MonoBehaviour:
   current_Weapon: {fileID: 11400000, guid: 2180ab6881df1a34fb6119899d5e411b, type: 2}
   primary_Weapon: -1
   secondary_Weapon: 1
-  fire_Point: {fileID: 0}
+  fire_Point: {fileID: 1114040580}
   Grenade: {fileID: 0}
-  muzzle_Flash: {fileID: 0}
+  muzzle_Flash: {fileID: 1828601338}
   pewpew: {fileID: 158527139}
   ReloadSound: {fileID: 158527138}
   WalkSFX: {fileID: 158527137}
@@ -7451,6 +7453,7 @@ MonoBehaviour:
   climb2: {fileID: 158527135}
   climb3: {fileID: 158527134}
   Slashy: {fileID: 158527140}
+  jumpy: {fileID: 0}
   can_Attack: 1
   can_Use_Action: 1
   is_Using_Action: 0
@@ -8191,6 +8194,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!198 &165585586 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3249678714556225111, guid: 2f99ee064bcd37f43b961afab8ea9575, type: 3}
+  m_PrefabInstance: {fileID: 4047381272070202134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &173952213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18626,7 +18634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_Rounds: 3
-  round_Time: 4
+  round_Time: 120
   current_Round_Time: 0
   intermission_Time: 20
   current_Intermission_Time: 0
@@ -47169,6 +47177,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.01, y: 1.01, z: 1.01}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1114040580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2358862786408918474, guid: 2f99ee064bcd37f43b961afab8ea9575, type: 3}
+  m_PrefabInstance: {fileID: 773098762}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1115009991
 GameObject:
   m_ObjectHideFlags: 0
@@ -58746,6 +58759,11 @@ RectTransform:
   m_AnchoredPosition: {x: 1.800003, y: 27.500044}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1509881920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2358862786408918474, guid: 2f99ee064bcd37f43b961afab8ea9575, type: 3}
+  m_PrefabInstance: {fileID: 4047381272070202134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1513848533 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 971d85bef3e02464a89840f5aeac0dc0, type: 3}
@@ -67392,6 +67410,8 @@ MonoBehaviour:
   camera_Handler: {fileID: 1996051637}
   cursor_Handler: {fileID: 1602884007}
   hud_Handler: {fileID: 1760973978}
+  game_manager: {fileID: 585705882}
+  player: 0
   item_Data: {fileID: 0}
   player_Input: {fileID: 1513848543}
   current_Mode: 0
@@ -67413,9 +67433,9 @@ MonoBehaviour:
   current_Weapon: {fileID: 11400000, guid: 2180ab6881df1a34fb6119899d5e411b, type: 2}
   primary_Weapon: -1
   secondary_Weapon: 1
-  fire_Point: {fileID: 0}
+  fire_Point: {fileID: 1509881920}
   Grenade: {fileID: 0}
-  muzzle_Flash: {fileID: 0}
+  muzzle_Flash: {fileID: 165585586}
   pewpew: {fileID: 1760973979}
   ReloadSound: {fileID: 1760973980}
   WalkSFX: {fileID: 1760973981}
@@ -67423,6 +67443,7 @@ MonoBehaviour:
   climb2: {fileID: 1760973985}
   climb3: {fileID: 1760973984}
   Slashy: {fileID: 1760973987}
+  jumpy: {fileID: 0}
   can_Attack: 1
   can_Use_Action: 1
   is_Using_Action: 0
@@ -68745,6 +68766,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823013924}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!198 &1828601338 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3249678714556225111, guid: 2f99ee064bcd37f43b961afab8ea9575, type: 3}
+  m_PrefabInstance: {fileID: 773098762}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1832386305
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public abstract class UserHandler : MonoBehaviour
     [Header("User Variables")]
     public GameObject User;
     public GameObject user_Spectate;
+    //public GameObject Gm_OBJ;
 
     [HideInInspector] public GameObject Neck;
 
@@ -29,7 +30,7 @@ public abstract class UserHandler : MonoBehaviour
 
     private UIHandler ui_Handler;
     public HUDHandler hud_Handler;
-    private GameManager game_manager;
+    public GameManager game_manager;
     public int player;
 
     private Grid_Data grid_Data;
@@ -160,7 +161,7 @@ public abstract class UserHandler : MonoBehaviour
         user_Controller = User.GetComponent<CharacterController>();
         spectator_Controller = user_Spectate.GetComponent<CharacterController>();
         body_Hitbox = User.GetComponent<CharacterController>();
-        game_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //game_manager = Gm_OBJ.GetComponent<GameManager>();
 
         // Initiate User Script Variables:
         camera_Handler = user_Camera.GetComponent<CameraHandler>();
