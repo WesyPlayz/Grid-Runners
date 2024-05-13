@@ -19531,6 +19531,10 @@ PrefabInstance:
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f902fdd279daef8469617e38c2e42d32, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f902fdd279daef8469617e38c2e42d32, type: 3}
       propertyPath: m_TagString
       value: Floor_Tile
       objectReference: {fileID: 0}
@@ -57897,7 +57901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1454708362
 SphereCollider:
   m_ObjectHideFlags: 0
