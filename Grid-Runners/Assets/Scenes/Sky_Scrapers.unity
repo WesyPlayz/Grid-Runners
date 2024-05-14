@@ -30378,6 +30378,7 @@ MonoBehaviour:
   is_Attacking: 0
   ground: 0
   wasGrounded: 0
+  on_tutorial: 0
 --- !u!82 &826623563
 AudioSource:
   m_ObjectHideFlags: 0
@@ -33168,6 +33169,7 @@ MonoBehaviour:
   user_Handler_2: {fileID: 1032385310}
   Players: []
   round_IP: 0
+  on_Tutorial: 0
   current_Round: 0
 --- !u!114 &928177994
 MonoBehaviour:
@@ -36032,6 +36034,7 @@ MonoBehaviour:
   is_Attacking: 0
   ground: 0
   wasGrounded: 0
+  on_tutorial: 0
 --- !u!114 &1032385311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52610,6 +52613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1540902888}
+  - component: {fileID: 1540902889}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -52792,6 +52796,22 @@ Transform:
   - {fileID: 2120039555}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1540902889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540902887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98dbefe460e34cf499bf9eca000abd9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid_Col:
+  - {fileID: 998133703833202652, guid: 3a52fd1e34ae9e342bc490baaa2c3cb7, type: 3}
+  current_Gird_Obj: 0
+  placement_Range: 10
 --- !u!1 &1561667494
 GameObject:
   m_ObjectHideFlags: 0
