@@ -33,10 +33,12 @@ public class GameManager : MonoBehaviour
     public GameObject P2;
     public UserHandler user_Handler_1;
     public UserHandler user_Handler_2;
+    private UIHandler UI_Handler;
 
     [SerializeField] public List<GameObject> Players = new List<GameObject> { };
 
     public bool round_IP;
+    public bool on_Tutorial = false;
 
     public int current_Round;
 
@@ -46,19 +48,21 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         StartCoroutine(Roundtime(round_Time, game_State.Round));
         playerInputManager = GetComponent<PlayerInputManager>();
+        UI_Handler = GetComponent<UIHandler>();
 
-        
+
+
         for (int i = 0; i < Display.displays.Length; i++)
         {
             Display.displays[i].Activate();
         }
     }
-
-    string TimeToClock(int balls = 0)
+    
+    public string TimeToClock(int balls = 0)
     {
         return Mathf.Floor(balls/60)+":"+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)+(balls-((Mathf.Floor(balls/60)*60)+Mathf.Floor((balls-Mathf.Floor(balls/60)*60)/10)*10));
     }
-
+    
     public void Player_Init()
     {
         print("Hello World");
@@ -78,6 +82,8 @@ public class GameManager : MonoBehaviour
                     current_Round++;
                     user_Handler_1.Respawn();
                     user_Handler_2.Respawn();
+                    P1_Points -= 2;
+                    P2_Points -= 2;
                     user_Handler_1.current_Mode = user_Handler_1.SwapMode(UserHandler.Mode.Play);
                     user_Handler_2.current_Mode = user_Handler_2.SwapMode(UserHandler.Mode.Play);
 
@@ -89,13 +95,17 @@ public class GameManager : MonoBehaviour
                         print(TimeToClock(current_Round_Time));
                     }
                     if (current_Round_Time == 0) // Start Intermission
-                        StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
+                    {
+                        if (on_Tutorial)
+                            UI_Handler.startGame(0);
+                        else
+                            StartCoroutine(Roundtime(intermission_Time, game_State.Intermission));
+                    }
                     break;
                 case game_State.Intermission: // Intermission
                     user_Handler_1.Respawn();
                     user_Handler_2.Respawn();
-                    if (user_Handler_1.Points != user_Handler_2.Points)
-                        Winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
+                    Winner = user_Handler_1.Points > user_Handler_2.Points ? 1 : 2;
                     user_Handler_1.current_Mode = user_Handler_1.SwapMode(Winner == 1 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
                     user_Handler_2.current_Mode = user_Handler_2.SwapMode(Winner == 2 ? UserHandler.Mode.Build : UserHandler.Mode.Menu);
                     P1_Wins += Winner == 1 ? 1 : 0;
@@ -113,9 +123,9 @@ public class GameManager : MonoBehaviour
                     break;
             }  
         }
-        else
+        else if (!UI_Handler.on_Main_Menu)
         {
-            SceneManager.LoadScene(P1_Wins > P2_Wins ? 2 : 1);
+            SceneManager.LoadScene(P1_Wins > P2_Wins ? 3 : 4);
         }
         print("Game Over");
     }

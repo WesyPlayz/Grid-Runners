@@ -22,9 +22,9 @@ MonoBehaviour:
   is_Hit_Scan: 0
   is_Spread: 0
   is_Auto: 0
-  projectile_Prefab: {fileID: 919132149155446097, guid: 80e35e397f662644ca6ae73cce4219c4, type: 3}
+  projectile_Prefab: {fileID: 9020964981694467796, guid: 8df15934bf3967a429f5d8c641c0b73b, type: 3}
   max_Ammo: 22
-  bullet_Speed: 35
+  bullet_Speed: 20
   reload_Speed: 0.1
   fire_Rate: 0.4
   ADS_FOV: 30

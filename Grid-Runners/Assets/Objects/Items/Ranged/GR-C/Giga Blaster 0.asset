@@ -24,7 +24,7 @@ MonoBehaviour:
   is_Auto: 0
   projectile_Prefab: {fileID: 9020964981694467796, guid: 29993417de3794840b85d671bed4e9c1, type: 3}
   max_Ammo: 4
-  bullet_Speed: 100
+  bullet_Speed: 20
   reload_Speed: 0.2
   fire_Rate: 0.3
   ADS_FOV: 75

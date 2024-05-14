@@ -148,6 +148,11 @@ public abstract class UserHandler : MonoBehaviour
     public bool ground = false;
     public bool wasGrounded;
 
+    //store variables:
+    private int weapon_cost;
+    private GameObject equip_Button;
+    public bool on_tutorial = false;
+
     // Input Initiation System:
     protected virtual void Awake(){}
 
@@ -330,8 +335,9 @@ public abstract class UserHandler : MonoBehaviour
     {
         User.transform.position = Spawn.transform.position; // Relocate User
         Health = max_Health;
-        game_manager.P1_Points += player == 1 ? 2 : 0;
-        game_manager.P2_Points += player == 1 ? 0 : 2;
+        game_manager.P1_Points += player == 1 ? 0 : 2;
+        game_manager.P2_Points += player == 1 ? 2 : 0;
+        print(player + "ded");
     }
 
     // Movement Systems:
@@ -402,5 +408,34 @@ public abstract class UserHandler : MonoBehaviour
     public void Switch_Ability(GameObject ability)
     {
         current_ability = ability;
+    }
+
+    public void Equip_Primary(int weapon)
+    {
+        primary_Weapon = weapon;
+    }
+
+    public void Equip_Secondary(int weapon)
+    {
+        secondary_Weapon = weapon;
+    }
+
+    public void Buy_Equip_Button(GameObject equip)
+    {
+        equip_Button = equip;
+    }
+
+    public void Buy_Cost(int cost)
+    {
+        weapon_cost = cost;
+    }
+
+    public void Buy_Weapon(GameObject undo_buy)
+    {
+        if ((player == 1 ? game_manager.P1_Points : game_manager.P2_Points) >= weapon_cost)
+        {
+            equip_Button.SetActive(true);
+            undo_buy.SetActive(false);
+        }
     }
 }

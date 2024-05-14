@@ -53,34 +53,51 @@ public class UIHandler : MonoBehaviour
     public AudioClip Hover1;
     public AudioClip Hover2;
 
+    [Header("texts")]
+    public TMP_Text Timer1;
+    public TMP_Text Timer2;
+    public TMP_Text P1_Points;
+    public TMP_Text P2_Points;
+
     void Start()
     {
         gameManager = GetComponent<GameManager>();
 
-        // Weapon Interfaces:
-        for (int i = 0; i < item_Data.Items.Count - 1; i++)
+        if (!on_Main_Menu)
         {
-            int current_Weapon = i;
-            Item weapon = item_Data.Items[current_Weapon];
-            shop_Interface weapon_Interface = item_Data.Interfaces[i];
-
-            weapon_Interface.Name.text = weapon.weapon_Prefab.name;
-            weapon_Interface.Icon.sprite = weapon.Icon;
-
-            weapon_Interface.DMG.text = "DMG | " + weapon.Damage.ToString();
-
-            if (weapon is Ranged ranged_Weapon)
+            // Weapon Interfaces:
+            for (int i = 0; i < item_Data.Items.Count - 1; i++)
             {
-                weapon_Interface.FR.text = "FR | " + (Mathf.Round((1 / ranged_Weapon.fire_Rate) * 10) / 10).ToString();
-                weapon_Interface.Handling.text = "Handling | " + (Mathf.Round((ranged_Weapon.reload_Speed + (ranged_Weapon.ADS_Speed / 10) + ranged_Weapon.speed_Mod / 3) * 10) / 10).ToString();
-            }
-            weapon_Interface.Cost.text = weapon.Cost.ToString() + " (Points)";
+                int current_Weapon = i;
+                Item weapon = item_Data.Items[current_Weapon];
+                shop_Interface weapon_Interface = item_Data.Interfaces[i];
 
-            weapon_Interface.purchase_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
-            weapon_Interface.equip_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
+                weapon_Interface.Name.text = weapon.weapon_Prefab.name;
+                weapon_Interface.Icon.sprite = weapon.Icon;
+
+                weapon_Interface.DMG.text = "DMG | " + weapon.Damage.ToString();
+
+                if (weapon is Ranged ranged_Weapon)
+                {
+                    weapon_Interface.FR.text = "FR | " + (Mathf.Round((1 / ranged_Weapon.fire_Rate) * 10) / 10).ToString();
+                    weapon_Interface.Handling.text = "Handling | " + (Mathf.Round((ranged_Weapon.reload_Speed + (ranged_Weapon.ADS_Speed / 10) + ranged_Weapon.speed_Mod / 3) * 10) / 10).ToString();
+                }
+                weapon_Interface.Cost.text = weapon.Cost.ToString() + " (Points)";
+
+                weapon_Interface.purchase_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
+                weapon_Interface.equip_Button.onClick.AddListener(() => item_Data.Add_Weapon((weapon_Interface.bound_Player == shop_Interface.Player.Player_1 ? gameManager.user_Handler_1 : gameManager.user_Handler_2), current_Weapon));
+            }
         }
     }
 
+    private void FixedUpdate()
+    {
+        Timer1.text = gameManager.TimeToClock(gameManager.current_Round_Time);
+        Timer2.text = gameManager.TimeToClock(gameManager.current_Round_Time);
+
+        P1_Points.text = ("Points: " + gameManager.P1_Points);
+        P2_Points.text = ("Points: " + gameManager.P2_Points);
+    }
 
     public void startGame(int map)
     {
@@ -99,7 +116,6 @@ public class UIHandler : MonoBehaviour
             P1_Weapons.SetActive(true);
             P1_Abilities.SetActive(false);
         }
-
         else if (player_Going == 3)
         {
             P2_Weapons.SetActive(false);
