@@ -101,7 +101,7 @@ public class UIHandler : MonoBehaviour
 
     public void startGame(int map)
     {
-        SceneManager.LoadScene(map);
+        SceneManager.LoadScene(map + 1);
     }
 
     public void Toggle_Abilities(int player_Going)

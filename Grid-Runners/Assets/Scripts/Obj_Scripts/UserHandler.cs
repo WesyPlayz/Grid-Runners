@@ -12,6 +12,7 @@ public abstract class UserHandler : MonoBehaviour
     [Header("User Variables")]
     public GameObject User;
     public GameObject user_Spectate;
+
     //public GameObject Gm_OBJ;
 
     [HideInInspector] public GameObject Neck;
@@ -30,7 +31,7 @@ public abstract class UserHandler : MonoBehaviour
 
     private UIHandler ui_Handler;
     public HUDHandler hud_Handler;
-    public GameManager game_manager;
+    public GameManager game_manager; 
     public int player;
 
     private Grid_Data grid_Data;
@@ -326,18 +327,23 @@ public abstract class UserHandler : MonoBehaviour
         {
             Health = Mathf.Max(Health - dmg, 0);
             if (Health <= 0)
-                Respawn();
+                Respawn(current_Mode = SwapMode(UserHandler.Mode.Idle));
         }
         return true;
     }
 
-    public void Respawn() // Respawn System:
+    public void Respawn(Mode mode = Mode.Idle) // Respawn System:
     {
         User.transform.position = Spawn.transform.position; // Relocate User
         Health = max_Health;
+        //int points = gameObject.name == "Player_1" ? game_manager.P1_Points : game_manager.P2_Points;
+
+        //points += player == 1 ? 0 : 2;
         game_manager.P1_Points += player == 1 ? 0 : 2;
         game_manager.P2_Points += player == 1 ? 2 : 0;
-        print(player + "ded");
+        game_manager.P1_kills += player == 1 ? 0 : 1;
+        game_manager.P2_kills += player == 1 ? 1 : 0;
+        current_Mode = SwapMode(UserHandler.Mode.Play);
     }
 
     // Movement Systems:
@@ -375,12 +381,17 @@ public abstract class UserHandler : MonoBehaviour
 
     public void Build(InputAction.CallbackContext phase)
     {
-        RaycastHit target;
-        if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+        int points = gameObject.name == "Player_1" ? game_manager.P1_Points : game_manager.P2_Points;
+
+        if (points != 0)
         {
-            GameObject selected_Target = target.transform.gameObject;
-            if (selected_Target.CompareTag("Grid_Tile")) { }
+            RaycastHit target;
+            if (Physics.Raycast(camera_Handler.user_Camera.ScreenPointToRay(Input.mousePosition), out target))
+            {
+                GameObject selected_Target = target.transform.gameObject;
+                if (selected_Target.CompareTag("Grid_Tile")) { }
                 grid_Data.PlaceObject(this, selected_Target, target.normal);
+            }
         }
     }
 
@@ -410,32 +421,5 @@ public abstract class UserHandler : MonoBehaviour
         current_ability = ability;
     }
 
-    public void Equip_Primary(int weapon)
-    {
-        primary_Weapon = weapon;
-    }
-
-    public void Equip_Secondary(int weapon)
-    {
-        secondary_Weapon = weapon;
-    }
-
-    public void Buy_Equip_Button(GameObject equip)
-    {
-        equip_Button = equip;
-    }
-
-    public void Buy_Cost(int cost)
-    {
-        weapon_cost = cost;
-    }
-
-    public void Buy_Weapon(GameObject undo_buy)
-    {
-        if ((player == 1 ? game_manager.P1_Points : game_manager.P2_Points) >= weapon_cost)
-        {
-            equip_Button.SetActive(true);
-            undo_buy.SetActive(false);
-        }
-    }
+    
 }

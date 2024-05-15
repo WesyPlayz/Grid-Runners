@@ -12590,43 +12590,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 171712861}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 508197186}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 171712858}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &171712861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21142,7 +21106,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &508197187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21206,19 +21170,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 508197189}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Primary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &508197189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21829,43 +21781,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 552419069}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 996815978}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 15
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 552419066}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &552419069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27335,7 +27251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &595449048
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27399,19 +27315,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 595449050}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Secondary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &595449050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29232,7 +29136,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1122, y: 912}
+  m_AnchoredPosition: {x: -1121.9993, y: 912}
   m_SizeDelta: {x: 0, y: 481}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &743752014
@@ -30330,8 +30234,8 @@ MonoBehaviour:
   player_Input: {fileID: 174183402}
   current_Mode: 0
   Spawn: {fileID: 1496397072}
-  walk_Speed: 0.025
-  sprint_Speed: 0.05
+  walk_Speed: 0.03
+  sprint_Speed: 0.06
   Points: 0
   points_Per_Kill: 2
   max_Health: 100
@@ -33154,11 +33058,13 @@ MonoBehaviour:
   max_Rounds: 3
   round_Time: 120
   current_Round_Time: 0
-  intermission_Time: 20
+  intermission_Time: 30
   current_Intermission_Time: 0
   Players_Ready: 0
   P1_Points: 0
   P2_Points: 0
+  P1_kills: 0
+  P2_kills: 0
   P1_Wins: 0
   P2_Wins: 0
   Winner: 0
@@ -33170,6 +33076,7 @@ MonoBehaviour:
   Players: []
   round_IP: 0
   on_Tutorial: 0
+  on_Win: 0
   current_Round: 0
 --- !u!114 &928177994
 MonoBehaviour:
@@ -34437,7 +34344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &996815979
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34501,19 +34408,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 996815981}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Primary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &996815981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35143,7 +35038,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1028095156
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35207,19 +35102,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1028095158}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Primary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1028095158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35986,8 +35869,8 @@ MonoBehaviour:
   player_Input: {fileID: 993454345}
   current_Mode: 0
   Spawn: {fileID: 1573594028}
-  walk_Speed: 0.025
-  sprint_Speed: 0.05
+  walk_Speed: 0.03
+  sprint_Speed: 0.06
   Points: 0
   points_Per_Kill: 2
   max_Health: 100
@@ -36292,43 +36175,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1049859297}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 15
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1312421409}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1049859294}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1049859297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43574,7 +43421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1259227200
 RectTransform:
   m_ObjectHideFlags: 0
@@ -43638,19 +43485,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1259227202}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Secondary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1259227202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44339,7 +44174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1312421410
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44403,19 +44238,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1312421412}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Equip_Primary
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1312421412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51529,7 +51352,7 @@ MonoBehaviour:
   menu_Cam_Pos: {fileID: 1027079723}
   origin_FOV: 0
   assigned_Player: 1
-  Sensitivity: 1
+  Sensitivity: 4.9
   look_Limit: 80
   is_Peeking: 0
   current_Side: 0
@@ -53185,43 +53008,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1588451753}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 595449047}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1032385310}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1588451750}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1588451753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69144,43 +68931,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2066411543}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1259227199}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2066411540}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2066411543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69908,43 +69659,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2134456036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Equip_Button
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1028095155}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Cost
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 826623562}
-        m_TargetAssemblyTypeName: UserHandler, Assembly-CSharp
-        m_MethodName: Buy_Weapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2134456033}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2134456036
 MonoBehaviour:
   m_ObjectHideFlags: 0
