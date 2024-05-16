@@ -19,13 +19,7 @@ public class Cursor_Handler : MonoBehaviour
 
     [Header("User Variables")] // Variables Associated With The User :
     //{
-        public Player player;
-        public enum Player
-        {
-            Player,
-            Player_1,
-            Player_2
-        }
+        public Game_Manager.Player player;
         private GameObject player_Obj;
 
         private User_Handler user_Handler;
@@ -34,13 +28,6 @@ public class Cursor_Handler : MonoBehaviour
 
     [Header("Cursor Variables")] // Variables Associated With The Cursor :
     //{
-        public Input_Type direct_Input;
-        public enum Input_Type
-        {
-            None,
-            Singular,
-            Universal
-        }
         public GameObject user_Cursor;
 
         [Range(0, 5)] public float cursor_Sensitivity;
@@ -64,66 +51,62 @@ public class Cursor_Handler : MonoBehaviour
         // User Assignment :
         player_Obj = GameObject.Find // Finds The Player Which This Script Is Assigned To :
             ((
-                player != Player.Player ? // [ Checks If Player Is Not Universal ]
+                player != Game_Manager.Player.Player ? // [ Checks If Player Is Not Universal ]
                 (
-                    player == Player.Player_1 ? "Player_1" : // [ Checks If Player Is FIrst Player ]
+                    player == Game_Manager.Player.Player_1 ? "Player_1" : // [ Checks If Player Is FIrst Player ]
                     "Player_2" // [ Assigns To Second Player If All Other's Are False ]
                 ) : 
                 "Player" // [ Assigns To Universal Player If All Other's Are False ]
             ));
         parameters = "(Player_1 | Player_2 | Player)";
         if (player_Obj == null) // Existential Check For player_obj :
-            debug.LogError(ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters);
+            Shutdown(ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters);
 
+        parameters = "(Game_Manager)";
         if (game_Manager != null) // Existential Check For game_Manager :
         {
-            if (game_Manager.game_State != Game_Manager.State.Linked) // Checks If Game State Is Linked Or Not :
+            if (game_Manager.input_State != Game_Manager.Input_Type.Singular) // Checks If Input Type Is Universal Or Not :
             {
                 user_Handler = player_Obj.GetComponent<User_Handler>(); // [ Assigns The Reference Of User_Handler ]
                 parameters = "(User_Handler)";
                 if (user_Handler == null) // Existential Check For user_Handler :
-                {
-                    debug.LogError(ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters);
-                    direct_Input = Input_Type.None; // [ Sets Input To No Players ]
-                }
-                else
-                    direct_Input = Input_Type.Singular; // [ Sets Input To Handle Players Seperately ]
+                    Shutdown(ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters);
             }
-            else
+            else if (game_Manager.input_State != Game_Manager.Input_Type.Universal)
             {
                 uni_User_Handler = player_Obj.GetComponent<Uni_User_Handler>(); // [ Assigns The Reference Of Uni_User_Handler ]
                 parameters = "(Uni_User_Handler)";
                 if (uni_User_Handler == null) // Existential Check For uni_User_Handler :
-                {
-                    debug.LogError(ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters);
-                    direct_Input = Input_Type.None; // [ Sets Input To No Players ]
-                }
-                else
-                    direct_Input = Input_Type.Universal; // [ Sets Input To Handle Players Universally ]
+                    Shutdown(ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters);
             }
         }
         else
-        {
-            parameters = "(Game_Manager)";
-            debug.LogError(ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters);
-            direct_Input = Input_Type.None; // [ Sets Input To No Players ]
-        }
+            Shutdown(ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters);
 
         // Cursor Assignment :
         Cursor.lockState = CursorLockMode.Locked; // [ Locks The Default Desktop Cursor To The Center Of The Screen ]
         cursor_Pos = GetComponent<RectTransform>(); // [ Assigns The Reference Of RectTransform ]
         parameters = "(RectTransform)";
         if (cursor_Pos == null) // Existential Check For cursor_Pos :
-        {
-            debug.LogError(ID_01 + "| Null Reference : cursor_Pos was not defined.\nParameters : " + parameters);
-            direct_Input = Input_Type.None; // [ Sets Input To No Players ]
-        }
+            Shutdown(ID_01 + "| Null Reference : cursor_Pos was not defined.\nParameters : " + parameters);
     }
 
-    // Cursor Input System :
+    // Script Emergency System :
     private string ID_02 = "ID : CH_02";
     /// <summary>
     /// [ ID : CH_02 ]
+    /// Params : (error)
+    /// </summary>
+    public void Shutdown(string error)
+    {
+        Debug.LogError(error);
+        this.enabled = false;
+    }
+
+    // Cursor Input System :
+    private string ID_03 = "ID : CH_03";
+    /// <summary>
+    /// [ ID : CH_03 ]
     /// Params : (None)
     /// </summary>
     public void Update()
@@ -133,10 +116,10 @@ public class Cursor_Handler : MonoBehaviour
         float cursor_Vertical = 0;
 
         // Direct Input :
-        switch (direct_Input)
+        switch (game_Manager.input_State)
         {
             // Singular Player Input :
-            case Input_Type.Singular:
+            case Game_Manager.Input_Type.Singular:
                 if (user_Handler.current_Mode == User_Handler.Mode.Menu) // [ Checks If Player Is Currently In A Menu ]
                 {
                     cursor_Horizontal = cursor_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
@@ -145,7 +128,7 @@ public class Cursor_Handler : MonoBehaviour
                 break;
 
             // Universal Player Input :
-            case Input_Type.Universal:
+            case Game_Manager.Input_Type.Universal:
                 if (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
                 {
                     cursor_Horizontal = cursor_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
@@ -155,14 +138,14 @@ public class Cursor_Handler : MonoBehaviour
         }
 
         // Cursor Movement System :
-        if (direct_Input != Input_Type.None && cursor_Horizontal + cursor_Vertical != 0) // [ Checks If Input Is Active ]
+        if (game_Manager.input_State != Game_Manager.Input_Type.None && cursor_Horizontal + cursor_Vertical != 0) // [ Checks If Input Is Active ]
             cursor_Pos.anchoredPosition = Move_Cursor(cursor_Horizontal, cursor_Vertical); // [ Run Cursor Movement ]
     }
 
     // Cursor Movement System :
-    private string ID_03 = "ID : CH_03";
+    private string ID_04 = "ID : CH_04";
     /// <summary>
-    /// [ ID : CH_03 ]
+    /// [ ID : CH_04 ]
     /// Params : (x | y)
     /// </summary>
     public Vector2 Move_Cursor(float x, float y)
@@ -183,9 +166,9 @@ public class Cursor_Handler : MonoBehaviour
     }
 
     // Cursor Select System:
-    private string ID_04 = "ID : CH_04";
+    private string ID_05 = "ID : CH_05";
     /// <summary>
-    /// [ ID : CH_04 ]
+    /// [ ID : CH_05 ]
     /// Params : (phase)
     /// </summary>
     public void Select(InputAction.CallbackContext phase)

@@ -1,70 +1,152 @@
+// System Libraries :
 using System.Collections;
 using System.Collections.Generic;
+
+// Unity Engine Libraries :
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraHandler : MonoBehaviour
+// Script Class :
+public class Camera_Handler : MonoBehaviour
 {
-    // user Variables:
-    private GameObject player_Obj;
-    public enum Player
-    {
-        Player_1,
-        Player_2
-    }
+    private Game_Manager game_Manager; // [ Game_Manager Reference ]
 
-    public UserHandler user_Handler;
+    [Header("User Variables")] // Variables Associated With The User :
+    //{
+        public Game_Manager.Player player;
+        private GameObject player_Obj;
 
-    [Header("Camera Variables")]
-    public Camera user_Camera;
-    public Camera ui_Camera;
+        private User_Handler user_Handler;
+        private Uni_User_Handler uni_User_Handler;
+    //}
 
-    public GameObject
-        user_Cam_Pos,
-        spec_Cam_Pos,
-        menu_Cam_Pos;
+    [Header("Camera Variables")] // Variables Associated With The Camera :
+    //{
+        public Camera 
+            user_Camera, 
+            ui_Camera;
 
-    [HideInInspector] public float origin_FOV;
+        public GameObject
+            user_Cam_Pos,
+            spec_Cam_Pos,
+            menu_Cam_Pos;
 
-    [Header("user Variables")]
-    public Player assigned_Player;
+        [HideInInspector] public float origin_FOV;
+        [Range(.1f, 69)] public float camera_Sensitivity;
+    //}
 
-    [Header("Rotation Variables")]
-    [Range(.1f, 69)]
-    public float Sensitivity;
+    [Header("Peek Variables")] // Variables Associated With The Camera Peek System :
+    //{
+        public bool is_Peeking;
+        public Side current_Side;
+        public enum Side
+        {
+            Right,
+            Left
+        }
+        [Range(-360, 360)] public float peek_Angle;
+    //}
 
-    [Range(0, 360)]
-    public float look_Limit;
+    [Header("Limit Variables")] // Variables Associated With The Camera Limit System :
+    //{
+        [Range(0, 360)] public float look_Limit;
+        [Range(0, 360)] public float Peek_Limit;
+    //}
 
-    [Header("Peek Variables")]
-    public bool is_Peeking;
-    public Side current_Side;
-    public enum Side
-    {
-        Right,
-        Left
-    }
-
-    [Range(-360, 360)]
-    public float peek_Angle;
-    [Range(0, 360)]
-    public float Peek_Limit;
-
-    // Variable Initialization System:
+    // Initialization System :
+    private string ID_01 = "ID : CH_01";
+    /// <summary>
+    /// [ ID : CH_01 ]
+    /// Params : (None)
+    /// </summary>
     void Start()
     {
-        // Player Binding System:
-        player_Obj = GameObject.Find((assigned_Player == Player.Player_1 ? "Player_1" : "Player_2")); // Finds which player this script is assigned to
+        string parameters = string.Empty;
 
-        user_Handler = player_Obj.GetComponent<UserHandler>(); // Finds the player's script
+        // User Assignment :
+        player_Obj = GameObject.Find // Finds The Player Which This Script Is Assigned To :
+            ((
+                player != Game_Manager.Player.Player ? // [ Checks If Player Is Not Universal ]
+                (
+                    player == Game_Manager.Player.Player_1 ? "Player_1" : // [ Checks If Player Is FIrst Player ]
+                    "Player_2" // [ Assigns To Second Player If All Other's Are False ]
+                ) :
+                "Player" // [ Assigns To Universal Player If All Other's Are False ]
+            ));
+        parameters = "(Player_1 | Player_2 | Player)";
+        if (player_Obj == null) // Existential Check For player_obj :
+            Debug.LogError(ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters);
+
+        parameters = "(Game_Manager)";
+        if (game_Manager != null) // Existential Check For game_Manager :
+        {
+            if (game_Manager.input_State != Game_Manager.Input_Type.Singular) // Checks If Input Type Is Universal Or Not :
+            {
+                user_Handler = player_Obj.GetComponent<User_Handler>(); // [ Assigns The Reference Of User_Handler ]
+                parameters = "(User_Handler)";
+                if (user_Handler == null) // Existential Check For user_Handler :
+                    Shutdown(ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters);
+            }
+            else if (game_Manager.input_State != Game_Manager.Input_Type.Universal)
+            {
+                uni_User_Handler = player_Obj.GetComponent<Uni_User_Handler>(); // [ Assigns The Reference Of Uni_User_Handler ]
+                parameters = "(Uni_User_Handler)";
+                if (uni_User_Handler == null) // Existential Check For uni_User_Handler :
+                    Shutdown(ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters);
+            }
+        }
+        else
+            Shutdown(ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters);
 
         // Camera Variable Setup:
         origin_FOV = ui_Camera.fieldOfView; // Assigns base FOV
     }
 
+    // Script Emergency System :
+    private string ID_02 = "ID : CH_02";
+    /// <summary>
+    /// [ ID : CH_02 ]
+    /// Params : (error)
+    /// </summary>
+    public void Shutdown(string error)
+    {
+        Debug.LogError(error);
+        this.enabled = false;
+    }
+
     // View Mechanics:
     public void Update() // Look System:
     {
+        // Initialize Camera Values :
+        float camera_Horizontal = 0;
+        float camera_Vertical = 0;
+
+        // Direct Input :
+        switch (game_Manager.input_State)
+        {
+            // Singular Player Input :
+            case Game_Manager.Input_Type.Singular:
+                if (user_Handler.current_Mode == User_Handler.Mode.Menu) // [ Checks If Player Is Currently In A Menu ]
+                {
+                    camera_Horizontal = camera_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
+                    camera_Vertical = camera_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                }
+                break;
+
+            // Universal Player Input :
+            case Game_Manager.Input_Type.Universal:
+                if (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
+                {
+                    camera_Horizontal = camera_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
+                    camera_Vertical = camera_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                }
+                break;
+        }
+
+        // Cursor Movement System :
+        if (game_Manager.input_State != Game_Manager.Input_Type.None && camera_Horizontal + camera_Vertical != 0) // [ Checks If Input Is Active ]
+            cursor_Pos.anchoredPosition = Turn_Camera(camera_Horizontal, camera_Vertical); // [ Run Cursor Movement ]
+
         if (user_Handler.current_Mode != UserHandler.Mode.Menu)
         {
             float lookHorizontal = Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // Y-Axis Rotational Value

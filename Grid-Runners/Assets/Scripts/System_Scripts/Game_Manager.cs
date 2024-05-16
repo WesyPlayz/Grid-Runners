@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-public class GameManager : MonoBehaviour
+public class Game_Manager : MonoBehaviour
 {
     private PlayerInputManager playerInputManager;
     [Header("Round Info")]
@@ -19,6 +19,19 @@ public class GameManager : MonoBehaviour
         Round,
         Intermission
     }
+    public enum Player
+    {
+        Player,
+        Player_1,
+        Player_2
+    }
+    public enum Input_Type
+    {
+        None,
+        Singular,
+        Universal
+    }
+    public Input_Type input_State;
 
     [Header("Point info")]
     public int P1_Points;
