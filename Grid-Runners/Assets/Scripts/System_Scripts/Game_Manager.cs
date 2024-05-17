@@ -29,7 +29,10 @@ public class Game_Manager : MonoBehaviour
     {
         None,
         Singular,
-        Universal
+        Universal,
+
+        Playing,
+        Building
     }
     public Input_Type input_State;
 

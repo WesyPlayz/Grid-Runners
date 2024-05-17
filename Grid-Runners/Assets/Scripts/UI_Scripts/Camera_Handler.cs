@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Game Libraries :
+using Utilities;
+
 // Script Class :
 public class Camera_Handler : MonoBehaviour
 {
@@ -54,12 +57,12 @@ public class Camera_Handler : MonoBehaviour
     //}
 
     // Initialization System :
-    private string ID_01 = "ID : CH_01";
+    public static string ID_01 = "ID : Cam_01";
     /// <summary>
-    /// [ ID : CH_01 ]
+    /// [ ID : Cam_01 ]
     /// Params : (None)
     /// </summary>
-    void Start()
+    public void Start()
     {
         string parameters = string.Empty;
 
@@ -75,8 +78,11 @@ public class Camera_Handler : MonoBehaviour
             ));
         parameters = "(Player_1 | Player_2 | Player)";
         if (player_Obj == null) // Existential Check For player_obj :
-            Debug.LogError(ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters);
-
+            Debug_System.Shutdown
+                (
+                    this, 
+                    ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters
+                );
         parameters = "(Game_Manager)";
         if (game_Manager != null) // Existential Check For game_Manager :
         {
@@ -85,36 +91,41 @@ public class Camera_Handler : MonoBehaviour
                 user_Handler = player_Obj.GetComponent<User_Handler>(); // [ Assigns The Reference Of User_Handler ]
                 parameters = "(User_Handler)";
                 if (user_Handler == null) // Existential Check For user_Handler :
-                    Shutdown(ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters);
+                    Debug_System.Shutdown
+                        (
+                            this, 
+                            ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters
+                        );
             }
             else if (game_Manager.input_State != Game_Manager.Input_Type.Universal)
             {
                 uni_User_Handler = player_Obj.GetComponent<Uni_User_Handler>(); // [ Assigns The Reference Of Uni_User_Handler ]
                 parameters = "(Uni_User_Handler)";
                 if (uni_User_Handler == null) // Existential Check For uni_User_Handler :
-                    Shutdown(ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters);
+                    Debug_System.Shutdown
+                        (
+                            this, 
+                            ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters
+                        );
             }
         }
         else
-            Shutdown(ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters);
+            Debug_System.Shutdown
+                (
+                    this, 
+                    ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters
+                );
 
         // Camera Variable Setup:
         origin_FOV = ui_Camera.fieldOfView; // Assigns base FOV
     }
 
-    // Script Emergency System :
-    private string ID_02 = "ID : CH_02";
-    /// <summary>
-    /// [ ID : CH_02 ]
-    /// Params : (error)
-    /// </summary>
-    public void Shutdown(string error)
-    {
-        Debug.LogError(error);
-        this.enabled = false;
-    }
-
     // View Mechanics:
+    public static string ID_02 = "ID : Cam_02";
+    /// <summary>
+    /// [ ID : Cam_02 ]
+    /// Params : (None)
+    /// </summary>
     public void Update() // Look System:
     {
         // Initialize Camera Values :
@@ -126,26 +137,42 @@ public class Camera_Handler : MonoBehaviour
         {
             // Singular Player Input :
             case Game_Manager.Input_Type.Singular:
-                if (user_Handler.current_Mode == User_Handler.Mode.Menu) // [ Checks If Player Is Currently In A Menu ]
+                if (user_Handler.current_Mode != User_Handler.Mode.Menu) // [ Checks If Player Is Currently In A Menu ]
                 {
-                    camera_Horizontal = camera_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
-                    camera_Vertical = camera_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                    camera_Horizontal = camera_Sensitivity * user_Handler.GetInputAxis // Y-Axis Movement Value :
+                        (
+                            User_Handler.User_Axis.Horizontal
+                        );
+                    camera_Vertical = camera_Sensitivity * user_Handler.GetInputAxis // X-Axis Movement Value :
+                        (
+                            User_Handler.User_Axis.Vertical
+                        );
                 }
                 break;
 
             // Universal Player Input :
             case Game_Manager.Input_Type.Universal:
-                if (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
+                if (uni_User_Handler.current_Mode != Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
                 {
-                    camera_Horizontal = camera_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
-                    camera_Vertical = camera_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                    camera_Horizontal = camera_Sensitivity * uni_User_Handler.GetInputAxis // Y-Axis Movement Value :
+                        (
+                            Uni_User_Handler.User_Axis.Horizontal
+                        );
+                    camera_Vertical = camera_Sensitivity * uni_User_Handler.GetInputAxis // X-Axis Movement Value :
+                        (
+                            Uni_User_Handler.User_Axis.Vertical
+                        );
                 }
                 break;
         }
 
         // Cursor Movement System :
         if (game_Manager.input_State != Game_Manager.Input_Type.None && camera_Horizontal + camera_Vertical != 0) // [ Checks If Input Is Active ]
-            cursor_Pos.anchoredPosition = Turn_Camera(camera_Horizontal, camera_Vertical); // [ Run Cursor Movement ]
+            user_Handler.Neck.transform.localEulerAngles = Turn_Camera // Run Cursor Movement :
+                ( 
+                    camera_Horizontal, 
+                    camera_Vertical
+                );
 
         if (user_Handler.current_Mode != UserHandler.Mode.Menu)
         {
@@ -175,6 +202,44 @@ public class Camera_Handler : MonoBehaviour
             }
         }
     }
+
+    public Vector3 Turn_Camera(float x, float y)
+    {
+        Vector3 local_Rot = Vector3.zero;
+
+        // Direct Input :
+        switch (game_Manager.input_State)
+        {
+            // Singular Player Input :
+            case Game_Manager.Input_Type.Singular:
+                (user_Handler.current_Mode == User_Handler.Mode.Play ? user_Handler.User : user_Handler.user_Spectate).transform.Rotate(Vector3.up * x, Space.World); // Y-Axis Rotation
+                (user_Handler.current_Mode == User_Handler.Mode.Play ? user_Handler.Neck : user_Handler.user_Spectate).transform.Rotate(Vector3.right * y); // X-Axis Rotation
+                local_Rot = user_Handler.Neck.transform.localEulerAngles; // Gets local angle values
+                break;
+
+            // Universal Player Input :
+            case Game_Manager.Input_Type.Universal:
+                if (uni_User_Handler.current_Mode != Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
+                {
+                    (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Play ? uni_User_Handler.User : uni_User_Handler.user_Spectate).transform.Rotate(Vector3.up * x, Space.World); // Y-Axis Rotation
+                    (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Play ? uni_User_Handler.Neck : uni_User_Handler.user_Spectate).transform.Rotate(Vector3.right * y); // X-Axis Rotation
+                    local_Rot = uni_User_Handler.Neck.transform.localEulerAngles; // Gets local angle values
+                }
+                break;
+        }
+        local_Rot.x = (local_Rot.x > 180) ? local_Rot.x - 360 : local_Rot.x; // creates a loop for the angle value
+        local_Rot.x = Mathf.Clamp(local_Rot.x, (!is_Peeking ? -look_Limit : -Peek_Limit), (!is_Peeking ? look_Limit : Peek_Limit)); // Limits X-Axis
+        if (is_Peeking)
+        {
+            local_Rot.z = (local_Rot.z > 180) ? local_Rot.z - 360 : local_Rot.z; // creates a loop for the angle value
+            local_Rot.z = Mathf.Clamp(local_Rot.z, (current_Side == Side.Right ? -Peek_Limit : -peek_Angle), (current_Side == Side.Right ? -peek_Angle : Peek_Limit)); // Limits Z-Axis
+        }
+        else
+            local_Rot.z = 0; // Locks Z-Axis
+        local_Rot.y = 0; // Locks Y-Axis
+        return local_Rot; // [ Returns The Rotation Value ]
+    }
+
     public void ADS(InputAction.CallbackContext phase) // Aim System:
     {
         user_Handler.can_Use_Action = !phase.performed;

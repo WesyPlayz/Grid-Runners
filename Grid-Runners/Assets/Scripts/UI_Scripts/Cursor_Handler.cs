@@ -1,16 +1,17 @@
 // System Libraries :
-using System.Collections;
 using System.Collections.Generic;
 
 // Unity Engine Libraries :
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // Other Package Libraries :
 using TMPro;
+
+// Game Libraries :
+using Utilities;
 
 // Script Class :
 public class Cursor_Handler : MonoBehaviour
@@ -36,9 +37,9 @@ public class Cursor_Handler : MonoBehaviour
     //}
 
     // Initialization System :
-    private string ID_01 = "ID : CH_01";
+    public static string ID_01 = "ID : Cur_01";
     /// <summary>
-    /// [ ID : CH_01 ]
+    /// [ ID : Cur_01 ]
     /// Params : (None)
     /// </summary>
     public void Start()
@@ -60,8 +61,11 @@ public class Cursor_Handler : MonoBehaviour
             ));
         parameters = "(Player_1 | Player_2 | Player)";
         if (player_Obj == null) // Existential Check For player_obj :
-            Shutdown(ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters);
-
+            Debug_System.Shutdown
+                (
+                    this, 
+                    ID_01 + "| Null Reference : player_obj was not defined.\nParameters : " + parameters
+                );
         parameters = "(Game_Manager)";
         if (game_Manager != null) // Existential Check For game_Manager :
         {
@@ -70,43 +74,47 @@ public class Cursor_Handler : MonoBehaviour
                 user_Handler = player_Obj.GetComponent<User_Handler>(); // [ Assigns The Reference Of User_Handler ]
                 parameters = "(User_Handler)";
                 if (user_Handler == null) // Existential Check For user_Handler :
-                    Shutdown(ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters);
+                    Debug_System.Shutdown
+                        (
+                            this, 
+                            ID_01 + "| Null Reference : user_Handler was not defined.\nParameters : " + parameters
+                        );
             }
             else if (game_Manager.input_State != Game_Manager.Input_Type.Universal)
             {
                 uni_User_Handler = player_Obj.GetComponent<Uni_User_Handler>(); // [ Assigns The Reference Of Uni_User_Handler ]
                 parameters = "(Uni_User_Handler)";
                 if (uni_User_Handler == null) // Existential Check For uni_User_Handler :
-                    Shutdown(ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters);
+                    Debug_System.Shutdown
+                        (
+                            this, 
+                            ID_01 + "| Null Reference : uni_User_Handler was not defined.\nParameters : " + parameters
+                        );
             }
         }
         else
-            Shutdown(ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters);
+            Debug_System.Shutdown
+                (
+                    this, 
+                    ID_01 + "| Null Reference : game_Manager was not defined.\nParameters : " + parameters
+                );
 
         // Cursor Assignment :
         Cursor.lockState = CursorLockMode.Locked; // [ Locks The Default Desktop Cursor To The Center Of The Screen ]
         cursor_Pos = GetComponent<RectTransform>(); // [ Assigns The Reference Of RectTransform ]
         parameters = "(RectTransform)";
         if (cursor_Pos == null) // Existential Check For cursor_Pos :
-            Shutdown(ID_01 + "| Null Reference : cursor_Pos was not defined.\nParameters : " + parameters);
-    }
-
-    // Script Emergency System :
-    private string ID_02 = "ID : CH_02";
-    /// <summary>
-    /// [ ID : CH_02 ]
-    /// Params : (error)
-    /// </summary>
-    public void Shutdown(string error)
-    {
-        Debug.LogError(error);
-        this.enabled = false;
+            Debug_System.Shutdown
+                (
+                    this, 
+                    ID_01 + "| Null Reference : cursor_Pos was not defined.\nParameters : " + parameters
+                );
     }
 
     // Cursor Input System :
-    private string ID_03 = "ID : CH_03";
+    public static string ID_02 = "ID : Cur_02";
     /// <summary>
-    /// [ ID : CH_03 ]
+    /// [ ID : Cur_02 ]
     /// Params : (None)
     /// </summary>
     public void Update()
@@ -122,8 +130,14 @@ public class Cursor_Handler : MonoBehaviour
             case Game_Manager.Input_Type.Singular:
                 if (user_Handler.current_Mode == User_Handler.Mode.Menu) // [ Checks If Player Is Currently In A Menu ]
                 {
-                    cursor_Horizontal = cursor_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
-                    cursor_Vertical = cursor_Sensitivity * user_Handler.GetInputAxis(UserHandler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                    cursor_Horizontal = cursor_Sensitivity * user_Handler.GetInputAxis // Y-Axis Movement Value :
+                        (
+                            UserHandler.User_Axis.Horizontal
+                        );
+                    cursor_Vertical = cursor_Sensitivity * user_Handler.GetInputAxis // X-Axis Movement Value :
+                        (
+                            UserHandler.User_Axis.Vertical
+                        );
                 }
                 break;
 
@@ -131,21 +145,31 @@ public class Cursor_Handler : MonoBehaviour
             case Game_Manager.Input_Type.Universal:
                 if (uni_User_Handler.current_Mode == Uni_User_Handler.Mode.Menu) // [ Checks If The Players Are Currently In A Menu ]
                 {
-                    cursor_Horizontal = cursor_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Horizontal); // [ Y-Axis Movement Value ]
-                    cursor_Vertical = cursor_Sensitivity * uni_User_Handler.GetInputAxis(Uni_User_Handler.User_Axis.Vertical); // [ X-Axis Movement Value ]
+                    cursor_Horizontal = cursor_Sensitivity * uni_User_Handler.GetInputAxis // Y-Axis Movement Value :
+                        (
+                            Uni_User_Handler.User_Axis.Horizontal
+                        );
+                    cursor_Vertical = cursor_Sensitivity * uni_User_Handler.GetInputAxis // X-Axis Movement Value :
+                        (
+                            Uni_User_Handler.User_Axis.Vertical
+                        );
                 }
                 break;
         }
 
         // Cursor Movement System :
         if (game_Manager.input_State != Game_Manager.Input_Type.None && cursor_Horizontal + cursor_Vertical != 0) // [ Checks If Input Is Active ]
-            cursor_Pos.anchoredPosition = Move_Cursor(cursor_Horizontal, cursor_Vertical); // [ Run Cursor Movement ]
+            cursor_Pos.anchoredPosition = Move_Cursor // Run Cursor Movement :
+                (
+                    cursor_Horizontal, 
+                    cursor_Vertical
+                );
     }
 
     // Cursor Movement System :
-    private string ID_04 = "ID : CH_04";
+    public static string ID_03 = "ID : Cur_03";
     /// <summary>
-    /// [ ID : CH_04 ]
+    /// [ ID : Cur_03 ]
     /// Params : (x | y)
     /// </summary>
     public Vector2 Move_Cursor(float x, float y)
@@ -159,35 +183,58 @@ public class Cursor_Handler : MonoBehaviour
         // Finds The Camera Bounds And Limits The Cursor To Them :
         RectTransform canvas_RectTransform = cursor_Pos.parent as RectTransform;
         Vector2 canvas_Size = canvas_RectTransform.sizeDelta;
-        anchored_Cursor_Pos.x = Mathf.Clamp(anchored_Cursor_Pos.x, -(canvas_Size.x / 2), (canvas_Size.x / 2));
-        anchored_Cursor_Pos.y = Mathf.Clamp(anchored_Cursor_Pos.y, -(canvas_Size.y / 2), (canvas_Size.y / 2));
-
+        anchored_Cursor_Pos.x = Mathf.Clamp
+            (
+                anchored_Cursor_Pos.x, 
+                -(canvas_Size.x / 2), 
+                (canvas_Size.x / 2)
+            );
+        anchored_Cursor_Pos.y = Mathf.Clamp
+            (
+                anchored_Cursor_Pos.y, 
+                -(canvas_Size.y / 2), 
+                (canvas_Size.y / 2)
+            );
         return anchored_Cursor_Pos; // [ Returns The Movement Value ]
     }
 
     // Cursor Select System:
-    private string ID_05 = "ID : CH_05";
+    public static string ID_04 = "ID : Cur_04";
     /// <summary>
-    /// [ ID : CH_05 ]
+    /// [ ID : Cur_04 ]
     /// Params : (phase)
     /// </summary>
     public void Select(InputAction.CallbackContext phase)
     {
+        // Pointer Data Assignment :
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
-        Vector2 screenPosition = RectTransformUtility.WorldToScreenPoint(null, cursor_Pos.position);
+        Vector2 screenPosition = RectTransformUtility.WorldToScreenPoint
+            (
+                null, 
+                cursor_Pos.position
+            );
         pointerData.position = screenPosition;
 
+        // UI Element Detection System :
         List<RaycastResult> ui_Elements = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, ui_Elements);
-
-        if (ui_Elements.Count > 0)
+        EventSystem.current.RaycastAll
+            (
+                pointerData, 
+                ui_Elements
+            );
+        if (ui_Elements.Count > 0) // [ Existential Check For ui_Elements ]
         {
-            foreach (RaycastResult ui_Element in ui_Elements)
+            foreach (RaycastResult ui_Element in ui_Elements) // Runs Through Each UI Element :
             {
-                Button button = ui_Element.gameObject.GetComponent<Button>();
-                if (button != null)
+                Button button = ui_Element.gameObject.GetComponent<Button>(); // [ Finds Button Component ]
+                if (button != null) // Existential Check For button :
                 {
-                    ExecuteEvents.Execute(button.gameObject, new BaseEventData(EventSystem.current), ExecuteEvents.submitHandler);
+                    ExecuteEvents.Execute // Executes Event Bound To The Button :
+                        (
+                            button.gameObject, 
+                            new BaseEventData(EventSystem.current), 
+                            ExecuteEvents.submitHandler
+                        );
                     continue;
                 }
             }
